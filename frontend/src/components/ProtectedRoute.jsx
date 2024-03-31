@@ -7,7 +7,7 @@ import { REFRESH_TOKEN, ACCESS_TOKEN } from "../constants"
 
 function ProtectedRoute({children}){
     const [isAuthorized, setIsAuthorized] = useState(null)
-
+    console.log(ACCESS_TOKEN)
     useEffect(() => {
         auth().catch(() => setIsAuthorized(false))
     }, [])
