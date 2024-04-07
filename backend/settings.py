@@ -13,12 +13,15 @@ https://docs.djangoproject.com/en/5.0/ref/settings/
 from pathlib import Path
 from datetime import timedelta
 from dotenv import load_dotenv
+import django_heroku
+import dj_database_url
 import os
 
-load_dotenv()
 
+load_dotenv()
+DATABASE_URL = os.getenv('DATABASE_URL')
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
-BASE_DIR = Path(__file__).resolve().parent.parent
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 
 # Quick-start development settings - unsuitable for production
@@ -97,17 +100,7 @@ WSGI_APPLICATION = 'backend.wsgi.application'
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
 
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': os.getenv("DB_NAME"),
-        "USER": os.getenv("DB_USER"),
-        "PASSWORD": os.getenv("DB_PWD"),
-        "HOST": os.getenv("DB_HOST"),
-        "PORT": os.getenv("DB_PORT"),
-    }
-}
-
-
+    'default': dj_database_url.config(default=os.getenv('DATABASE_URL'))}
 # Password validation
 # https://docs.djangoproject.com/en/5.0/ref/settings/#auth-password-validators
 
@@ -157,3 +150,5 @@ CORS_ALLOWS_CREDENTIALS = True
 CORS_ALLOW_METHODS = [
     'DELETE',  # Add DELETE method to the allowed methods
 ]
+
+django_heroku.settings(locals())
