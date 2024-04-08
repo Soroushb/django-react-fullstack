@@ -1,5 +1,5 @@
 asgiref
-Django
+Django~=3.2.12
 django-cors-headers
 djangorestframework
 djangorestframework-simplejwt
