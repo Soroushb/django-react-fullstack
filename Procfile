@@ -1,1 +1,1 @@
-web: gunicorn --worker-class=eventlet backend.wsgi:application
+web: PYTHONPATH=/app python backend.wsgi:application
