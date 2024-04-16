@@ -142,13 +142,10 @@ STATIC_URL = 'static/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-CORS_ALLOWED_ORIGINS = [
-    'http://127.0.0.1:8000',  # Assuming your React app is running on port 3000
-]
+
 CORS_ALLOW_ALL_ORIGINS = True
+CORS_ORIGIN_ALLOW_ALL = True
 CORS_ALLOWS_CREDENTIALS = True
-CORS_ALLOW_METHODS = [
-    'DELETE',  # Add DELETE method to the allowed methods
-]
+
 
 django_heroku.settings(locals())
