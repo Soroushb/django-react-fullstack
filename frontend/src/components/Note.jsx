@@ -15,12 +15,6 @@ function Note({ note, onDelete }) {
 
 
         <>
-        <div>
-            <button onClick={() => {
-                localStorage.removeItem(ACCESS_TOKEN);
-                localStorage.removeItem(REFRESH_TOKEN);
-                navigate("/login")}}>Logout</button>
-        </div>
         <div className="note-container">
             <p className="note-title">{note.title}</p>
             <p className="note-content">{note.content}</p>
