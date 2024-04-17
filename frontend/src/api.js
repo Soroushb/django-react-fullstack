@@ -1,24 +1,23 @@
-import axios from "axios"
-import { ACCESS_TOKEN } from "./constants"
+import axios from "axios";
+import { ACCESS_TOKEN } from "./constants";
 
-const apiUrl = "literature-frenz-eece749b9dd9.herokuapp.com";
+const apiUrl = "https://literature-frenz-eece749b9dd9.herokuapp.com"; // Absolute URL to your Heroku backend
 
 const api = axios.create({
     baseURL: import.meta.env.VITE_API_URL ? import.meta.env.VITE_API_URL : apiUrl
-})
+});
 
 api.interceptors.request.use(
     (config) => {
         const token = localStorage.getItem(ACCESS_TOKEN);
-        if(token){
-            config.headers.Authorization = `Bearer ${token}`
+        if (token) {
+            config.headers.Authorization = `Bearer ${token}`;
         }
         return config;
     },
     (error) => {
-        return Promise.reject(error)
+        return Promise.reject(error);
     }
-)
+);
 
-
-export default api
+export default api;
