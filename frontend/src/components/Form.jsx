@@ -1,4 +1,4 @@
-import {React, useState} from "react"
+import {useState} from "react"
 import api from "../api"
 import { useNavigate } from "react-router-dom"
 import {ACCESS_TOKEN, REFRESH_TOKEN} from "../constants"
@@ -40,7 +40,7 @@ const Form = ({route, method}) => {
     <input className="form-input" type="text" value={username} onChange={(e) => setUsername(e.target.value)}  placeholder = "Username"/>
     <input className="form-input" type="password" value={password} onChange={(e) => setPassword(e.target.value)}  placeholder = "Password" />
     {loading && <LoadingIndicator/>}
-    <button className="form-button" type="submit">{name}</button>
+    <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded w-full" type="submit">{name}</button>
   </form>
 }
 

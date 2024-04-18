@@ -5,6 +5,8 @@ import Register from "./pages/Register"
 import Home from "./pages/Home"
 import NotFound from "./pages/NotFound"
 import ProtectedRoute from "./components/ProtectedRoute"
+import './styles.css'
+import './index.css'; // Make sure this file exists if you're importing it
 
 function Logout(){
   localStorage.clear()
