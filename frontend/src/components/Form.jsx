@@ -3,7 +3,6 @@ import api from "../api"
 import { useNavigate } from "react-router-dom"
 import {ACCESS_TOKEN, REFRESH_TOKEN} from "../constants"
 import "../styles/Form.css"
-import LoadingIndicator from "./LoadingIndicator"
 
 const Form = ({route, method}) => {
 
@@ -117,7 +116,6 @@ const Form = ({route, method}) => {
               id="exampleFormControlInput2"
               placeholder="Username" />
             <label
-              for="exampleFormControlInput2"
               className="pointer-events-none absolute left-3 top-0 mb-0 max-w-[90%] origin-[0_0] truncate pt-[0.37rem] leading-[2.15] text-neutral-500 transition-all duration-200 ease-out peer-focus:-translate-y-[1.15rem] peer-focus:scale-[0.8] peer-focus:text-primary peer-data-[twe-input-state-active]:-translate-y-[1.15rem] peer-data-[twe-input-state-active]:scale-[0.8] motion-reduce:transition-none dark:text-neutral-400 dark:peer-focus:text-primary"
               >Username
             </label>
@@ -131,7 +129,6 @@ const Form = ({route, method}) => {
               id="exampleFormControlInput22"
               placeholder="Password" />
             <label
-              for="exampleFormControlInput22"
               className="pointer-events-none absolute left-3 top-0 mb-0 max-w-[90%] origin-[0_0] truncate pt-[0.37rem] leading-[2.15] text-neutral-500 transition-all duration-200 ease-out peer-focus:-translate-y-[1.15rem] peer-focus:scale-[0.8] peer-focus:text-primary peer-data-[twe-input-state-active]:-translate-y-[1.15rem] peer-data-[twe-input-state-active]:scale-[0.8] motion-reduce:transition-none dark:text-neutral-400 dark:peer-focus:text-primary"
               >Password
             </label>
@@ -145,8 +142,7 @@ const Form = ({route, method}) => {
                 value=""
                 id="exampleCheck2" />
               <label
-                className="inline-block ps-[0.15rem] hover:cursor-pointer"
-                for="exampleCheck2">
+                className="inline-block ps-[0.15rem] hover:cursor-pointer">
                 Remember me
               </label>
             </div>
@@ -164,12 +160,11 @@ const Form = ({route, method}) => {
             </button>
 
             <p className="mb-0 mt-2 pt-1 text-sm font-semibold">
-              Don't have an account?
+            
               <a
-                href="#!"
+                href="/register"
                 className="text-danger transition duration-150 ease-in-out hover:text-danger-600 focus:text-danger-600 active:text-danger-700"
-                >Register</a
-              >
+                >Register</a>
             </p>
             <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded w-full" type="submit">{name}</button>
 
