@@ -63,6 +63,7 @@ const Home = () => {
                 <button onClick={() => {
                 navigate("/register")}}>Register</button>
         </div>
+        <button onClick={() => navigate("/books")}>Books</button>
         <div>
             <h2>Notes</h2>
             {notes.map((note) => (
