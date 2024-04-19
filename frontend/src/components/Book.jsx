@@ -9,12 +9,11 @@ const Book = ({id}) => {
     getBook()
   }, [])
 
-  console.log(id)
 
   const getBook = () => {
     api.get(`api/books/${id}/`)
     .then((res) => res.data)
-    .then((data) => {setBook(data); console.log(data)})
+    .then((data) => {setBook(data);})
     .catch((err) => alert(err))
   }
 
