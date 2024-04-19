@@ -57,6 +57,19 @@ class BookListCreate(ListCreateAPIView):
         else:
             print(serializer.error)
 
+class BookCreate(ListCreateAPIView):
+    queryset = Book.objects.all()
+    serializer_class = BookSerializer
+
+    def get_queryset(self):
+        return Book.objects.all()
+    
+    def perform_create(self, serializer):
+        if serializer.is_valid():
+            serializer.save(user = self.request.user)
+        else:
+            print(serializer.error)
+
 class BookDetail(RetrieveAPIView):
     queryset = Book.objects.all()
     serializer_class = BookSerializer
