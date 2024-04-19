@@ -25,7 +25,7 @@ const BookSearch = () => {
                 const bookListData = {
                     list_type: "read",
                     book: bookId,
-                    user: ""
+                    user: 0
                 };
 
                 const bookListRes = await api.post("/api/books/", bookListData);
