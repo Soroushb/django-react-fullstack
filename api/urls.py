@@ -5,5 +5,10 @@ from . import views
 urlpatterns = [
 
     path("notes/", views.NoteListCreate.as_view(), name="note-list"),
-    path("notes/delete/<int:pk>", views.NoteDelete.as_view(), name="delete-note")
+    path("notes/delete/<int:pk>", views.NoteDelete.as_view(), name="delete-note"),
+    path("books/", views.BookListCreate.as_view(), name="book-list"),
+    path("books/<int:pk>/", views.BookDetail.as_view(), name="book-detail"),
+    path("books/<int:pk>/update/", views.BookUpdate.as_view(), name="book-update"),
+    path("books/<int:pk>/delete/", views.BookDelete.as_view(), name="book-delete"),
+
 ]

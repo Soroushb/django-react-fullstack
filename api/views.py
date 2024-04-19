@@ -1,9 +1,10 @@
 from django.shortcuts import render
 from django.contrib.auth.models import User
-from rest_framework import generics
-from .serializers import UserSerializer, NoteSerializer
+from rest_framework import generics, viewsets
+from rest_framework.generics import ListCreateAPIView, RetrieveAPIView, UpdateAPIView, DestroyAPIView
+from .serializers import UserSerializer, NoteSerializer, BookSerializer, BookListSerializer
 from rest_framework.permissions import IsAuthenticated, AllowAny
-from .models import Note
+from .models import Note, Book, BookList
 # Create your views here.
 
 class NoteListCreate(generics.ListCreateAPIView):
@@ -33,3 +34,27 @@ class CreateUserView(generics.CreateAPIView):
     queryset = User.objects.all()
     serializer_class = UserSerializer
     permission_classes = [AllowAny]
+
+class BookViewSet(viewsets.ModelViewSet):
+    queryset = Book.objects.all()
+    serializer_class = BookSerializer
+
+class BookListViewSet(viewsets.ModelViewSet):
+    queryset = BookList.objects.all()
+    serializer_class = BookListSerializer
+
+class BookListCreate(ListCreateAPIView):
+    queryset = Book.objects.all()
+    serializer_class = BookSerializer
+
+class BookDetail(RetrieveAPIView):
+    queryset = Book.objects.all()
+    serializer_class = BookSerializer
+
+class BookUpdate(UpdateAPIView):
+    queryset = Book.objects.all()
+    serializer_class = BookSerializer
+
+class BookDelete(DestroyAPIView):
+    queryset = Book.objects.all()
+    serializer_class = BookSerializer

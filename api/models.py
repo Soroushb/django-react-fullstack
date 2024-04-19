@@ -10,3 +10,13 @@ class Note(models.Model):
 
     def __str__(self):
         return self.title
+
+class Book(models.Model):
+    title = models.CharField(max_length=255)
+    author = models.CharField(max_length=255)
+    published_year = models.PositiveIntegerField()
+
+class BookList(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    book = models.ForeignKey(Book, on_delete=models.CASCADE)
+    list_type = models.CharField(max_length=20)  #'favorite', 'to_read', 'finished'
