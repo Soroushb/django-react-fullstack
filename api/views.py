@@ -44,8 +44,18 @@ class BookListViewSet(viewsets.ModelViewSet):
     serializer_class = BookListSerializer
 
 class BookListCreate(ListCreateAPIView):
-    queryset = Book.objects.all()
-    serializer_class = BookSerializer
+    queryset = BookList.objects.all()
+    serializer_class = BookListSerializer
+
+    def get_queryset(self):
+        user = self.request.user
+        return BookList.objects.filter(user=user)
+    
+    def perform_create(self, serializer):
+        if serializer.is_valid():
+            serializer.save(user = self.request.user)
+        else:
+            print(serializer.error)
 
 class BookDetail(RetrieveAPIView):
     queryset = Book.objects.all()
