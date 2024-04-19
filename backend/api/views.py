@@ -46,6 +46,7 @@ class BookListViewSet(viewsets.ModelViewSet):
 class BookListCreate(ListCreateAPIView):
     queryset = BookList.objects.all()
     serializer_class = BookListSerializer
+    permission_classes = [IsAuthenticated]  
 
     def get_queryset(self):
         user = self.request.user
@@ -54,6 +55,19 @@ class BookListCreate(ListCreateAPIView):
     def perform_create(self, serializer):
         if serializer.is_valid():
             serializer.save(user = self.request.user)
+        else:
+            print(serializer.error)
+
+class BookCreate(ListCreateAPIView):
+    queryset = Book.objects.all()
+    serializer_class = BookSerializer
+
+    def get_queryset(self):
+        return Book.objects.all()
+    
+    def perform_create(self, serializer):
+        if serializer.is_valid():
+            serializer.save()
         else:
             print(serializer.error)
 

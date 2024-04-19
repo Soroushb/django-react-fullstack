@@ -1,14 +1,53 @@
-import { useState } from 'react';
+import React, { useState } from 'react';
+import api from '../api';
+
 
 const BookSearch = () => {
     const [books, setBooks] = useState([]);
     const [searchTerm, setSearchTerm] = useState('');
+    const [selectedBook, setSelectedBook] = useState(null);
+
+    const handleBookClick = (book) => {
+        setSelectedBook(book); // Set the selected book when the user clicks
+        createBook(book); // Call createBook with the selected book
+    };
+
+    const createBook = async (book) => {
+        try {
+            const { title, author, publicationYear } = book;
+            const res = await api.post("/api/book/", { title, author, published_year: publicationYear });
+
+            if (res.status === 201) {
+                alert("Book Created");
+
+                // Add the book to the user's BookList
+                const bookId = res.data.id;
+                const bookListData = {
+                    list_type: "read",
+                    book: bookId,
+                    user: ""
+                };
+
+                const bookListRes = await api.post("/api/books/", bookListData);
+                if (bookListRes.status === 201) {
+                    alert("Book added to BookList");
+                } else {
+                    alert("Failed to add book to BookList");
+                }
+            } else {
+                alert("Failed to create the book");
+            }
+        } catch (error) {
+            console.error('Error creating or adding book:', error);
+            alert('Failed to create or add the book. Check console for details.');
+        }
+    };
 
     const handleSearch = async (event) => {
-        event.preventDefault(); 
+        event.preventDefault();
 
         const params = new URLSearchParams({
-            q: "alchemist",
+            q: searchTerm,
             page: "1"
         });
 
@@ -27,6 +66,7 @@ const BookSearch = () => {
             setBooks(data); // Update state with fetched books
         } catch (error) {
             console.error('Error fetching data:', error);
+            alert('Failed to fetch data. Check console for details.');
         }
     };
 
@@ -59,7 +99,9 @@ const BookSearch = () => {
             </form>
 
             {books?.map((book) => (
-                <p key={book._id}>{book.title}</p>
+                <p onClick={() => handleBookClick(book)} key={book._id}>
+                    {book.title}
+                </p>
             ))}
         </div>
     );

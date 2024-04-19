@@ -20,16 +20,18 @@ const Books = () => {
     const getMyBooks = () => {
         api.get('/api/books/')
         .then((res) => res.data)
-        .then((data) => {setMyBooks(data);})
+        .then((data) => {setMyBooks(data); console.log(data) })
         .catch((err) => alert(err));
     }
+
+    
 
     return(
 
         <>
         <BookSearch/>
         <p>Books</p>
-        {myBooks.map((book) => (<Book key={book.id} id={book?.id}/>))}
+        {myBooks.map((book) => (<Book key={book.id} id={book?.book}/>))}
         </>
     )
 

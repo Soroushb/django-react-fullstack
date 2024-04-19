@@ -5,10 +5,14 @@ const Book = ({id}) => {
 
   const [book, setBook] = useState(null)
 
+
+
   useEffect(() => {
     getBook()
   }, [])
 
+  
+  
 
   const getBook = () => {
     api.get(`api/books/${id}/`)
