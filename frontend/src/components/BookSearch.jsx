@@ -1,18 +1,11 @@
-import React, { useState } from 'react';
 import api from '../api';
-
+import React, { useState } from 'react';
 
 const BookSearch = () => {
     const [books, setBooks] = useState([]);
     const [searchTerm, setSearchTerm] = useState('');
-    const [selectedBook, setSelectedBook] = useState(null);
 
-    const handleBookClick = (book) => {
-        setSelectedBook(book); // Set the selected book when the user clicks
-        createBook(book); // Call createBook with the selected book
-    };
-
-    const createBook = async (book) => {
+    const handleBookClick = async (book) => {
         try {
             const { title, author, publicationYear } = book;
             const res = await api.post("/api/book/", { title, author, published_year: publicationYear });
@@ -24,8 +17,8 @@ const BookSearch = () => {
                 const bookId = res.data.id;
                 const bookListData = {
                     list_type: "read",
-                    book: bookId,
-                    user: 0
+                    book: bookId, // Use the book ID, not the entire book object
+                    user: 1 // Replace '6' with the current user's ID retrieved from token
                 };
 
                 const bookListRes = await api.post("/api/books/", bookListData);
