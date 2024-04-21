@@ -15,6 +15,11 @@ class Book(models.Model):
     title = models.CharField(max_length=255)
     author = models.CharField(max_length=255)
     published_year = models.PositiveIntegerField()
+    rating = models.DecimalField(decimal_places=2, max_digits=5, default=0)
+    ratings = models.PositiveIntegerField(default=0)
+    smallImageURL = models.CharField(max_length=500, default="")
+    url = models.CharField(max_length=500, default="")
+
 
 class BookList(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
