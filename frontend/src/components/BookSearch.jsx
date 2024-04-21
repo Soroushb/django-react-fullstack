@@ -7,8 +7,9 @@ const BookSearch = () => {
 
     const handleBookClick = async (book) => {
         try {
-            const { title, author, publicationYear } = book;
-            const res = await api.post("/api/book/", { title, author, published_year: publicationYear });
+            console.log(book)
+            const { title, author, publicationYear, rating, ratings, smallImageURL, url } = book;
+            const res = await api.post("/api/book/", { title, author, published_year: publicationYear, rating, ratings, smallImageURL, url  });
 
             if (res.status === 201) {
                 alert("Book Created");

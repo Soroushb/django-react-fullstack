@@ -29,9 +29,13 @@ const Books = () => {
     return(
 
         <>
+        <div className="m-16">
         <BookSearch/>
         <p>Books</p>
+        <div className="flex">
         {myBooks.map((book) => (<Book key={book.id} id={book?.book}/>))}
+        </div>
+        </div>
         </>
     )
 
