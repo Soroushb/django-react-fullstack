@@ -9,6 +9,7 @@ import axios from "axios"
 
 const Books = () => {
 
+    const navigate = useNavigate()
     const [myBooks, setMyBooks] = useState([])
     console.log(myBooks)
 
@@ -22,7 +23,7 @@ const Books = () => {
         api.get('/api/books/')
         .then((res) => res.data)
         .then((data) => {setMyBooks(data); console.log(data) })
-        .catch((err) => alert(err));
+        .catch(() => {navigate("/login")});
     }
 
     

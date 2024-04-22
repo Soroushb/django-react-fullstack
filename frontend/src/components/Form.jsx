@@ -8,13 +8,17 @@ const Form = ({route, method}) => {
 
     const [username, setUsername] = useState("")
     const [password, setPassword] = useState("")
+    const [error, setError] = useState(false)
+    const [submitClicked, setSubmitClicked] = useState(false)
     const [loading, setLoading] = useState(false)
     const navigate = useNavigate()
     const name = method === "login" ? "Login": "Register"
+    console.log(method)
 
     const handleSubmit = async (e) => {
         setLoading(true);
         e.preventDefault();
+        setSubmitClicked(true)
 
         try{
             const res = await api.post(route, {username, password})
@@ -28,7 +32,7 @@ const Form = ({route, method}) => {
             }
         
         }catch(error){
-            alert(error)
+            setError(true)
         }finally{
             setLoading(false)
         }
@@ -107,6 +111,29 @@ const Form = ({route, method}) => {
               Or
             </p>
           </div>
+          {password && username && method === "login" && error && (
+          <div className="flex justify-center align-middle">
+          <p className="text-red-700">Your credentials are incorrect.</p>
+          </div>
+          )}
+
+          {password && username && method == "register" && error && (
+          <div className="flex justify-center align-middle">
+          <p className="text-red-700">Account already exists!</p>
+          </div>
+          )}
+
+          {!password && username && submitClicked && (
+          <div className="flex justify-center align-middle">
+          <p className="text-red-700">Please input your password.</p>
+          </div>
+          )}
+
+          {password && !username && submitClicked && (
+          <div className="flex justify-center align-middle">
+          <p className="text-red-700">Please input your username.</p>
+          </div>
+          )}
 
           <div className="relative mb-6" data-twe-input-wrapper-init>
             <input
@@ -158,14 +185,20 @@ const Form = ({route, method}) => {
               data-twe-ripple-color="light">
               Login
             </button>
-
+            {method === "login" && (
             <p className="mb-0 mt-2 pt-1 text-sm font-semibold">
-            
               <a
                 href="/register"
                 className="text-danger transition duration-150 ease-in-out hover:text-danger-600 focus:text-danger-600 active:text-danger-700"
                 >Register</a>
-            </p>
+            </p>)}
+            {method === "register" && (
+            <p className="mb-0 mt-2 pt-1 text-sm font-semibold">
+              <a
+                href="/login"
+                className="text-danger transition duration-150 ease-in-out hover:text-danger-600 focus:text-danger-600 active:text-danger-700"
+                >Login</a>
+            </p>)}
             <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded w-full" type="submit">{name}</button>
 
           </div>
