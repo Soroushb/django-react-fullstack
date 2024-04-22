@@ -1,9 +1,11 @@
 import api from '../api';
 import React, { useState } from 'react';
+import Book from './Book';
 
 const BookSearch = () => {
     const [books, setBooks] = useState([]);
     const [searchTerm, setSearchTerm] = useState('');
+    console.log(books)
 
     const handleBookClick = async (book) => {
         try {
@@ -92,11 +94,29 @@ const BookSearch = () => {
                 </div>
             </form>
 
+            <div className='flex flex-wrap w-full justify-center'>
+
             {books?.map((book) => (
-                <p onClick={() => handleBookClick(book)} key={book._id}>
-                    {book.title}
-                </p>
+                <>
+                <div className='m-8' onClick={() => handleBookClick(book)} key={book._id}>
+                    <div className="flex flex-col justify-center items-center max-w-40 h-full rounded overflow-hidden shadow-lg">
+                    <img className="" src={book?.smallImageURL} alt="Sunset in the mountains"/>
+                    <div className="px-6 py-4">
+                        <div className="font-bold mb-2">{book?.title}</div>
+                        <p className="text-gray-700 text-base">
+                        Rating: {book?.rating}
+                        </p>
+                    </div>
+                    <div className="px-6 pt-4 pb-2">
+                        <span className="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2">#photography</span>
+                        <span className="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2">#travel</span>
+                        <span className="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2">#winter</span>
+                    </div>
+                    </div>
+                </div>
+            </>
             ))}
+              </div>
         </div>
     );
 };

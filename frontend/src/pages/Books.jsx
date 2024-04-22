@@ -9,11 +9,12 @@ import axios from "axios"
 
 const Books = () => {
 
-
     const [myBooks, setMyBooks] = useState([])
+    console.log(myBooks)
 
     useEffect(() => {
         getMyBooks()
+        
     }, [])
 
 
@@ -31,10 +32,15 @@ const Books = () => {
         <>
         <div className="m-16">
         <BookSearch/>
-        <p>Books</p>
-        <div className="flex">
-        {myBooks.map((book) => (<Book key={book.id} id={book?.book}/>))}
+        <p>Books in progress:</p>
+        <div className="flex flex-wrap ">
+        {myBooks.map((book) => (<Book key={book.id} id={book?.book} list_type={book?.list_type} type="progress"/>))}
         </div>
+        <p>Books to read:</p>
+        <div className="flex flex-wrap ">
+        {myBooks.map((book) => (<Book key={book.id} id={book?.book} list_type={book?.list_type} type="read"/>))}
+        </div>
+
         </div>
         </>
     )
