@@ -11,5 +11,5 @@ urlpatterns = [
     path("books/<int:pk>/", views.BookDetail.as_view(), name="book-detail"),
     path("books/<int:pk>/update/", views.BookUpdate.as_view(), name="book-update"),
     path("books/<int:pk>/delete/", views.BookDelete.as_view(), name="book-delete"),
-
+    path("users/<int:user_id>", views.UsernameByUserId.as_view(), name="user")
 ]

@@ -1,4 +1,5 @@
 import React from 'react'
+import Profile from './Profile'
 
 const Navbar = () => {
   return (
@@ -7,7 +8,7 @@ const Navbar = () => {
         LOGO
         </div>
         <div className='account m-20'>
-        Account
+        <Profile/>
         </div>
     </div>
   )

@@ -5,6 +5,7 @@ from rest_framework.generics import ListCreateAPIView, RetrieveAPIView, UpdateAP
 from .serializers import UserSerializer, NoteSerializer, BookSerializer, BookListSerializer
 from rest_framework.permissions import IsAuthenticated, AllowAny
 from .models import Note, Book, BookList
+from rest_framework.response import Response
 # Create your views here.
 
 class NoteListCreate(generics.ListCreateAPIView):
@@ -82,3 +83,15 @@ class BookUpdate(UpdateAPIView):
 class BookDelete(DestroyAPIView):
     queryset = Book.objects.all()
     serializer_class = BookSerializer
+
+class UsernameByUserId(generics.RetrieveAPIView):
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request, *args, **kwargs):
+        user_id = kwargs.get('user_id')
+        try:
+            user = User.objects.get(id=user_id)
+            username = user.username
+            return Response({'username': username})
+        except User.DoesNotExist:
+            return Response(status=404, data={'error': 'User not found'})

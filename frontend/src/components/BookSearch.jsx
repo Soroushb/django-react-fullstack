@@ -1,10 +1,11 @@
 import api from '../api';
-import React, { useState } from 'react';
-import Book from './Book';
+import { useState } from 'react';
+import LoadingIndicator from './LoadingIndicator';
 
 const BookSearch = () => {
     const [books, setBooks] = useState([]);
     const [searchTerm, setSearchTerm] = useState('');
+    const [loading, setLoading] = useState(false);
     console.log(books)
 
     const handleBookClick = async (book) => {
@@ -57,8 +58,9 @@ const BookSearch = () => {
             if (!response.ok) {
                 throw new Error('Network response was not ok.');
             }
-
+            
             const data = await response.json();
+            !data ? setLoading(true) : setLoading(false)
             setBooks(data); // Update state with fetched books
         } catch (error) {
             console.error('Error fetching data:', error);
@@ -95,8 +97,9 @@ const BookSearch = () => {
             </form>
 
             <div className='flex flex-wrap w-full justify-center'>
-
-            {books?.map((book) => (
+            {loading && <LoadingIndicator/>}
+            {books.length > 0 ? (
+            books?.map((book) => (
                 <>
                 <div className='m-8' onClick={() => handleBookClick(book)} key={book._id}>
                     <div className="flex flex-col justify-center items-center max-w-40 h-full rounded overflow-hidden shadow-lg">
@@ -115,7 +118,8 @@ const BookSearch = () => {
                     </div>
                 </div>
             </>
-            ))}
+            ))
+        ) : (<p>No books found.</p>)}
               </div>
         </div>
     );
