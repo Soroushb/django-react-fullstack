@@ -59,6 +59,17 @@ class BookListCreate(ListCreateAPIView):
         else:
             print(serializer.error)
 
+class BookListUpdateAPIView(generics.UpdateAPIView):
+    queryset = BookList.objects.all()
+    serializer_class = BookListSerializer
+
+    def patch(self, request, *args, **kwargs):
+        instance = self.get_object()
+        serializer = self.get_serializer(instance, data=request.data, partial=True)
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+        return Response(serializer.data)
+
 class BookCreate(ListCreateAPIView):
     queryset = Book.objects.all()
     serializer_class = BookSerializer

@@ -6,6 +6,7 @@ const BookSearch = () => {
     const [books, setBooks] = useState([]);
     const [searchTerm, setSearchTerm] = useState('');
     const [loading, setLoading] = useState(false);
+    const [type, setType] = useState("")
     console.log(books)
 
     const handleBookClick = async (book) => {
@@ -20,7 +21,7 @@ const BookSearch = () => {
                 // Add the book to the user's BookList
                 const bookId = res.data.id;
                 const bookListData = {
-                    list_type: "read",
+                    list_type: {type},
                     book: bookId, // Use the book ID, not the entire book object
                     user: 1 // Replace '6' with the current user's ID retrieved from token
                 };
@@ -71,6 +72,7 @@ const BookSearch = () => {
     return (
         <div>
             <form className="max-w-md mx-auto" onSubmit={handleSearch}>
+                p
                 <label htmlFor="default-search" className="mb-2 text-sm font-medium text-gray-900 sr-only dark:text-white">Search</label>
                 <div className="relative">
                     <div className="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
@@ -82,7 +84,7 @@ const BookSearch = () => {
                         type="search"
                         id="default-search"
                         className="block w-full p-4 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                        placeholder="Search Mockups, Logos..."
+                        placeholder="Search Books and Authors..."
                         value={searchTerm}
                         onChange={(e) => setSearchTerm(e.target.value)}
                         required
@@ -111,9 +113,9 @@ const BookSearch = () => {
                         </p>
                     </div>
                     <div className="px-6 pt-4 pb-2">
-                        <span className="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2">#photography</span>
-                        <span className="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2">#travel</span>
-                        <span className="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2">#winter</span>
+                        <span className="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2">To read</span>
+                        <span className="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2">In Progress</span>
+                        <span className="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2">Finished</span>
                     </div>
                     </div>
                 </div>

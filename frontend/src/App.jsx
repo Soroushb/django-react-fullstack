@@ -6,6 +6,7 @@ import NotFound from "./pages/NotFound"
 import Books from "./pages/Books"
 import Navbar from "./components/Navbar"
 import ProtectedRoute from "./components/ProtectedRoute"
+import MyBooks from "./pages/MyBooks"
 import './styles.css'
 import './index.css'; // Make sure this file exists if you're importing it
 
@@ -35,6 +36,7 @@ function App() {
           <Route path="/logout" element={<Logout/>}/>
           <Route path="/books" element={<Books/>} />
           <Route path="/register" element={<RegisterAndLogout/>}/>
+          <Route path="myBooks" element={<MyBooks/>}/>
           <Route path="*" element={<NotFound/>}></Route>
         </Routes>
         </div>
