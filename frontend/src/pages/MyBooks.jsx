@@ -12,7 +12,7 @@ const MyBooks = () => {
     useEffect(() => {
         getMyBooks()
         
-    }, [myBooks])
+    }, [])
 
     const setInProg = (book) => {
 
@@ -50,7 +50,7 @@ const MyBooks = () => {
         <p>Books to read:</p>
         {booksToRead.length > 0 ? (
             <div className="flex flex-wrap" >
-            {myBooks.map((book) => (<div key={book.id} onClick={() => {setInProg(book);}}><Book key={book.id} id={book?.book} list_type={book?.list_type} type="read" /></div>))}
+            {myBooks.map((book) => (<div key={book.id}><Book key={book.id} id={book?.book} list_type={book?.list_type} type="read" setInProg={() => setInProg(book)} /></div>))}
             </div>
         ) : (<p>No books finished.</p>)}
         
