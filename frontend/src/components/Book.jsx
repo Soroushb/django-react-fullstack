@@ -19,6 +19,7 @@ const Book = ({ id, list_type, type }) => {
       });
   };
 
+
   // Render the Book component conditionally based on 'type' and 'list_type'
   return (
     <>
@@ -33,6 +34,9 @@ const Book = ({ id, list_type, type }) => {
             <div className="px-6 pt-4 pb-2">
               <span className="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2">
                 {list_type}
+              </span>
+              <span className="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-green-700 mr-2 mb-2">
+                Add to in progress
               </span>
             </div>
           </div>

@@ -12,7 +12,19 @@ const MyBooks = () => {
     useEffect(() => {
         getMyBooks()
         
-    }, [])
+    }, [myBooks])
+
+    const setInProg = (book) => {
+
+        api.patch(`api/booklist/${book.id}/update/`, {list_type: 'progress'})
+        .then((res) => {
+          console.log(res)
+        })
+        .catch((err) => {
+          console.log(err)
+        })
+       
+      }
 
 
     const getMyBooks = () => {
@@ -37,8 +49,8 @@ const MyBooks = () => {
         
         <p>Books to read:</p>
         {booksToRead.length > 0 ? (
-            <div className="flex flex-wrap ">
-            {myBooks.map((book) => (<Book key={book.id} id={book?.book} list_type={book?.list_type} type="read"/>))}
+            <div className="flex flex-wrap" >
+            {myBooks.map((book) => (<div key={book.id} onClick={() => {setInProg(book);}}><Book key={book.id} id={book?.book} list_type={book?.list_type} type="read" /></div>))}
             </div>
         ) : (<p>No books finished.</p>)}
         
