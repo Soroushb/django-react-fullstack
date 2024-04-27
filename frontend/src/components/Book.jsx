@@ -1,10 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import api from '../api';
 
-const Book = ({ id, list_type, type, setInProg, setToFinished }) => {
+const Book = ({ id, list_type, type, setInProg, setToFinished, setToRead }) => {
   const [book, setBook] = useState(null);
-
-  console.log(book)
 
   useEffect(() => {
     getBook();
@@ -21,6 +19,24 @@ const Book = ({ id, list_type, type, setInProg, setToFinished }) => {
       });
   };
 
+  const handleAddToLibrary = () => {
+    const confirmMessage = `Do you want to add "${book.title}" to ${type}?`;
+    if (window.confirm(confirmMessage)) {
+      switch (type) {
+        case 'progress':
+          setInProg(book);
+          break;
+        case 'to read':
+          setToRead(book);
+          break;
+        case 'finished':
+          setToFinished(book);
+          break;
+        default:
+          break;
+      }
+    }
+  };
 
   // Render the Book component conditionally based on 'type' and 'list_type'
   return (
@@ -34,15 +50,12 @@ const Book = ({ id, list_type, type, setInProg, setToFinished }) => {
               <p className="text-gray-700 text-base">Rating: {book.rating}</p>
             </div>
             <div className="px-6 pt-4 pb-2">
-              <span className="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2">
+              <span className="inline-block  px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2">
                 {list_type}
               </span>
-              <span onClick={() => {setInProg(book);}} className="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-green-700 mr-2 mb-2">
-                Add to in progress
-              </span>
-              <span onClick={() => {setToFinished(book);}} className="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-green-700 mr-2 mb-2">
-                Add to finished
-              </span>
+              <button onClick={handleAddToLibrary} className="inline-block bg-gray-200 px-3 py-1 text-sm font-semibold text-green-700 mr-2 mb-2">
+                Add to library
+              </button>
             </div>
           </div>
         </div>

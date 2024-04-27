@@ -34,14 +34,24 @@ const Profile = () => {
   }, [username]); // Run this effect whenever `username` changes
 
   return (
-    <div>
-      {username && (
-      <div className='bg-blue-400 rounded-full'>
-      <h1 className='text-white p-4'>{username.substring(0,1).toUpperCase()}</h1>
-      </div>)
-      }
-      
-    </div>
+    <div className="relative">
+    {username && (
+      <div className="relative w-16 h-16">
+        <div className="bg-gradient-to-br from-blue-500 to-purple-500 rounded-full w-full h-full flex items-center justify-center shadow-lg relative">
+          <h1 className="text-white text-4xl font-bold z-10 relative">{username.substring(0, 1).toUpperCase()}</h1>
+          <div className="absolute top-0 left-0 w-full h-full rounded-full border-2 border-white pointer-events-none"></div>
+        </div>
+      </div>
+    )}
+    {username && (
+      <div className="absolute top-0 left-0 mt-20 bg-white rounded-lg shadow-lg p-4 hidden group-hover:block">
+        <p className="text-gray-800 text-sm">Welcome, {username}!</p>
+        <button className="bg-blue-500 hover:bg-blue-600 text-white font-semibold px-4 py-2 rounded mt-2">
+          View Profile
+        </button>
+      </div>
+    )}
+  </div>
   );
 };
 

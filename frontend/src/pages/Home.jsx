@@ -3,7 +3,6 @@ import api from "../api"
 import "../styles/Home.css"
 import Note from "../components/Note"
 import { useNavigate } from "react-router-dom"
-import {ACCESS_TOKEN, REFRESH_TOKEN} from "../constants"
 
 
 const Home = () => {
@@ -56,10 +55,7 @@ const Home = () => {
   </button>
 </div>
       <div>
-            <button onClick={() => {
-                localStorage.removeItem(ACCESS_TOKEN);
-                localStorage.removeItem(REFRESH_TOKEN);
-                navigate("/login")}}>Logout</button>
+            <button >Logout</button>
                 <button onClick={() => {
                 navigate("/register")}}>Register</button>
         </div>

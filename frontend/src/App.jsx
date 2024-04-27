@@ -24,10 +24,11 @@ function App() {
 
   return (
     <>
-       <div className='navbar'>
+       
+      <BrowserRouter>
+      <div className='navbar'>
             <Navbar/>
       </div>
-      <BrowserRouter>
       <div className='main'>
       <div className='routes'>
         <Routes>
