@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import api from '../api';
 
-const Book = ({ id, list_type, type, setInProg }) => {
+const Book = ({ id, list_type, type, setInProg, setToFinished }) => {
   const [book, setBook] = useState(null);
 
   useEffect(() => {
@@ -37,6 +37,9 @@ const Book = ({ id, list_type, type, setInProg }) => {
               </span>
               <span onClick={() => {setInProg(book);}} className="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-green-700 mr-2 mb-2">
                 Add to in progress
+              </span>
+              <span onClick={() => {setToFinished(book);}} className="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-green-700 mr-2 mb-2">
+                Add to finished
               </span>
             </div>
           </div>
