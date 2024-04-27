@@ -4,6 +4,8 @@ import api from '../api';
 const Book = ({ id, list_type, type, setInProg, setToFinished }) => {
   const [book, setBook] = useState(null);
 
+  console.log(book)
+
   useEffect(() => {
     getBook();
   }, [id]); // Re-fetch book data whenever 'id' changes

@@ -7,21 +7,22 @@ const BookSearch = () => {
     const [searchTerm, setSearchTerm] = useState('');
     const [loading, setLoading] = useState(false);
     const [type, setType] = useState("")
+    let bookType = ""
     console.log(books)
 
-    const handleBookClick = async (book) => {
+    const handleBookClick = async (book, bookType) => {
         try {
-            console.log(book)
+            console.log(bookType)
             const { title, author, publicationYear, rating, ratings, smallImageURL, url } = book;
             const res = await api.post("/api/book/", { title, author, published_year: publicationYear, rating, ratings, smallImageURL, url  });
-
+            
             if (res.status === 201) {
                 alert("Book Created");
 
                 // Add the book to the user's BookList
                 const bookId = res.data.id;
                 const bookListData = {
-                    list_type: {type},
+                    list_type: bookType,
                     book: bookId, // Use the book ID, not the entire book object
                     user: 1 // Replace '6' with the current user's ID retrieved from token
                 };
@@ -103,7 +104,7 @@ const BookSearch = () => {
             {books.length > 0 ? (
             books?.map((book) => (
                 <>
-                <div className='m-8' onClick={() => handleBookClick(book)} key={book._id}>
+                <div className='m-8' key={book._id}>
                     <div className="flex flex-col justify-center items-center max-w-40 h-full rounded overflow-hidden shadow-lg">
                     <img className="" src={book?.smallImageURL} alt="Sunset in the mountains"/>
                     <div className="px-6 py-4">
@@ -113,9 +114,9 @@ const BookSearch = () => {
                         </p>
                     </div>
                     <div className="px-6 pt-4 pb-2">
-                        <span className="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2">To read</span>
-                        <span className="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2">In Progress</span>
-                        <span className="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2">Finished</span>
+                        <span className="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2" onClick={() => handleBookClick(book,  bookType = "to read")}>To read</span>
+                        <span className="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2" onClick={() => handleBookClick(book,  bookType = "progress")}>In Progress</span>
+                        <span className="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2"  onClick={() => handleBookClick(book,  bookType = "finished")}>Finished</span>
                     </div>
                     </div>
                 </div>

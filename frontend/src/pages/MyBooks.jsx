@@ -12,7 +12,7 @@ const MyBooks = () => {
     useEffect(() => {
         getMyBooks()
         
-    }, [])
+    },[])
 
     const setInProg = (book) => {
 
@@ -24,19 +24,7 @@ const MyBooks = () => {
           console.log(err)
         })
        
-    }
-
-    const setToFinished = (book) => {
-
-      api.patch(`api/booklist/${book.id}/update/`, {list_type: 'finished'})
-      .then((res) => {
-        console.log(res)
-      })
-      .catch((err) => {
-        console.log(err)
-      })
-     
-  }
+      }
 
 
     const getMyBooks = () => {
@@ -62,14 +50,7 @@ const MyBooks = () => {
         <p>Books to read:</p>
         {booksToRead.length > 0 ? (
             <div className="flex flex-wrap" >
-            {myBooks.map((book) => (<div key={book.id}><Book key={book.id} id={book?.book} list_type={book?.list_type} type="read" setInProg={() => setInProg(book)} setToFinished={() => setToFinished(book)} /></div>))}
-            </div>
-        ) : (<p>No books finished.</p>)}
-
-        <p>Finished Books:</p>
-        {booksToRead.length > 0 ? (
-            <div className="flex flex-wrap" >
-            {myBooks.map((book) => (<div key={book.id}><Book key={book.id} id={book?.book} list_type={book?.list_type} type="finished" setInProg={() => setInProg(book)} setToFinished={setToFinished} /></div>))}
+            {myBooks.map((book) => (<div key={book.id} onClick={() => {setInProg(book);}}><Book key={book.id} id={book?.book} list_type={book?.list_type} type="to read" /></div>))}
             </div>
         ) : (<p>No books finished.</p>)}
         
