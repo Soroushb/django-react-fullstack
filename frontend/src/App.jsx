@@ -9,6 +9,7 @@ import ProtectedRoute from "./components/ProtectedRoute"
 import MyBooks from "./pages/MyBooks"
 import './styles.css'
 import './index.css'; // Make sure this file exists if you're importing it
+import Account from "./components/Account"
 
 function Logout(){
   localStorage.clear()
@@ -36,6 +37,7 @@ function App() {
           <Route path="/login" element={<Login/>}/>
           <Route path="/logout" element={<Logout/>}/>
           <Route path="/books" element={<Books/>} />
+          <Route path="/profile" element={<Account/>} />
           <Route path="/register" element={<RegisterAndLogout/>}/>
           <Route path="myBooks" element={<MyBooks/>}/>
           <Route path="*" element={<NotFound/>}></Route>
