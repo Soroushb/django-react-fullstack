@@ -1,6 +1,11 @@
 from django.contrib.auth.models import User
 from rest_framework import serializers
-from .models import Note, Book, BookList
+from .models import Note, Book, BookList, UserProfile
+
+class UserProfileSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = UserProfile
+        fields = ['bio', 'picture']
 
 
 class UserSerializer(serializers.ModelSerializer):

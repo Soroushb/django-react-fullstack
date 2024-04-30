@@ -1,12 +1,62 @@
 from django.shortcuts import render
 from django.contrib.auth.models import User
-from rest_framework import generics, viewsets
+from rest_framework import generics, viewsets, status
+from rest_framework.views import APIView
+from django.shortcuts import get_object_or_404
 from rest_framework.generics import ListCreateAPIView, RetrieveAPIView, UpdateAPIView, DestroyAPIView
-from .serializers import UserSerializer, NoteSerializer, BookSerializer, BookListSerializer
+from .serializers import UserSerializer, NoteSerializer, BookSerializer, BookListSerializer, UserProfileSerializer
 from rest_framework.permissions import IsAuthenticated, AllowAny
-from .models import Note, Book, BookList
+from .models import Note, Book, BookList, UserProfile
 from rest_framework.response import Response
 # Create your views here.
+
+class UserProfileViewSet(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request):
+        # Check if UserProfile exists for the current user
+        profile, created = UserProfile.objects.get_or_create(user=request.user)
+
+        # If UserProfile was created, serialize and return it
+        if created:
+            serializer = UserProfileSerializer(profile)
+            return Response(serializer.data)
+        
+        # If UserProfile already existed, serialize and return it
+        serializer = UserProfileSerializer(profile)
+        return Response(serializer.data)
+    
+    def put(self, request):
+        profile = get_object_or_404(UserProfile, user=request.user)
+        
+        serializer = UserProfileSerializer(profile, data=request.data)
+        
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    
+    def post(self, request):
+        # Check if UserProfile already exists for the current user
+        existing_profile = UserProfile.objects.filter(user=request.user).exists()
+        if existing_profile:
+            return Response({"detail": "UserProfile already exists for this user."}, status=status.HTTP_400_BAD_REQUEST)
+
+        # Create a new UserProfile for the current user
+        serializer = UserProfileSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save(user=request.user)
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    
+    def delete(self, request):
+        try:
+            profile = UserProfile.objects.get(user=request.user)
+            profile.delete()
+            return Response({"detail": "UserProfile deleted successfully."}, status=status.HTTP_204_NO_CONTENT)
+        except UserProfile.DoesNotExist:
+            return Response({"detail": "UserProfile does not exist for this user."}, status=status.HTTP_404_NOT_FOUND)
+
 
 class NoteListCreate(generics.ListCreateAPIView):
     serializer_class = NoteSerializer
@@ -36,6 +86,7 @@ class CreateUserView(generics.CreateAPIView):
     serializer_class = UserSerializer
     permission_classes = [AllowAny]
 
+    
 class BookViewSet(viewsets.ModelViewSet):
     queryset = Book.objects.all()
     serializer_class = BookSerializer

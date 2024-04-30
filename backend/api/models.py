@@ -1,7 +1,18 @@
 from django.db import models
 from django.contrib.auth.models import User
 # Create your models here.
+def user_directory_path(instance, filename):
+    # file will be uploaded to MEDIA_ROOT/profile_pics/user_<id>/<filename>
+    return f"profile_pics/user_{instance.user.id}/{filename}"
 
+class UserProfile(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    bio = models.TextField(blank=True)
+    picture = models.ImageField(upload_to=user_directory_path, blank=True)
+
+    def __str__(self):
+        return self.user.username
+    
 class Note(models.Model):
     title = models.CharField(max_length = 100)
     content = models.TextField()
@@ -10,6 +21,7 @@ class Note(models.Model):
 
     def __str__(self):
         return self.title
+    
 
 class Book(models.Model):
     title = models.CharField(max_length=255)
@@ -25,3 +37,4 @@ class BookList(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     book = models.ForeignKey(Book, on_delete=models.CASCADE)
     list_type = models.CharField(max_length=20)  #'favorite', 'to_read', 'finished'
+
