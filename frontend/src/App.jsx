@@ -10,6 +10,7 @@ import MyBooks from "./pages/MyBooks"
 import './styles.css'
 import './index.css'; // Make sure this file exists if you're importing it
 import Account from "./components/Account"
+import Writings from "./pages/Writings"
 
 function Logout(){
   localStorage.clear()
@@ -36,10 +37,11 @@ function App() {
           <Route path="/" element={<ProtectedRoute><Home/></ProtectedRoute>}/>
           <Route path="/login" element={<Login/>}/>
           <Route path="/logout" element={<Logout/>}/>
-          <Route path="/books" element={<Books/>} />
-          <Route path="/profile" element={<Account/>} />
+          <Route path="/books" element={<ProtectedRoute><Books/></ProtectedRoute>} />
+          <Route path="/profile" element={<ProtectedRoute><Account/></ProtectedRoute>} />
           <Route path="/register" element={<RegisterAndLogout/>}/>
-          <Route path="myBooks" element={<MyBooks/>}/>
+          <Route path="/notes" element={<ProtectedRoute><Writings/></ProtectedRoute>}/>
+          <Route path="myBooks" element={<ProtectedRoute><MyBooks/></ProtectedRoute>}/>
           <Route path="*" element={<NotFound/>}></Route>
         </Routes>
         </div>

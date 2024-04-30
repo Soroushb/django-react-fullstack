@@ -1,6 +1,10 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 
 const Account = () => {
+
+  const navigate = useNavigate()
+
   return (
     <div className="container mx-auto mt-10">
       <div className="grid grid-cols-2 gap-8">
@@ -38,7 +42,7 @@ const Account = () => {
         </div>
 
         {/* Box 4: Reflections */}
-        <div className="rounded-lg shadow-md overflow-hidden">
+        <div className="rounded-lg shadow-md overflow-hidden" onClick={() => navigate("/notes")}>
           <div className="bg-gradient-to-r from-purple-400 to-purple-600 p-6 rounded-t-lg">
             <h2 className="text-2xl font-bold text-white mb-4">Reflections</h2>
           </div>

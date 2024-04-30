@@ -17,10 +17,21 @@ const Navbar = () => {
   }, [localStorage.ACCESS_TOKEN])
 
   return (
-    <div className="bg-purple-800">
+    <div className="bg-gradient-to-br from-emerald-900 to-emerald-400">
       <div className="container mx-auto px-4 py-6 flex justify-between items-center">
         {/* Logo */}
-        <div className="text-white text-2xl font-semibold">LOGO</div>
+        <div className="text-white text-2xl font-semibold cursor-pointer" onClick={() => navigate("/")}>LITERATURE HOUSE</div>
+
+        <div className='flex flex-col  items-center group hover:cursor-pointer'>
+        <div className="text-white text-xl">Books</div>
+        <div className='hidden group-hover:block bg-white w-2 h-2 rounded-full'></div>
+        </div>
+
+        <div className='flex flex-col  items-center group hover:cursor-pointer'>
+        <div className="text-white text-xl">Notes</div>
+        <div className='hidden group-hover:block bg-white w-2 h-2 rounded-full'></div>
+        </div>
+
 
         {/* Account */}
         <div className="relative">
