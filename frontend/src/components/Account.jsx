@@ -31,7 +31,7 @@ const Account = () => {
         </div>
 
         {/* Box 3: Goals */}
-        <div className="rounded-lg shadow-md overflow-hidden">
+        <div className="rounded-lg shadow-md overflow-hidden" onClick={() => navigate("/goals")}>
           <div className="bg-gradient-to-r from-yellow-400 to-yellow-600 p-6 rounded-t-lg">
             <h2 className="text-2xl font-bold text-white mb-4">Goals</h2>
           </div>

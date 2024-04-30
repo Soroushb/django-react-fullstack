@@ -22,12 +22,12 @@ const Navbar = () => {
         {/* Logo */}
         <div className="text-white text-2xl font-semibold cursor-pointer" onClick={() => navigate("/")}>LITERATURE HOUSE</div>
 
-        <div className='flex flex-col  items-center group hover:cursor-pointer'>
+        <div className='flex flex-col  items-center group hover:cursor-pointer' onClick={() => navigate("/mybooks")}>
         <div className="text-white text-xl">Books</div>
         <div className='hidden group-hover:block bg-white w-2 h-2 rounded-full'></div>
         </div>
 
-        <div className='flex flex-col  items-center group hover:cursor-pointer'>
+        <div className='flex flex-col  items-center group hover:cursor-pointer' onClick={() => navigate("/notes")}>
         <div className="text-white text-xl">Notes</div>
         <div className='hidden group-hover:block bg-white w-2 h-2 rounded-full'></div>
         </div>
