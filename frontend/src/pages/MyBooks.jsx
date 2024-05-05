@@ -47,15 +47,16 @@ const MyBooks = () => {
 
     return (
         <div className='flex flex-col items-center'>
+            <div className='flex'>
             <div className="max-w-screen-lg mx-auto mt-8">
-                <h1 className="text-3xl font-bold mb-4 text-gray-800">My Books</h1>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                    <div className="border rounded-lg p-6 bg-gray-100">
-                        <h2 className="text-xl font-semibold mb-4">Books in Progress:</h2>
-                        {inProgress.length > 0 ? (
-                            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                                {inProgress.map((book) => (
-                                    <div key={book.id} className="bg-white rounded-lg shadow-md p-4 cursor-pointer hover:bg-gray-50 transition duration-300 ease-in-out transform hover:-translate-y-1 hover:scale-105" onClick={() => setToRead(book)}>
+                <h1 className="text-3xl font-bold mb-4 text-gray-800 invisible">My Books</h1>
+                
+                <div className="m-10 rounded-lg p-6=">
+                        <h2 className="text-xl text-white font-semibold mb-4">Books in progress:</h2>
+                        {inProgress?.length > 0 ? (
+                            <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+                                {inProgress?.map((book) => (
+                                    <div key={book.id} className=" rounded-lg shadow-md p-4 cursor-pointer transition duration-300 ease-in-out transform hover:-translate-y-1 hover:scale-105" onClick={() => setInProg(book)}>
                                         <Book id={book.book} list_type={book.list_type} type="progress" />
                                     </div>
                                 ))}
@@ -64,12 +65,14 @@ const MyBooks = () => {
                             <p className="text-gray-600">No books in progress</p>
                         )}
                     </div>
-                    <div className="border rounded-lg p-6 bg-gray-100">
-                        <h2 className="text-xl font-semibold mb-4">Books to Read:</h2>
+                   
+                    <div>
+                    <div className="m-10 rounded-lg p-6=">
+                        <h2 className="text-xl text-white font-semibold mb-4">Books to Read:</h2>
                         {booksToRead.length > 0 ? (
-                            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
                                 {booksToRead.map((book) => (
-                                    <div key={book.id} className="bg-white rounded-lg shadow-md p-4 cursor-pointer hover:bg-gray-50 transition duration-300 ease-in-out transform hover:-translate-y-1 hover:scale-105" onClick={() => setInProg(book)}>
+                                    <div key={book.id} className=" rounded-lg shadow-md p-4 cursor-pointer transition duration-300 ease-in-out transform hover:-translate-y-1 hover:scale-105" onClick={() => setInProg(book)}>
                                         <Book id={book.book} list_type={book.list_type} type="to read" />
                                     </div>
                                 ))}
@@ -79,6 +82,7 @@ const MyBooks = () => {
                         )}
                     </div>
                 </div>
+            </div>
             </div>
         </div>
     );

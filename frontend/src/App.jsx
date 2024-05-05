@@ -33,7 +33,7 @@ function App() {
       <div className='navbar'>
             <Navbar/>
       </div>
-      <div className='main'>
+      <div>
       <div className='routes'>
         <Routes>
           <Route path="/" element={<ProtectedRoute><Home/></ProtectedRoute>}/>

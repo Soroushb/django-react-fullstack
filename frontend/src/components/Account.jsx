@@ -52,8 +52,8 @@ const Account = () => {
   const navigate = useNavigate()
 
   return (
-    <div className="container mx-auto mt-10">
-
+  
+    <div className="container mx-auto mt-10 ">
 <div className="flex items-center">
       {/* Avatar */}
       <div className="w-16 h-16 rounded-full overflow-hidden">
