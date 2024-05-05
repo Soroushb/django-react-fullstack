@@ -124,20 +124,23 @@ const Form = ({route, method}) => {
             {method === "login" && (
             <div className="flex flex-col items-center justify-center mb-10">
               <p>Don't have an account? </p>
-            <p className="flex justify-center items-center cursor-pointer hover:scale-110   mb-0 mt-2 pt-1 text-sm font-semibold bg-purple-800 text-white p-4 rounded-full">
+            <p className="flex justify-center items-center cursor-pointer hover:scale-110  mb-0 mt-2 pt-1 text-sm font-semibold bg-gray-500 text-white p-4 rounded-full">
               <a
                 href="/register"
                 className="text-danger transition mt-2 duration-150 ease-in-out hover:text-danger-600 focus:text-danger-600 active:text-danger-700"
-                >Register</a>
+                >REGISTER</a>
             </p>
             </div>)}
             {method === "register" && (
-            <p className="mb-0 mt-2 pt-1 text-sm font-semibold">
-              <a
-                href="/login"
-                className="text-danger transition duration-150 ease-in-out hover:text-danger-600 focus:text-danger-600 active:text-danger-700"
-                >Login</a>
-            </p>)}
+            <div className="flex flex-col items-center justify-center mb-10">
+            <p>Already have an account? </p>
+            <p className="flex justify-center items-center cursor-pointer hover:scale-110   mb-0 mt-2 pt-1 text-sm font-semibold bg-gray-500 text-white p-4 rounded-full">
+            <a
+              href="/login"
+              className="text-danger transition mt-2 duration-150 ease-in-out hover:text-danger-600 focus:text-danger-600 active:text-danger-700"
+              >LOGIN</a>
+          </p>
+          </div>)}
             <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded w-full" type="submit">{name}</button>
 
           </div>

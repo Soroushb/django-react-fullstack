@@ -1,58 +1,72 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import Profile from './Profile';
-import {ACCESS_TOKEN, REFRESH_TOKEN} from "../constants"
+import { ACCESS_TOKEN, REFRESH_TOKEN } from "../constants"
 import { useNavigate } from 'react-router-dom';
 
-
 const Navbar = () => {
+  const [isLoggedin, setIsLoggedin] = useState(false);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-  const navigate = useNavigate()
+  const navigate = useNavigate();
+
   const toggleDropdown = () => {
     setIsDropdownOpen(!isDropdownOpen);
   };
 
-  useEffect(() => {
+  const checkUser = () => {
+    const user = localStorage.getItem(ACCESS_TOKEN);
+    setIsLoggedin(!!user); 
+  };
 
-  }, [localStorage.ACCESS_TOKEN])
+  useEffect(() => {
+    checkUser(); 
+  }, []);
+
+  useEffect(() => {
+    checkUser(); 
+  }, [localStorage.getItem(ACCESS_TOKEN)]);
+
+  const handleLogout = () => {
+    localStorage.removeItem(ACCESS_TOKEN);
+    localStorage.removeItem(REFRESH_TOKEN);
+    setIsLoggedin(false); 
+    navigate("/login");
+  };
 
   return (
-    <div className="bg-gradient-to-br from-emerald-900 to-emerald-400">
+    <div className="bg-gray-100">
       <div className="container mx-auto px-4 py-6 flex justify-between items-center">
-        {/* Logo */}
-        <div className="text-white text-2xl font-semibold cursor-pointer" onClick={() => navigate("/")}>LITERATURE HOUSE</div>
+        <div className="text-gray-800 text-2xl font-semibold cursor-pointer" onClick={() => navigate("/")}>LITERATURE HOUSE</div>
 
-        <div className='flex flex-col  items-center group hover:cursor-pointer' onClick={() => navigate("/mybooks")}>
-        <div className="text-white text-xl">Books</div>
-        <div className='hidden group-hover:block bg-white w-2 h-2 rounded-full'></div>
-        </div>
+        {isLoggedin && (
+          <>
+            <div className='flex flex-col items-center group hover:cursor-pointer' onClick={() => navigate("/mybooks")}>
+              <div className="text-gray-700 text-xl">Books</div>
+              <div className='hidden group-hover:block bg-gray-700 w-2 h-2 rounded-full'></div>
+            </div>
 
-        <div className='flex flex-col  items-center group hover:cursor-pointer' onClick={() => navigate("/notes")}>
-        <div className="text-white text-xl">Notes</div>
-        <div className='hidden group-hover:block bg-white w-2 h-2 rounded-full'></div>
-        </div>
+            <div className='flex flex-col items-center group hover:cursor-pointer' onClick={() => navigate("/notes")}>
+              <div className="text-gray-700 text-xl">Notes</div>
+              <div className='hidden group-hover:block bg-gray-700 w-2 h-2 rounded-full'></div>
+            </div>
 
-
-        {/* Account */}
-        <div className="relative">
-          {/* Profile Button */}
+            <div className="relative">
           <button onClick={toggleDropdown} className="text-white focus:outline-none">
-            <Profile/>
+            <Profile />
           </button>
 
-          {/* Dropdown Menu */}
           {isDropdownOpen && (
             <div className="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg py-2">
-              {/* Example menu items */}
               <Link to="/profile" className="block px-4 py-2 text-gray-800 hover:bg-purple-200">My Profile</Link>
               <Link to="/settings" className="block px-4 py-2 text-gray-800 hover:bg-purple-200">Settings</Link>
-              <button onClick={() => {
-                localStorage.removeItem(ACCESS_TOKEN);
-                localStorage.removeItem(REFRESH_TOKEN);
-                navigate("/login")}} className="block px-4 py-2 text-gray-800 hover:bg-purple-200">Logout</button>
+              <button onClick={handleLogout} className="block px-4 py-2 text-gray-800 hover:bg-purple-200">Logout</button>
             </div>
           )}
         </div>
+          </>
+        )}
+
+        
       </div>
     </div>
   );
