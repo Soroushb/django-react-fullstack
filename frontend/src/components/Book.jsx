@@ -20,27 +20,6 @@ const Book = ({ id, list_type, type, setInProg, setToFinished, setToRead, inLibr
   };
 
 
-  const StarRating = ({ rating }) => {
-    // Calculate the number of filled and empty stars
-    const filledStars = Math.floor(rating);
-    const hasHalfStar = rating % 1 >= 0.5;
-    const totalStars = 5;
-    const emptyStars = totalStars - filledStars - (hasHalfStar ? 1 : 0);
-  
-    // Create an array of stars to render
-    const stars = [];
-    for (let i = 0; i < filledStars; i++) {
-      stars.push(<i key={i} className="text-yellow-400 fas fa-star"></i>);
-    }
-    if (hasHalfStar) {
-      stars.push(<i key="half" className="text-yellow-400 fas fa-star-half-alt"></i>);
-    }
-    for (let i = 0; i < emptyStars; i++) {
-      stars.push(<i key={i + filledStars + (hasHalfStar ? 1 : 0)} className="text-gray-300 far fa-star"></i>);
-    }
-  
-    return <div className="flex items-center">{stars}</div>;
-  };
   
   const handleAddToLibrary = () => {
     const confirmMessage = `Do you want to add "${book.title}" to ${type}?`;

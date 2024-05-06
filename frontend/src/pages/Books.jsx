@@ -8,17 +8,13 @@ import axios from "axios"
 
 const Books = () => {
 
-    const navigate = useNavigate()
 
   
     
     return(
 
         <>
-        <div>
-            <h1 onClick={() => navigate("/mybooks")}>My books</h1>
-        </div>
-        <div className="m-16">
+        <div className="h-full">
         <BookSearch/>
         </div>
         </>

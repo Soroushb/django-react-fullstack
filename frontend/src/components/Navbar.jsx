@@ -40,8 +40,13 @@ const Navbar = () => {
 
         {isLoggedin && (
           <>
+            <div className='flex flex-col items-center group hover:cursor-pointer' onClick={() => navigate("/books")}>
+              <div className="text-gray-700 text-xl">Book Search</div>
+              <div className='hidden group-hover:block bg-gray-700 w-2 h-2 rounded-full'></div>
+            </div>
+
             <div className='flex flex-col items-center group hover:cursor-pointer' onClick={() => navigate("/mybooks")}>
-              <div className="text-gray-700 text-xl">Books</div>
+              <div className="text-gray-700 text-xl">My Books</div>
               <div className='hidden group-hover:block bg-gray-700 w-2 h-2 rounded-full'></div>
             </div>
 
@@ -49,6 +54,12 @@ const Navbar = () => {
               <div className="text-gray-700 text-xl">Notes</div>
               <div className='hidden group-hover:block bg-gray-700 w-2 h-2 rounded-full'></div>
             </div>
+
+            <div className='flex flex-col items-center group hover:cursor-pointer' onClick={() => navigate("/goals")}>
+              <div className="text-gray-700 text-xl">Goals</div>
+              <div className='hidden group-hover:block bg-gray-700 w-2 h-2 rounded-full'></div>
+            </div>
+
 
             <div className="relative">
           <button onClick={toggleDropdown} className="text-white focus:outline-none">

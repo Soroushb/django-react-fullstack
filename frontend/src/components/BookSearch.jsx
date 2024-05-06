@@ -1,12 +1,14 @@
 import api from '../api';
 import { useState } from 'react';
 import LoadingIndicator from './LoadingIndicator';
+import { useNavigate } from 'react-router-dom';
 
 const BookSearch = () => {
     const [books, setBooks] = useState([]);
     const [searchTerm, setSearchTerm] = useState('');
     const [loading, setLoading] = useState(false);
-    const [type, setType] = useState("")
+    const navigate = useNavigate()
+    const [submitClicked, setSubmitClicked] = useState(false)
     let bookType = ""
     console.log(books)
 
@@ -17,7 +19,6 @@ const BookSearch = () => {
             const res = await api.post("/api/book/", { title, author, published_year: publicationYear, rating, ratings, smallImageURL, url  });
             
             if (res.status === 201) {
-                alert("Book Created");
 
                 // Add the book to the user's BookList
                 const bookId = res.data.id;
@@ -29,7 +30,7 @@ const BookSearch = () => {
 
                 const bookListRes = await api.post("/api/books/", bookListData);
                 if (bookListRes.status === 201) {
-                    alert("Book added to BookList");
+                    alert("Book added to your library");
                 } else {
                     alert("Failed to add book to BookList");
                 }
@@ -71,59 +72,65 @@ const BookSearch = () => {
     };
 
     return (
-        <div>
-            <form className="max-w-md mx-auto" onSubmit={handleSearch}>
-                p
-                <label htmlFor="default-search" className="mb-2 text-sm font-medium text-gray-900 sr-only dark:text-white">Search</label>
-                <div className="relative">
-                    <div className="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
-                        <svg className="w-4 h-4 text-gray-500 dark:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
-                            <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"/>
-                        </svg>
-                    </div>
-                    <input
-                        type="search"
-                        id="default-search"
-                        className="block w-full p-4 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                        placeholder="Search Books and Authors..."
-                        value={searchTerm}
-                        onChange={(e) => setSearchTerm(e.target.value)}
-                        required
-                    />
-                    <button
-                        type="submit"
-                        className="text-white absolute end-2.5 bottom-2.5 bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
-                    >
-                        Search
-                    </button>
-                </div>
-            </form>
+        <div className="min-h-screen">
+        <div className='m-12 overflow-x-hidden h-full'>
+            <div className='flex flex-col  justify-center items-center'>
+            <h1 className="text-3xl font-bold mb-4 text-white">Search For Books:</h1>
+            <h2 className="flex flex-col items-center text-2xl font-bold mb-4 text-gray-200">Add them to your 
+            <h1 onClick={() => navigate("/mybooks")} className="text-2xl font-bold mb-4 text-purple-800 bg-white p-2 rounded-md mt-2 hover:scale-105 hover:cursor-pointer">  Library</h1></h2>
+            </div>
+   
+            <form className="max-w-md mx-auto bg-transparent relative" onSubmit={handleSearch}>
+    <label htmlFor="default-search" className="sr-only">Search</label>
+    <div className="relative">
+        <input
+            type="search"
+            id="default-search"
+            className="block w-full md:w-96 p-4 text-sm text-gray-200 rounded-lg bg-transparent focus:ring-blue-500 focus:border-blue-500 placeholder-gray-400 focus:placeholder-opacity-75"
+            placeholder="Search Books and Authors..."
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+            required
+        />
+        <button
+            type="submit"
+            onClick={() => setSubmitClicked(true)}
+            className="text-white absolute top-1/2 transform -translate-y-1/2 right-2 bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2"
+        >
+            Search
+        </button>
+    </div>
+</form>
+
+
+
 
             <div className='flex flex-wrap w-full justify-center'>
             {loading && <LoadingIndicator/>}
             {books.length > 0 ? (
             books?.map((book) => (
                 <>
-                <div className='m-8' key={book._id}>
-                    <div className="flex flex-col justify-center items-center max-w-40 h-full rounded overflow-hidden shadow-lg">
-                    <img className="" src={book?.smallImageURL} alt="Sunset in the mountains"/>
-                    <div className="px-6 py-4">
-                        <div className="font-bold mb-2">{book?.title}</div>
-                        <p className="text-gray-700 text-base">
-                        Rating: {book?.rating}
-                        </p>
-                    </div>
-                    <div className="px-6 pt-4 pb-2">
-                        <span className="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2" onClick={() => handleBookClick(book,  bookType = "to read")}>To read</span>
-                        <span className="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2" onClick={() => handleBookClick(book,  bookType = "progress")}>In Progress</span>
-                        <span className="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2"  onClick={() => handleBookClick(book,  bookType = "finished")}>Finished</span>
-                    </div>
-                    </div>
-                </div>
+            <div className="m-8 group">
+          <span className="absolute top-0 left-full w-max bg-white shadow-lg p-2 rounded-md invisible group-hover:visible">{book?.title}</span>
+          <div className="flex flex-col justify-center items-center max-w-40 h-full rounded overflow-hidden shadow-lg">
+            <img className="" src={book.smallImageURL} alt={book.title} />
+            <div className="px-6 py-4 flex items-center flex-col justify-center">
+              <div className='relative group'>
+              <div className="font-bold text-white mb-2 flex justify-center items-center">{book.title?.substring(0, 12)}.. 
+          </div>
+              </div>
+              <p className="text-gray-300 text-base">Rating: {book.rating}</p>
+            </div>
+            <div className="px-6 pt-4 pb-2">
+              <div onClick={() => handleBookClick(book,  bookType = "to read")} className='bg-blue-200 p-2 text-gray-700 hover:scale-110 hover:cursor-pointer rounded-lg'>Add to library</div>
+            </div>
+          </div>
+        </div>
             </>
             ))
-        ) : (<p>No books found.</p>)}
+        ) : ( <p className='text-gray-300 mt-8 font-bold'>  </p>)}
               </div>
+        </div>
         </div>
     );
 };
