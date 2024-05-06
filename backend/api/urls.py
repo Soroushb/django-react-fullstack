@@ -13,6 +13,8 @@ urlpatterns = [
     path("books/<int:pk>/update/", views.BookUpdate.as_view(), name="book-update"),
     path("books/<int:pk>/delete/", views.BookDelete.as_view(), name="book-delete"),
     path("users/<int:user_id>", views.UsernameByUserId.as_view(), name="user"),
+    path('reading-logs/', views.ReadingLogListCreate.as_view(), name='reading-log-list-create'),
+    path('reading-logs/<int:pk>/', views.ReadingLogDetail.as_view(), name='reading-log-detail'),
     path("profile/", views.UserProfileViewSet.as_view(), name="user_profile"),
     
 ]

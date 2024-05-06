@@ -4,9 +4,9 @@ from rest_framework import generics, viewsets, status
 from rest_framework.views import APIView
 from django.shortcuts import get_object_or_404
 from rest_framework.generics import ListCreateAPIView, RetrieveAPIView, UpdateAPIView, DestroyAPIView
-from .serializers import UserSerializer, NoteSerializer, BookSerializer, BookListSerializer, UserProfileSerializer
+from .serializers import UserSerializer, NoteSerializer, BookSerializer, BookListSerializer, UserProfileSerializer,ReadingLogSerializer 
 from rest_framework.permissions import IsAuthenticated, AllowAny
-from .models import Note, Book, BookList, UserProfile
+from .models import Note, Book, BookList, UserProfile, ReadingLog
 from rest_framework.response import Response
 # Create your views here.
 
@@ -157,3 +157,23 @@ class UsernameByUserId(generics.RetrieveAPIView):
             return Response({'username': username})
         except User.DoesNotExist:
             return Response(status=404, data={'error': 'User not found'})
+        
+
+class ReadingLogListCreate(generics.ListCreateAPIView):
+    serializer_class = ReadingLogSerializer
+    permission_classes = [IsAuthenticated]
+
+    def get_queryset(self):
+        user = self.request.user
+        return ReadingLog.objects.filter(user=user)
+
+    def perform_create(self, serializer):
+        if serializer.is_valid():
+            serializer.save(user=self.request.user)
+        else:
+            print(serializer.errors)
+
+class ReadingLogDetail(generics.RetrieveUpdateDestroyAPIView):
+    queryset = ReadingLog.objects.all()
+    serializer_class = ReadingLogSerializer
+    permission_classes = [IsAuthenticated]

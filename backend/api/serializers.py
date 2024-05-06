@@ -1,6 +1,6 @@
 from django.contrib.auth.models import User
 from rest_framework import serializers
-from .models import Note, Book, BookList, UserProfile
+from .models import Note, Book, BookList, UserProfile, ReadingLog
 
 class UserProfileSerializer(serializers.ModelSerializer):
     class Meta:
@@ -35,3 +35,13 @@ class BookListSerializer(serializers.ModelSerializer):
     class Meta:
         model = BookList
         fields = '__all__'
+
+class ReadingLogSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = ReadingLog
+        fields = ['mins_read', 'date', 'user']
+        read_only_fields = ['user']  # Set the user field to read-only
+
+    def validate(self, attrs):
+        attrs['user'] = self.context['request'].user  # Set the user based on the request user
+        return attrs

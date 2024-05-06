@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
+from django.utils import timezone
 # Create your models here.
 def user_directory_path(instance, filename):
     # file will be uploaded to MEDIA_ROOT/profile_pics/user_<id>/<filename>
@@ -38,3 +39,12 @@ class BookList(models.Model):
     book = models.ForeignKey(Book, on_delete=models.CASCADE)
     list_type = models.CharField(max_length=20)  #'favorite', 'to_read', 'finished'
 
+
+class ReadingLog(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    date = models.DateField(default=timezone.now)
+    mins_read = models.DecimalField(max_digits=5, decimal_places=2)
+
+    def __str__(self):
+        return f"Reading Log for {self.user.username} on {self.date}"
+    
