@@ -6,7 +6,10 @@ import api from '../api';
 const Charts = () => {
     const [readingTimes, setReadingTimes] = useState([]);
     const [mins_read, setMins_read] = useState("");
-    const [date, setDate] = useState("")
+    const [date, setDate] = useState("");
+
+    const [goalTimes, setGoalTimes] = useState([]);
+    const [mins_done, setMins_done] = useState("");
 
     useEffect(() => {
         getReadingTime();
@@ -19,6 +22,15 @@ const Charts = () => {
             .catch((err) => console.log(err))
     }
 
+    const getGoalTime = () => {
+        api.get("/api/goal-logs/")
+            .then((res) => res.data)
+            .then((data) => setReadingTimes(data))
+            .catch((err) => console.log(err))
+    }
+
+    
+
     const addReadingTime = async () => {
       // Check if the date already exists in the reading times array
       const existingIndex = readingTimes.findIndex(item => item.date === date);
@@ -27,6 +39,7 @@ const Charts = () => {
           // If the date exists, update the reading time
           const updatedReadingTimes = [...readingTimes];
           updatedReadingTimes[existingIndex] = { date, mins_read };
+          console.log(date)
           setReadingTimes(updatedReadingTimes); // Update state with the updated reading times
           await api.put(`/api/reading-logs/${readingTimes[existingIndex].id}/`, { mins_read, date });
           alert("Reading time updated");
@@ -61,7 +74,7 @@ const Charts = () => {
 
     // Chart data object
     const chartData = {
-        labels: dates,
+        labels: dates.sort(),
         datasets: [
             {
                 label: 'Reading Time',
