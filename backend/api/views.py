@@ -4,10 +4,11 @@ from rest_framework import generics, viewsets, status
 from rest_framework.views import APIView
 from django.shortcuts import get_object_or_404
 from rest_framework.generics import ListCreateAPIView, RetrieveAPIView, UpdateAPIView, DestroyAPIView
-from .serializers import UserSerializer, NoteSerializer, BookSerializer, BookListSerializer, UserProfileSerializer,ReadingLogSerializer 
+from .serializers import UserSerializer, NoteSerializer, BookSerializer, BookListSerializer, UserProfileSerializer,ReadingLogSerializer, GoalLogSerializer, GoalListSerializer
 from rest_framework.permissions import IsAuthenticated, AllowAny
-from .models import Note, Book, BookList, UserProfile, ReadingLog
+from .models import Note, Book, BookList, UserProfile, ReadingLog, GoalLog, GoalList
 from rest_framework.response import Response
+
 # Create your views here.
 
 class UserProfileViewSet(APIView):
@@ -177,3 +178,45 @@ class ReadingLogDetail(generics.RetrieveUpdateDestroyAPIView):
     queryset = ReadingLog.objects.all()
     serializer_class = ReadingLogSerializer
     permission_classes = [IsAuthenticated]
+
+class GoalLogListCreate(generics.ListCreateAPIView):
+    serializer_class = GoalLogSerializer
+    permission_classes = [IsAuthenticated]
+
+    def get_queryset(self):
+        user = self.request.user
+        return GoalLog.objects.filter(user=user)
+
+    def perform_create(self, serializer):
+        if serializer.is_valid():
+            serializer.save(user=self.request.user)
+        else:
+            print(serializer.errors)
+
+class GoalLogDetail(generics.RetrieveUpdateDestroyAPIView):
+    queryset = GoalLog.objects.all()
+    serializer_class = GoalLogSerializer
+    permission_classes = [IsAuthenticated]
+
+class GoalListCreate(generics.CreateAPIView):
+    queryset = GoalList.objects.all()
+    serializer_class = GoalListSerializer
+    permission_classes = [IsAuthenticated]
+
+
+class GoalListDetail(generics.RetrieveAPIView):
+    queryset = GoalList.objects.all()
+    serializer_class = GoalListSerializer
+    permission_classes = [IsAuthenticated]
+
+
+class GoalListRetrieveAPIView(generics.ListAPIView):
+    queryset = GoalList.objects.all()
+    serializer_class = GoalListSerializer
+    permission_classes = [IsAuthenticated]
+
+    def get_queryset(self):
+        user = self.request.user
+        return GoalList.objects.filter(user=user)
+
+

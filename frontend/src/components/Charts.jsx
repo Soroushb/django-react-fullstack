@@ -7,12 +7,14 @@ const Charts = () => {
     const [readingTimes, setReadingTimes] = useState([]);
     const [mins_read, setMins_read] = useState("");
     const [date, setDate] = useState("");
-
+    const [goalList, setGoalList] = useState([])
+    const [userGoals, setUserGoals] = useState([])
     const [goalTimes, setGoalTimes] = useState([]);
     const [mins_done, setMins_done] = useState("");
 
     useEffect(() => {
         getReadingTime();
+        getGoalList();
     }, []);
 
     const getReadingTime = () => {
@@ -27,6 +29,26 @@ const Charts = () => {
             .then((res) => res.data)
             .then((data) => setReadingTimes(data))
             .catch((err) => console.log(err))
+    }
+
+    const getGoalList = () => {
+        api.get("/api/goal-lists/retrieve/")
+        .then((res) => res.data)
+        .then((data) => {
+            // Iterate over each item in the data array
+            for(let i = 0; i < data.length; i++){ 
+                const goalId = data[i].goal; // Access the goal attribute for the current item
+                getUserGoals(goalId);
+            } 
+        })
+        .catch((err) => console.log(err))
+    }
+
+    const getUserGoals = (goal) => {
+        api.get(`/api/goal-logs/${goal}/`)
+        .then((res) => res.data)
+        .then((data) => {setUserGoals(data); console.log(data)})
+        .catch((err) => console.log(err))
     }
 
     

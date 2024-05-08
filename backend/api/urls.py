@@ -15,6 +15,11 @@ urlpatterns = [
     path("users/<int:user_id>", views.UsernameByUserId.as_view(), name="user"),
     path('reading-logs/', views.ReadingLogListCreate.as_view(), name='reading-log-list-create'),
     path('reading-logs/<int:pk>/', views.ReadingLogDetail.as_view(), name='reading-log-detail'),
+    path('goal-logs/', views.GoalLogListCreate.as_view(), name='goal-log-list-create'),
+    path('goal-logs/<int:pk>/', views.GoalLogDetail.as_view(), name='goal-log-detail'),
+    path('goal-lists/', views.GoalListCreate.as_view(), name='goal-list-create'),
+    path('goal-lists/retrieve/', views.GoalListRetrieveAPIView.as_view(), name='goal-list-retrieve'),
+    path('goal-lists/<int:pk>/', views.GoalListDetail.as_view(), name='goal-list-detail'),
     path("profile/", views.UserProfileViewSet.as_view(), name="user_profile"),
     
 ]
