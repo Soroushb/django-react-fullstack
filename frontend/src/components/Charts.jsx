@@ -148,10 +148,10 @@ const Charts = () => {
     };
 
     return (
-        <div className="container mx-auto overflow-x-hidden ">
+        <div className="container mx-auto overflow-x-hidden">
             <div>
                 <h2 className="text-2xl font-bold mb-4 text-white mt-8">Reading Time Graph</h2>
-
+    
                 <div className="flex justify-between bg-white p-4 rounded-lg shadow" style={{ height: '400px' }}>
                     <div className='m-4'>
                         <h2>Add Input</h2>
@@ -188,57 +188,52 @@ const Charts = () => {
                     </div>
                 </div>
             </div>
-            {Object.entries(goalTimes).map(([goalName, goalData]) => {
-
-                let goalDates = goalData.map(goal => goal.date);
-                let goalMins = goalData.map(goal => goal.mins_done);
-
-                let goalChartData = {
-                    labels: goalDates.sort(),
-                    datasets: [
-                        {
-                            label: 'Reading Time',
-                            data: goalMins,
-                            fill: false,
-                            borderColor: 'rgba(75, 192, 192, 1)',
-                            tension: 0.1
-                        }
-                    ]
-                };
-
-                let goalOptions = {
-                    scales: {
-                        x: {
-                            type: 'category', // Scale type for x-axis
-                            labels: goalDates // Labels for x-axis
-                        },
-                        y: {
-                            // Scale configuration for y-axis
-                            beginAtZero: true // Start y-axis from zero
-                        }
-                    }
-                };
-            
-
-
-                return(<div key={goalName} className='m-8 bg-gray-200'>
-                <h2>{goalName}</h2>
-            <Line data={goalChartData} options={goalOptions} />
+            <div className='grid grid-cols-2 gap-4'>
+                {Object.entries(goalTimes).map(([goalName, goalData]) => {
+                    let goalDates = goalData.map(goal => goal.date);
+                    let goalMins = goalData.map(goal => goal.mins_done);
     
-            <ul>
+                    let goalChartData = {
+                        labels: goalDates.sort(),
+                        datasets: [
+                            {
+                                label: 'Reading Time',
+                                data: goalMins,
+                                fill: false,
+                                borderColor: 'rgba(75, 192, 192, 1)',
+                                tension: 0.1
+                            }
+                        ]
+                    };
     
-                {goalData.map((goal) => (
-                    <>
-                    <li key={goal.id}>
-                        {goal.date} - {goal.mins_done} mins
-                    </li>
-                    </>
-                
-                ))}
-            </ul>
-        </div>)
-            
-})}
+                    let goalOptions = {
+                        scales: {
+                            x: {
+                                type: 'category', // Scale type for x-axis
+                                labels: goalDates // Labels for x-axis
+                            },
+                            y: {
+                                // Scale configuration for y-axis
+                                beginAtZero: true // Start y-axis from zero
+                            }
+                        }
+                    };
+    
+                    return (
+                        <div key={goalName} className='bg-white p-5 rounded-lg'>
+                            <h2>{goalName}</h2>
+                            <Line data={goalChartData} options={goalOptions} />
+                            <ul>
+                                {goalData.map((goal) => (
+                                    <li key={goal.id}>
+                                        {goal.date} - {goal.mins_done} mins
+                                    </li>
+                                ))}
+                            </ul>
+                        </div>
+                    );
+                })}
+            </div>
         </div>
     );
 };
