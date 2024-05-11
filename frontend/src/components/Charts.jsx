@@ -56,6 +56,7 @@ const Charts = () => {
                     return accumulator;
                 }, {});
 
+                // Update state with the goal list and the map of unique lowercase goal names to data
                 setGoalList(data);
                 setUserGoals(uniqueLowerCaseGoalNames);
                 setGoalTimes(goalDataMap);
@@ -63,7 +64,7 @@ const Charts = () => {
             .catch((err) => console.log(err));
     };
 
-    console.log(goalTimes)
+    console.log(goalTimes.running)
 
     const addUserGoal = () => {
         api.post(`/api/goal-logs/`, { name: goalName, date: date, mins_done: mins_done })
@@ -118,7 +119,6 @@ const Charts = () => {
     // Extract dates and reading times from readingTimes array
     const dates = readingTimes.map(item => item.date);
     const readingData = readingTimes.map(item => parseFloat(item.mins_read)); // Convert to float if mins_read is a string
-
     // Chart data object
     const chartData = {
         labels: dates.sort(),
@@ -188,18 +188,57 @@ const Charts = () => {
                     </div>
                 </div>
             </div>
-            {Object.entries(goalTimes).map(([goalName, goalData]) => (
-    <div key={goalName} className='m-8 bg-gray-200'>
-        <h2>{goalName}</h2>
-        <ul>
-            {goalData.map((goal) => (
-                <li key={goal.id}>
-                    {goal.date} - {goal.mins_done} mins
-                </li>
-            ))}
-        </ul>
-    </div>
-))}
+            {Object.entries(goalTimes).map(([goalName, goalData]) => {
+
+                let goalDates = goalData.map(goal => goal.date);
+                let goalMins = goalData.map(goal => goal.mins_done);
+
+                let goalChartData = {
+                    labels: goalDates.sort(),
+                    datasets: [
+                        {
+                            label: 'Reading Time',
+                            data: goalMins,
+                            fill: false,
+                            borderColor: 'rgba(75, 192, 192, 1)',
+                            tension: 0.1
+                        }
+                    ]
+                };
+
+                let goalOptions = {
+                    scales: {
+                        x: {
+                            type: 'category', // Scale type for x-axis
+                            labels: goalDates // Labels for x-axis
+                        },
+                        y: {
+                            // Scale configuration for y-axis
+                            beginAtZero: true // Start y-axis from zero
+                        }
+                    }
+                };
+            
+
+
+                return(<div key={goalName} className='m-8 bg-gray-200'>
+                <h2>{goalName}</h2>
+            <Line data={goalChartData} options={goalOptions} />
+    
+            <ul>
+    
+                {goalData.map((goal) => (
+                    <>
+                    <li key={goal.id}>
+                        {goal.date} - {goal.mins_done} mins
+                    </li>
+                    </>
+                
+                ))}
+            </ul>
+        </div>)
+            
+})}
         </div>
     );
 };
