@@ -13,7 +13,7 @@ const Charts = () => {
     const [goalTimes, setGoalTimes] = useState([]);
     const [mins_done, setMins_done] = useState(0);
     const [date, setDate] = useState("");
-    const [goalName, setGoalName] = useState("")
+    const [goalName, setGoalName] = useState("");
 
 
     useEffect(() => {
@@ -26,27 +26,44 @@ const Charts = () => {
         api.get("/api/reading-logs/")
             .then((res) => res.data)
             .then((data) => setReadingTimes(data))
-            .catch((err) => console.log(err))
-    }
+            .catch((err) => console.log(err));
+    };
 
     const getGoalTime = () => {
         api.get("/api/goal-logs/")
             .then((res) => res.data)
             .then((data) => {setReadingTimes(data); console.log(data)})
-            .catch((err) => console.log(err))
-    }
+            .catch((err) => console.log(err));
+    };
 
     const getGoalList = () => {
-        api.get("/api/goal-lists/retrieve/")
-        .then((res) => res.data)
-        .then((data) => {
-            // Iterate over each item in the data array
-            for(let i = 0; i < data.length; i++){ 
-                const goalId = data[i].goal; // Access the goal attribute for the current item
-            } 
-        })
-        .catch((err) => console.log(err))
-    }
+        api.get("/api/goal-logs/")
+            .then((res) => res.data)
+            .then((data) => {
+                const lowerCaseGoalNames = data.map(item => item.name.toLowerCase());
+                const uniqueLowerCaseGoalNames = [...new Set(lowerCaseGoalNames)];
+
+                const goalDataMap = data.reduce((accumulator, currentValue) => {
+                    const lowercaseName = currentValue.name.toLowerCase();
+
+                    if (lowercaseName in accumulator) {
+
+                        accumulator[lowercaseName].push(currentValue);
+                    } else {
+                        accumulator[lowercaseName] = [currentValue];
+                    }
+
+                    return accumulator;
+                }, {});
+
+                setGoalList(data);
+                setUserGoals(uniqueLowerCaseGoalNames);
+                setGoalTimes(goalDataMap);
+            })
+            .catch((err) => console.log(err));
+    };
+
+    console.log(goalTimes)
 
     const addUserGoal = () => {
         api.post(`/api/goal-logs/`, { name: goalName, date: date, mins_done: mins_done })
@@ -60,43 +77,43 @@ const Charts = () => {
                 // Handle error
                 console.error("Error adding new goal:", err);
             });
-    }
+    };
 
     const addReadingTime = async () => {
-      // Check if the date already exists in the reading times array
-      const existingIndex = readingTimes.findIndex(item => item.date === date);
-  
-      if (existingIndex !== -1) {
-          // If the date exists, update the reading time
-          const updatedReadingTimes = [...readingTimes];
-          updatedReadingTimes[existingIndex] = { readingDate, mins_read };
-          console.log(date)
-          setReadingTimes(updatedReadingTimes); // Update state with the updated reading times
-          await api.put(`/api/reading-logs/${readingTimes[existingIndex].id}/`, { mins_read, date });
-          alert("Reading time updated");
-      } else {
-          // If the date doesn't exist, add a new reading time
-          const res = await api.post("/api/reading-logs/", { mins_read, date });
-  
-          if (res.status === 201) {
-              alert("New data added");
-              getReadingTime(); // Refresh data after adding new reading time
-          } else {
-              console.log("Error");
-          }
-      }
-  }
-    
+        // Check if the date already exists in the reading times array
+        const existingIndex = readingTimes.findIndex(item => item.date === date);
+
+        if (existingIndex !== -1) {
+            // If the date exists, update the reading time
+            const updatedReadingTimes = [...readingTimes];
+            updatedReadingTimes[existingIndex] = { readingDate, mins_read };
+            console.log(date);
+            setReadingTimes(updatedReadingTimes); // Update state with the updated reading times
+            await api.put(`/api/reading-logs/${readingTimes[existingIndex].id}/`, { mins_read, date });
+            alert("Reading time updated");
+        } else {
+            // If the date doesn't exist, add a new reading time
+            const res = await api.post("/api/reading-logs/", { mins_read, date });
+
+            if (res.status === 201) {
+                alert("New data added");
+                getReadingTime(); // Refresh data after adding new reading time
+            } else {
+                console.log("Error");
+            }
+        }
+    };
+
     const pieChartData = {
-      labels: ['Red', 'Blue', 'Yellow'],
-      datasets: [
-          {
-              data: [300, 50, 100],
-              backgroundColor: ['red', 'blue', 'yellow'],
-              borderWidth: 0
-          }
-      ]
-  };
+        labels: ['Red', 'Blue', 'Yellow'],
+        datasets: [
+            {
+                data: [300, 50, 100],
+                backgroundColor: ['red', 'blue', 'yellow'],
+                borderWidth: 0
+            }
+        ]
+    };
 
     // Extract dates and reading times from readingTimes array
     const dates = readingTimes.map(item => item.date);
@@ -132,45 +149,57 @@ const Charts = () => {
 
     return (
         <div className="container mx-auto overflow-x-hidden ">
-          <div>
-            <h2 className="text-2xl font-bold mb-4 text-white mt-8">Reading Time Graph</h2>
-           
-            <div className="flex justify-between bg-white p-4 rounded-lg shadow" style={{ height: '400px' }}>
-              <div className='m-4'>
-                <h2>Add Input</h2>
-                <form onSubmit={(e) => {
-                              e.preventDefault(); // Prevent default form submission
-                              addReadingTime(); // Call addReadingTime function
-                          }}>
-                  <label>Minutes Read:</label>
-                  <input onChange={(e) => setMins_read(e.target.value)} value={mins_read} name='mins_read' type='text'></input>
-                  <label>Date:</label>
-                  <input onChange={(e) => setDate(e.target.value)} value={date} name='date' type='date'></input>
-                  <button className='bg-blue-700 rounded-md p-2 text-white' type='submit'>Add Reading Time</button>
-                </form>
-              </div>
-              <Line data={chartData} options={options} />
-            </div>
-          </div>
-          <div>
             <div>
-            <div className='m-4'>
-                <h2>Add A new Goal</h2>
-                <form onSubmit={(e) => {
-                              e.preventDefault(); // Prevent default form submission
-                              addUserGoal(newGoal); // Call addReadingTime function
-                          }}>
-                  <label>Name:</label>
-                  <input onChange={(e) => setGoalName(e.target.value)} value={goalName} name='name' type='text'></input>
-                  <label>Minutes Done:</label>
-                  <input onChange={(e) => setMins_done(e.target.value)} value={mins_done} name='mins_done' type='number'></input>
-                  <label>Date:</label>
-                  <input onChange={(e) => setDate(e.target.value)} value={date} name='date' type='date'></input>
-                  <button className='bg-blue-700 rounded-md p-2 text-white' type='submit'>Add Reading Time</button>
-                </form>
-              </div>
+                <h2 className="text-2xl font-bold mb-4 text-white mt-8">Reading Time Graph</h2>
+
+                <div className="flex justify-between bg-white p-4 rounded-lg shadow" style={{ height: '400px' }}>
+                    <div className='m-4'>
+                        <h2>Add Input</h2>
+                        <form onSubmit={(e) => {
+                            e.preventDefault(); // Prevent default form submission
+                            addReadingTime(); // Call addReadingTime function
+                        }}>
+                            <label>Minutes Read:</label>
+                            <input onChange={(e) => setMins_read(e.target.value)} value={mins_read} name='mins_read' type='text'></input>
+                            <label>Date:</label>
+                            <input onChange={(e) => setDate(e.target.value)} value={date} name='date' type='date'></input>
+                            <button className='bg-blue-700 rounded-md p-2 text-white' type='submit'>Add Reading Time</button>
+                        </form>
+                    </div>
+                    <Line data={chartData} options={options} />
+                </div>
             </div>
-          </div>
+            <div>
+                <div>
+                    <div className='m-4'>
+                        <h2>Add A new Goal</h2>
+                        <form onSubmit={(e) => {
+                            e.preventDefault(); // Prevent default form submission
+                            addUserGoal(newGoal); // Call addUserGoal function
+                        }}>
+                            <label>Name:</label>
+                            <input onChange={(e) => setGoalName(e.target.value)} value={goalName} name='name' type='text'></input>
+                            <label>Minutes Done:</label>
+                            <input onChange={(e) => setMins_done(e.target.value)} value={mins_done} name='mins_done' type='number'></input>
+                            <label>Date:</label>
+                            <input onChange={(e) => setDate(e.target.value)} value={date} name='date' type='date'></input>
+                            <button className='bg-blue-700 rounded-md p-2 text-white' type='submit'>Add Reading Time</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            {Object.entries(goalTimes).map(([goalName, goalData]) => (
+    <div key={goalName} className='m-8 bg-gray-200'>
+        <h2>{goalName}</h2>
+        <ul>
+            {goalData.map((goal) => (
+                <li key={goal.id}>
+                    {goal.date} - {goal.mins_done} mins
+                </li>
+            ))}
+        </ul>
+    </div>
+))}
         </div>
     );
 };

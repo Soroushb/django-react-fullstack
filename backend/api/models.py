@@ -61,7 +61,9 @@ class GoalLog(models.Model):
 class GoalList(models.Model):
     name = models.CharField(max_length=255, default="")
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-    goals = models.ManyToManyField('GoalLog', related_name='goal_lists')
+    mins_done = models.DecimalField(max_digits=5, decimal_places=2)
+    date = models.DateField(default=timezone.now)  # removed unique=True
+
     
     def __str__(self):
         return f"{self.user.username}'s Goal List: {self.goal.name}"
