@@ -59,8 +59,9 @@ class GoalLog(models.Model):
         return f"Goal for {self.user.username} on {self.date}"
 
 class GoalList(models.Model):
+    name = models.CharField(max_length=255, default="")
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-    goal = models.ForeignKey(GoalLog, on_delete=models.CASCADE)
-
+    goals = models.ManyToManyField('GoalLog', related_name='goal_lists')
+    
     def __str__(self):
         return f"{self.user.username}'s Goal List: {self.goal.name}"

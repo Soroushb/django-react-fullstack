@@ -20,6 +20,7 @@ urlpatterns = [
     path('goal-lists/', views.GoalListCreate.as_view(), name='goal-list-create'),
     path('goal-lists/retrieve/', views.GoalListRetrieveAPIView.as_view(), name='goal-list-retrieve'),
     path('goal-lists/<int:pk>/', views.GoalListDetail.as_view(), name='goal-list-detail'),
+    path('goal-lists/update/<int:pk>/', views.GoalListUpdate.as_view(), name='goal-list-update'),
     path("profile/", views.UserProfileViewSet.as_view(), name="user_profile"),
     
 ]

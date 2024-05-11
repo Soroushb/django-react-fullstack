@@ -54,6 +54,7 @@ class GoalLogSerializer(serializers.ModelSerializer):
         fields = ['id' ,'name' ,'mins_done', 'date']
 
 class GoalListSerializer(serializers.ModelSerializer):
+    user = serializers.PrimaryKeyRelatedField(default=serializers.CurrentUserDefault(), read_only=True)
     class Meta:
         model = GoalList
         fields = '__all__'

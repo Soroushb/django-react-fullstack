@@ -198,10 +198,23 @@ class GoalLogDetail(generics.RetrieveUpdateDestroyAPIView):
     serializer_class = GoalLogSerializer
     permission_classes = [IsAuthenticated]
 
-class GoalListCreate(generics.CreateAPIView):
-    queryset = GoalList.objects.all()
-    serializer_class = GoalListSerializer
+class GoalListCreate(APIView):
     permission_classes = [IsAuthenticated]
+
+    def post(self, request):
+        # Extract data from the request
+        user = request.user
+        name = request.data.get('name')
+        goal_ids = request.data.get('goals')  # Assuming goals is a list of goal ids
+
+        # Create a GoalList object
+        try:
+            goal_list = GoalList.objects.create(user=user, name=name)
+            goal_list.goals.add(*goal_ids)  # Associate the GoalLog objects
+            serializer = GoalListSerializer(goal_list)
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        except Exception as e:
+            return Response({'error': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 
 class GoalListDetail(generics.RetrieveAPIView):
@@ -220,3 +233,21 @@ class GoalListRetrieveAPIView(generics.ListAPIView):
         return GoalList.objects.filter(user=user)
 
 
+
+class GoalListUpdate(generics.UpdateAPIView):
+    queryset = GoalList.objects.all()
+    serializer_class = GoalListSerializer
+    permission_classes = [IsAuthenticated]
+
+    def put(self, request, *args, **kwargs):
+        instance = self.get_object()
+        goals = request.data.get('goals', [])
+        
+        # Assuming you want to completely replace the existing goals with the new ones
+        instance.goals.add(*goals)  # Add the new goals
+        
+        serializer = self.get_serializer(instance, data=request.data)
+        serializer.is_valid(raise_exception=True)   
+        serializer.save()
+        
+        return Response(serializer.data)
