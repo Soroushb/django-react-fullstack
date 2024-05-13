@@ -6,15 +6,10 @@ import api from '../api';
 const Charts = () => {
     const [readingTimes, setReadingTimes] = useState([]);
     const [mins_read, setMins_read] = useState("");
-    const [readingDate, setReadingDate] = useState("");
-    const [newGoal, setNewGoal] = useState("");
-    const [goalList, setGoalList] = useState([]);
-    const [userGoals, setUserGoals] = useState([]);
-    const [goalTimes, setGoalTimes] = useState({});
-    const [mins_done, setMins_done] = useState(0);
     const [date, setDate] = useState("");
     const [goalName, setGoalName] = useState("");
-
+    const [mins_done, setMins_done] = useState(0);
+    const [goalTimes, setGoalTimes] = useState({});
 
     useEffect(() => {
         getReadingTime();
@@ -25,13 +20,6 @@ const Charts = () => {
         api.get("/api/reading-logs/")
             .then((res) => res.data)
             .then((data) => setReadingTimes(data))
-            .catch((err) => console.log(err));
-    };
-
-    const getGoalTime = () => {
-        api.get("/api/goal-logs/")
-            .then((res) => res.data)
-            .then((data) => {setReadingDate(data); console.log(data)})
             .catch((err) => console.log(err));
     };
 
@@ -46,7 +34,6 @@ const Charts = () => {
                     const lowercaseName = currentValue.name.toLowerCase();
 
                     if (lowercaseName in accumulator) {
-
                         accumulator[lowercaseName].push(currentValue);
                     } else {
                         accumulator[lowercaseName] = [currentValue];
@@ -55,38 +42,29 @@ const Charts = () => {
                     return accumulator;
                 }, {});
 
-                // Update state with the goal list and the map of unique lowercase goal names to data
-                setGoalList(data);
-                setUserGoals(uniqueLowerCaseGoalNames);
                 setGoalTimes(goalDataMap);
             })
             .catch((err) => console.log(err));
     };
 
-    console.log(goalTimes.running)
-
     const addUserGoal = async () => {
-        const existingIndex = Object.values(goalTimes).flatMap(item => item)
-            .findIndex(item => item.date === date && item.name === goalName);
+        const existingGoal = Object.values(goalTimes).flatMap(item => item)
+            .find(item => item.date === date && item.name === goalName);
         
-        if (existingIndex !== -1) {
+        if (existingGoal) {
             const goalType = Object.keys(goalTimes).find(key =>
                 goalTimes[key].some(item => item.date === date && item.name === goalName)
             );
             const updatedGoalTimes = { ...goalTimes };
-            updatedGoalTimes[goalType][existingIndex] = { name: goalName, date, mins_done };
-            console.log(date)
+            updatedGoalTimes[goalType][existingGoal.id] = { name: goalName, date, mins_done };
             setGoalTimes(updatedGoalTimes); 
-            await api.put(`/api/goal-logs/${goalTimes[goalType][existingIndex].id}/`, { mins_done, date });
-            alert("Goal time updated");
+            await api.put(`/api/goal-logs/${existingGoal.id}/`, { mins_done, date, name: goalName });
         } else {
-            // Add new goal
             api.post(`/api/goal-logs/`, { name: goalName, date, mins_done })
                 .then((res) => {
                     console.log("New goal added:", res.data);
-
-                    setNewGoal(""); // Clear the input field
-                    getGoalTime();
+                    setGoalName(""); // Clear the input field
+                    getGoalList();
                     alert(`New ${goalName} added.`);
                 })
                 .catch((err) => {
@@ -96,51 +74,32 @@ const Charts = () => {
     };
 
     const addReadingTime = async () => {
-        // Check if the date already exists in the reading times array
         const existingIndex = readingTimes.findIndex(item => item.date === date);
 
         if (existingIndex !== -1) {
-            // If the date exists, update the reading time
             const updatedReadingTimes = [...readingTimes];
-            updatedReadingTimes[existingIndex] = { readingDate, mins_read };
-            console.log(date);
-            setReadingTimes(updatedReadingTimes); // Update state with the updated reading times
+            updatedReadingTimes[existingIndex] = { date, mins_read };
+            setReadingTimes(updatedReadingTimes);
             await api.put(`/api/reading-logs/${readingTimes[existingIndex].id}/`, { mins_read, date });
             alert("Reading time updated");
         } else {
-            // If the date doesn't exist, add a new reading time
             const res = await api.post("/api/reading-logs/", { mins_read, date });
 
             if (res.status === 201) {
                 alert("New data added");
-                getReadingTime(); // Refresh data after adding new reading time
+                getReadingTime();
             } else {
                 console.log("Error");
             }
         }
     };
 
-    const pieChartData = {
-        labels: ['Red', 'Blue', 'Yellow'],
-        datasets: [
-            {
-                data: [300, 50, 100],
-                backgroundColor: ['red', 'blue', 'yellow'],
-                borderWidth: 0
-            }
-        ]
-    };
-
-    // Extract dates and reading times from readingTimes array
-    const dates = readingTimes.map(item => item.date);
-    const readingData = readingTimes.map(item => parseFloat(item.mins_read)); // Convert to float if mins_read is a string
-    // Chart data object
     const chartData = {
-        labels: dates.sort(),
+        labels: readingTimes.map(item => item.date).sort(),
         datasets: [
             {
                 label: 'Reading Time',
-                data: readingData,
+                data: readingTimes.map(item => parseFloat(item.mins_read)),
                 fill: false,
                 borderColor: 'rgba(75, 192, 192, 1)',
                 tension: 0.1
@@ -148,21 +107,17 @@ const Charts = () => {
         ]
     };
 
-    // Scale configuration for the chart
     const options = {
         scales: {
             x: {
-                type: 'category', // Scale type for x-axis
-                labels: dates // Labels for x-axis
+                type: 'category',
+                labels: readingTimes.map(item => item.date).sort()
             },
             y: {
-                // Scale configuration for y-axis
-                beginAtZero: true // Start y-axis from zero
+                beginAtZero: true
             }
         }
     };
-
-    
 
     return (
         <div className="container mx-auto overflow-x-hidden">
@@ -173,8 +128,8 @@ const Charts = () => {
                     <div className='m-4'>
                         <h2>Add Input</h2>
                         <form onSubmit={(e) => {
-                            e.preventDefault(); // Prevent default form submission
-                            addReadingTime(); // Call addReadingTime function
+                            e.preventDefault();
+                            addReadingTime();
                         }}>
                             <label>Minutes Read:</label>
                             <input onChange={(e) => setMins_read(e.target.value)} value={mins_read} name='mins_read' type='text'></input>
@@ -191,8 +146,8 @@ const Charts = () => {
                     <div className='m-4'>
                         <h2>Add A new Goal</h2>
                         <form onSubmit={(e) => {
-                            e.preventDefault(); // Prevent default form submission
-                            addUserGoal(newGoal); // Call addUserGoal function
+                            e.preventDefault();
+                            addUserGoal();
                         }}>
                             <label>Name:</label>
                             <input onChange={(e) => setGoalName(e.target.value)} value={goalName} name='name' type='text'></input>
@@ -207,7 +162,6 @@ const Charts = () => {
             </div>
             <div className='grid grid-cols-2 gap-4'>
                 {Object.entries(goalTimes).map(([goalName, goalData]) => {
-                    console.log(goalTimes)
                     let goalDates = goalData.map(goal => goal.date);
                     let goalMins = goalData.map(goal => goal.mins_done);
     
@@ -227,23 +181,19 @@ const Charts = () => {
                     let goalOptions = {
                         scales: {
                             x: {
-                                type: 'category', // Scale type for x-axis
-                                labels: goalDates // Labels for x-axis
+                                type: 'category',
+                                labels: goalDates
                             },
                             y: {
-                                // Scale configuration for y-axis
-                                beginAtZero: true // Start y-axis from zero
+                                beginAtZero: true
                             }
                         }
                     };
-
-                    
     
                     return (
                         <div key={goalName} className='bg-white p-5 rounded-lg'>
                             <h2>{goalName}</h2>
                             <Line data={goalChartData} options={goalOptions} />
-                            
                         </div>
                     );
                 })}
