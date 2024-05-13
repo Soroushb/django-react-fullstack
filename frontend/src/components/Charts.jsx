@@ -10,7 +10,7 @@ const Charts = () => {
     const [newGoal, setNewGoal] = useState("");
     const [goalList, setGoalList] = useState([]);
     const [userGoals, setUserGoals] = useState([]);
-    const [goalTimes, setGoalTimes] = useState([]);
+    const [goalTimes, setGoalTimes] = useState({});
     const [mins_done, setMins_done] = useState(0);
     const [date, setDate] = useState("");
     const [goalName, setGoalName] = useState("");
@@ -19,7 +19,6 @@ const Charts = () => {
     useEffect(() => {
         getReadingTime();
         getGoalList();
-        getGoalTime();
     }, []);
 
     const getReadingTime = () => {
@@ -32,7 +31,7 @@ const Charts = () => {
     const getGoalTime = () => {
         api.get("/api/goal-logs/")
             .then((res) => res.data)
-            .then((data) => {setReadingTimes(data); console.log(data)})
+            .then((data) => {setReadingDate(data); console.log(data)})
             .catch((err) => console.log(err));
     };
 
@@ -66,18 +65,34 @@ const Charts = () => {
 
     console.log(goalTimes.running)
 
-    const addUserGoal = () => {
-        api.post(`/api/goal-logs/`, { name: goalName, date: date, mins_done: mins_done })
-            .then((res) => {
-                // Handle success
-                console.log("New goal added:", res.data);
-                setNewGoal(""); // Clear the input field
-                // Optionally, you can update the goal list state to include the new goal
-            })
-            .catch((err) => {
-                // Handle error
-                console.error("Error adding new goal:", err);
-            });
+    const addUserGoal = async () => {
+        const existingIndex = Object.values(goalTimes).flatMap(item => item)
+            .findIndex(item => item.date === date && item.name === goalName);
+        
+        if (existingIndex !== -1) {
+            const goalType = Object.keys(goalTimes).find(key =>
+                goalTimes[key].some(item => item.date === date && item.name === goalName)
+            );
+            const updatedGoalTimes = { ...goalTimes };
+            updatedGoalTimes[goalType][existingIndex] = { name: goalName, date, mins_done };
+            console.log(date)
+            setGoalTimes(updatedGoalTimes); 
+            await api.put(`/api/goal-logs/${goalTimes[goalType][existingIndex].id}/`, { mins_done, date });
+            alert("Goal time updated");
+        } else {
+            // Add new goal
+            api.post(`/api/goal-logs/`, { name: goalName, date, mins_done })
+                .then((res) => {
+                    console.log("New goal added:", res.data);
+
+                    setNewGoal(""); // Clear the input field
+                    getGoalTime();
+                    alert(`New ${goalName} added.`);
+                })
+                .catch((err) => {
+                    console.error("Error adding new goal:", err);
+                });
+        }
     };
 
     const addReadingTime = async () => {
@@ -147,6 +162,8 @@ const Charts = () => {
         }
     };
 
+    
+
     return (
         <div className="container mx-auto overflow-x-hidden">
             <div>
@@ -190,6 +207,7 @@ const Charts = () => {
             </div>
             <div className='grid grid-cols-2 gap-4'>
                 {Object.entries(goalTimes).map(([goalName, goalData]) => {
+                    console.log(goalTimes)
                     let goalDates = goalData.map(goal => goal.date);
                     let goalMins = goalData.map(goal => goal.mins_done);
     
@@ -197,7 +215,7 @@ const Charts = () => {
                         labels: goalDates.sort(),
                         datasets: [
                             {
-                                label: 'Reading Time',
+                                label: goalName,
                                 data: goalMins,
                                 fill: false,
                                 borderColor: 'rgba(75, 192, 192, 1)',
@@ -218,18 +236,14 @@ const Charts = () => {
                             }
                         }
                     };
+
+                    
     
                     return (
                         <div key={goalName} className='bg-white p-5 rounded-lg'>
                             <h2>{goalName}</h2>
                             <Line data={goalChartData} options={goalOptions} />
-                            <ul>
-                                {goalData.map((goal) => (
-                                    <li key={goal.id}>
-                                        {goal.date} - {goal.mins_done} mins
-                                    </li>
-                                ))}
-                            </ul>
+                            
                         </div>
                     );
                 })}
