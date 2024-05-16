@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Line, Doughnut } from 'react-chartjs-2';
-import Chart from 'chart.js/auto';
+import { Line } from 'react-chartjs-2';
 import api from '../api';
 
 const Charts = () => {
@@ -10,6 +9,7 @@ const Charts = () => {
     const [goalName, setGoalName] = useState("");
     const [mins_done, setMins_done] = useState(0);
     const [goalTimes, setGoalTimes] = useState({});
+    const [showGoal, setShowGoal] = useState("");
 
     useEffect(() => {
         getReadingTime();
@@ -143,6 +143,7 @@ const Charts = () => {
             </div>
             <div>
                 <div>
+                    
                     <div className='m-4'>
                         <h2>Add A new Goal</h2>
                         <form onSubmit={(e) => {
@@ -155,16 +156,18 @@ const Charts = () => {
                             <input onChange={(e) => setMins_done(e.target.value)} value={mins_done} name='mins_done' type='number'></input>
                             <label>Date:</label>
                             <input onChange={(e) => setDate(e.target.value)} value={date} name='date' type='date'></input>
-                            <button className='bg-blue-700 rounded-md p-2 text-white' type='submit'>Add Reading Time</button>
+                            <button className='bg-blue-700 rounded-md p-2 text-white' type='submit'>Add Goal</button>
                         </form>
                     </div>
                 </div>
             </div>
-            <div className='grid grid-cols-2 gap-4'>
+            <div className=''>
                 {Object.entries(goalTimes).map(([goalName, goalData]) => {
+                    if (showGoal !== goalName) return null;
+
                     let goalDates = goalData.map(goal => goal.date);
                     let goalMins = goalData.map(goal => goal.mins_done);
-    
+
                     let goalChartData = {
                         labels: goalDates.sort(),
                         datasets: [
@@ -177,7 +180,7 @@ const Charts = () => {
                             }
                         ]
                     };
-    
+
                     let goalOptions = {
                         scales: {
                             x: {
@@ -189,10 +192,17 @@ const Charts = () => {
                             }
                         }
                     };
-    
+
                     return (
                         <div key={goalName} className='bg-white p-5 rounded-lg'>
-                            <h2>{goalName}</h2>
+                        <h1 className='text-bold'>Your Goals:</h1>
+                        <div className='flex justify-between p-4 '>
+                            {Object.keys(goalTimes).map((goal) => (
+                                <div key={goal} onClick={() => setShowGoal(goal)} className='bg-purple-600 text-white p-4 rounded-lg hover:scale-110 hover:cursor-pointer'>
+                                    {goal}
+                                </div>
+                            ))}
+                    </div>
                             <Line data={goalChartData} options={goalOptions} />
                         </div>
                     );
