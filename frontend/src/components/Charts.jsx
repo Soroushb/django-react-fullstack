@@ -151,7 +151,8 @@ const Charts = () => {
             <div>
                 {Object.entries(goalTimes).map(([goalName, goalData]) => {
                     if (showGoal !== goalName) return null;
-
+                    let sortedData = goalData.sort((a,b) => {return new Date(a.date) - new Date(b.date);})
+                    console.log(sortedData)
                     let goalDates = goalData.map(goal => goal.date);
                     let goalMins = goalData.map(goal => goal.mins_done);
 

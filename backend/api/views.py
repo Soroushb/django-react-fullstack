@@ -193,10 +193,9 @@ class GoalLogListCreate(generics.ListCreateAPIView):
         else:
             print(serializer.errors)
 
-class GoalLogDetail(generics.RetrieveUpdateDestroyAPIView):
+class GoalLogDetail(UpdateAPIView):
     queryset = GoalLog.objects.all()
-    serializer_class = GoalLogSerializer
-    permission_classes = [IsAuthenticated]
+    serializer_class = GoalListSerializer
 
 class GoalListCreate(APIView):
     permission_classes = [IsAuthenticated]
@@ -215,6 +214,8 @@ class GoalListCreate(APIView):
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         except Exception as e:
             return Response({'error': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+        
+   
 
 
 class GoalListDetail(generics.RetrieveAPIView):
