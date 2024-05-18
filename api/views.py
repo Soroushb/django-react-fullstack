@@ -4,10 +4,11 @@ from rest_framework import generics, viewsets, status
 from rest_framework.views import APIView
 from django.shortcuts import get_object_or_404
 from rest_framework.generics import ListCreateAPIView, RetrieveAPIView, UpdateAPIView, DestroyAPIView
-from .serializers import UserSerializer, NoteSerializer, BookSerializer, BookListSerializer, UserProfileSerializer
+from .serializers import UserSerializer, NoteSerializer, BookSerializer, BookListSerializer, UserProfileSerializer,ReadingLogSerializer, GoalLogSerializer, GoalListSerializer
 from rest_framework.permissions import IsAuthenticated, AllowAny
-from .models import Note, Book, BookList, UserProfile
+from .models import Note, Book, BookList, UserProfile, ReadingLog, GoalLog, GoalList
 from rest_framework.response import Response
+
 # Create your views here.
 
 class UserProfileViewSet(APIView):
@@ -157,3 +158,97 @@ class UsernameByUserId(generics.RetrieveAPIView):
             return Response({'username': username})
         except User.DoesNotExist:
             return Response(status=404, data={'error': 'User not found'})
+        
+
+class ReadingLogListCreate(generics.ListCreateAPIView):
+    serializer_class = ReadingLogSerializer
+    permission_classes = [IsAuthenticated]
+
+    def get_queryset(self):
+        user = self.request.user
+        return ReadingLog.objects.filter(user=user)
+
+    def perform_create(self, serializer):
+        if serializer.is_valid():
+            serializer.save(user=self.request.user)
+        else:
+            print(serializer.errors)
+
+class ReadingLogDetail(generics.RetrieveUpdateDestroyAPIView):
+    queryset = ReadingLog.objects.all()
+    serializer_class = ReadingLogSerializer
+    permission_classes = [IsAuthenticated]
+
+class GoalLogListCreate(generics.ListCreateAPIView):
+    serializer_class = GoalLogSerializer
+    permission_classes = [IsAuthenticated]
+
+    def get_queryset(self):
+        user = self.request.user
+        return GoalLog.objects.filter(user=user)
+
+    def perform_create(self, serializer):
+        if serializer.is_valid():
+            serializer.save(user=self.request.user)
+        else:
+            print(serializer.errors)
+
+class GoalLogDetail(UpdateAPIView):
+    queryset = GoalLog.objects.all()
+    serializer_class = GoalListSerializer
+
+class GoalListCreate(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def post(self, request):
+        # Extract data from the request
+        user = request.user
+        name = request.data.get('name')
+        goal_ids = request.data.get('goals')  # Assuming goals is a list of goal ids
+
+        # Create a GoalList object
+        try:
+            goal_list = GoalList.objects.create(user=user, name=name)
+            goal_list.goals.add(*goal_ids)  # Associate the GoalLog objects
+            serializer = GoalListSerializer(goal_list)
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        except Exception as e:
+            return Response({'error': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+        
+   
+
+
+class GoalListDetail(generics.RetrieveAPIView):
+    queryset = GoalList.objects.all()
+    serializer_class = GoalListSerializer
+    permission_classes = [IsAuthenticated]
+
+
+class GoalListRetrieveAPIView(generics.ListAPIView):
+    queryset = GoalList.objects.all()
+    serializer_class = GoalListSerializer
+    permission_classes = [IsAuthenticated]
+
+    def get_queryset(self):
+        user = self.request.user
+        return GoalList.objects.filter(user=user)
+
+
+
+class GoalListUpdate(generics.UpdateAPIView):
+    queryset = GoalList.objects.all()
+    serializer_class = GoalListSerializer
+    permission_classes = [IsAuthenticated]
+
+    def put(self, request, *args, **kwargs):
+        instance = self.get_object()
+        goals = request.data.get('goals', [])
+        
+        # Assuming you want to completely replace the existing goals with the new ones
+        instance.goals.add(*goals)  # Add the new goals
+        
+        serializer = self.get_serializer(instance, data=request.data)
+        serializer.is_valid(raise_exception=True)   
+        serializer.save()
+        
+        return Response(serializer.data)

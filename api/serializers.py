@@ -1,6 +1,8 @@
 from django.contrib.auth.models import User
 from rest_framework import serializers
-from .models import Note, Book, BookList, UserProfile
+from .models import Note, Book, BookList, UserProfile, ReadingLog, GoalLog, GoalList
+from django.shortcuts import get_object_or_404
+from rest_framework.exceptions import ValidationError
 
 class UserProfileSerializer(serializers.ModelSerializer):
     class Meta:
@@ -34,4 +36,25 @@ class BookSerializer(serializers.ModelSerializer):
 class BookListSerializer(serializers.ModelSerializer):
     class Meta:
         model = BookList
+        fields = '__all__'
+
+class ReadingLogSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = ReadingLog
+        fields = ['mins_read', 'date', 'user']
+        read_only_fields = ['user']  # Set the user field to read-only
+
+    def validate(self, attrs):
+        attrs['user'] = self.context['request'].user  # Set the user based on the request user
+        return attrs
+    
+class GoalLogSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = GoalLog
+        fields = ['id' ,'name' ,'mins_done', 'date']
+
+class GoalListSerializer(serializers.ModelSerializer):
+    user = serializers.PrimaryKeyRelatedField(default=serializers.CurrentUserDefault(), read_only=True)
+    class Meta:
+        model = GoalList
         fields = '__all__'
