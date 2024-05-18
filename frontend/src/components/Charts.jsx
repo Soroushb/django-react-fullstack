@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from 'react';
-import { Line } from 'react-chartjs-2';
+import { Line, Pie } from 'react-chartjs-2';
 import api from '../api';
 import Chart from 'chart.js/auto';
+import { IoIosClose } from "react-icons/io";
 
 const Charts = () => {
     const [readingTimes, setReadingTimes] = useState([]);
@@ -11,6 +12,45 @@ const Charts = () => {
     const [mins_done, setMins_done] = useState(0);
     const [goalTimes, setGoalTimes] = useState({});
     const [showGoal, setShowGoal] = useState("");
+    const [showAddGoal, setShowAddGoal] = useState(false)
+
+
+    
+    const data = {
+          labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
+          datasets: [
+            {
+              label: '# of Votes',
+              data: [12, 19, 3, 5, 2, 3],
+              backgroundColor: [
+                'rgba(255, 99, 132, 0.2)',
+                'rgba(54, 162, 235, 0.2)',
+                'rgba(255, 206, 86, 0.2)',
+                'rgba(75, 192, 192, 0.2)',
+                'rgba(153, 102, 255, 0.2)',
+                'rgba(255, 159, 64, 0.2)',
+              ],
+              borderColor: [
+                'rgba(255, 99, 132, 1)',
+                'rgba(54, 162, 235, 1)',
+                'rgba(255, 206, 86, 1)',
+                'rgba(75, 192, 192, 1)',
+                'rgba(153, 102, 255, 1)',
+                'rgba(255, 159, 64, 1)',
+              ],
+              borderWidth: 1,
+            },
+          ],
+        };
+      
+        const pieOptions = {
+          responsive: true,
+          plugins: {
+            legend: {
+              position: 'top',
+            },
+          },
+        };
 
     useEffect(() => {
         getReadingTime();
@@ -131,19 +171,51 @@ const Charts = () => {
     };
 
     return (
-        <div className="container mx-auto overflow-x-hidden">
+        <div className="container mx-auto pb-20 pt-20">
             <div>
-                <div className='flex justify-center mt-14 mb-4'>
-                    <h1 className='text-bold text-white text-3xl'>Your Goals:</h1>
+            
+                <div>
+                <div className='flex'>
+                <h1 onClick={() => setShowAddGoal(true)} className='text-bold bg-red-800 hover:cursor-pointer text-white p-4 rounded-md'>Add a New Goal</h1>
                 </div>
-                <div className='flex m-8 justify-between p-4'>
+
+                    {showAddGoal && (
+                        <form onSubmit={(e) => {
+                            e.preventDefault();
+                            setGoalName(showGoal);
+                            addUserGoal();
+                        }}>
+                            <div className='flex justify-end'>
+                            <div onClick={() => setShowAddGoal(false)} className='text-white bg-red-500 p-1 rounded-full scale-150 hover:bg-red-700 hover:cursor-pointer'><IoIosClose/></div>
+                            </div>
+                            <div className='flex flex-col items-center'>
+                            <div>
+                            <label>Name:</label>
+                            <input onChange={(e) => setGoalName(e.target.value)} value={goalName} name='name' type='text' />
+                            <label>Minutes Done:</label>
+                            <input onChange={(e) => setMins_done(parseInt(e.target.value, 10))} value={mins_done} name='mins_done' type='number' />
+                            <label>Date:</label>
+                            <input onChange={(e) => setDate(e.target.value)} value={date} name='date' type='date' />
+                            <button type='submit' className='text-bold bg-red-800 text-white p-4 rounded-md'>Add a New Goal</button>
+                            </div>
+                            </div>
+                        
+                        </form>
+                    )}
+
+    <div className='flex justify-center mt-14 mb-4'>
+                    <h1 className='text-bold text-white text-3xl'>Your Goal Logs:</h1>
+                </div>
+                    
+                </div>
+                <div className='flex m-8 justify-center p-4'>
                     {Object.keys(goalTimes).map((goal) => (
                         <div
                             key={goal}
                             onClick={() => setShowGoal(goal)}
-                            className={`${showGoal === goal ? "bg-white text-purple-800" : "bg-purple-600 text-white"} p-4 rounded-lg hover:scale-110 hover:cursor-pointer`}
+                            className={`${showGoal === goal ? "bg-white text-purple-800" : "bg-purple-600 text-white"} p-4 rounded-lg hover:scale-110 hover:cursor-pointer m-2`}
                         >
-                            {goal}
+                            {goal.toUpperCase()}
                         </div>
                     ))}
                 </div>
@@ -220,10 +292,20 @@ const Charts = () => {
                     </div>
                     <Line data={chartData} options={options} />
                 </div>
-            </div>
+            </div>  
             */}
+      <div className='bg-white flex'>
+       <div className='w-1/4'>
+       <h2>Pie Chart Example</h2>
+      <Pie data={data} options={pieOptions} />
+       </div>
+       <div>
+            H
+       </div>
+      
+    </div>
             
-        </div>
+    </div>
     );
 };
 

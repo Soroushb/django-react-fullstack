@@ -42,7 +42,7 @@ class BookList(models.Model):
 
 class ReadingLog(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-    date = models.DateField(default=timezone.now, unique=True)
+    date = models.DateField(default=timezone.now)
     mins_read = models.DecimalField(max_digits=5, decimal_places=2)
 
     def __str__(self):
@@ -51,7 +51,7 @@ class ReadingLog(models.Model):
 
 class GoalLog(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-    name = models.CharField(max_length=255)
+    name = models.CharField(max_length=265)
     date = models.DateField(default=timezone.now)  # removed unique=True
     mins_done = models.DecimalField(max_digits=5, decimal_places=2)
 
@@ -67,3 +67,14 @@ class GoalList(models.Model):
     
     def __str__(self):
         return f"{self.user.username}'s Goal List: {self.goal.name}"
+
+class DayPlan(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    name = models.CharField(max_length=200)
+    goalDuration = models.DecimalField(max_digits=5, decimal_places=2)
+    duration = models.DecimalField(max_digits=5, decimal_places=2, default=0.00)
+    date = models.DateField(default=timezone.now)
+
+    def __str__(self):
+        return f"{self}'s Day Plan: {self.name}"
+
