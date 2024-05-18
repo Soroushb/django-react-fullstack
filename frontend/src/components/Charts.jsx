@@ -184,7 +184,6 @@ const Charts = () => {
                     return (
                         <div key={goalName} className='flex justify-between bg-white p-5 rounded-lg' style={{ height: '400px' }}>
                             <div className='m-4'>
-                                <h2>Add A new Goal</h2>
                                 <form onSubmit={(e) => {
                                     e.preventDefault();
                                     setGoalName(showGoal);
@@ -194,7 +193,7 @@ const Charts = () => {
                                     <input onChange={(e) => setMins_done(parseInt(e.target.value, 10))} value={mins_done} name='mins_done' type='number' />
                                     <label>Date:</label>
                                     <input onChange={(e) => setDate(e.target.value)} value={date} name='date' type='date' />
-                                    <button className='bg-blue-700 rounded-md p-2 text-white' type='submit'>Add Goal</button>
+                                    <button className='bg-blue-700 rounded-md p-2 text-white' type='submit'>Add/Update Goal Time</button>
                                 </form>
                             </div>
                             <Line data={goalChartData} options={goalOptions} />
@@ -202,6 +201,7 @@ const Charts = () => {
                     );
                 })}
             </div>
+            {/*
             <div>
                 <h2 className="text-2xl font-bold mb-4 text-white mt-8">Reading Time Graph</h2>
                 <div className="flex justify-between bg-white p-4 rounded-lg shadow" style={{ height: '400px' }}>
@@ -221,6 +221,8 @@ const Charts = () => {
                     <Line data={chartData} options={options} />
                 </div>
             </div>
+            */}
+            
         </div>
     );
 };
