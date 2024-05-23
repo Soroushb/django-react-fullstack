@@ -1,6 +1,6 @@
 from django.contrib.auth.models import User
 from rest_framework import serializers
-from .models import Note, Book, BookList, UserProfile, ReadingLog, GoalLog, GoalList
+from .models import Note, Book, BookList, UserProfile, ReadingLog, GoalLog, GoalList, DayPillars, DayPlan
 from django.shortcuts import get_object_or_404
 from rest_framework.exceptions import ValidationError
 
@@ -57,4 +57,14 @@ class GoalListSerializer(serializers.ModelSerializer):
     user = serializers.PrimaryKeyRelatedField(default=serializers.CurrentUserDefault(), read_only=True)
     class Meta:
         model = GoalList
+        fields = '__all__'
+
+class DayPlanSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = DayPlan
+        fields = '__all__'
+
+class DayPillarsSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = DayPillars
         fields = '__all__'

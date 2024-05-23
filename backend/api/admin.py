@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Note, Book, BookList, UserProfile, ReadingLog, DayPlan
+from .models import Note, Book, BookList, UserProfile, ReadingLog, DayPlan,DayPillars
 
 # Register your models here.
 admin.site.register(Note)
@@ -8,3 +8,4 @@ admin.site.register(BookList)
 admin.site.register(UserProfile)
 admin.site.register(ReadingLog)
 admin.site.register(DayPlan)
+admin.site.register(DayPillars)

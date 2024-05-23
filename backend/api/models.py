@@ -78,3 +78,9 @@ class DayPlan(models.Model):
     def __str__(self):
         return f"{self}'s Day Plan: {self.name}"
 
+
+class DayPillars(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    name = models.CharField(max_length=200)
+    hours = models.DecimalField(max_digits=5, decimal_places=2, default=0.00)
+
