@@ -12,45 +12,43 @@ const Charts = () => {
     const [mins_done, setMins_done] = useState(0);
     const [goalTimes, setGoalTimes] = useState({});
     const [showGoal, setShowGoal] = useState("");
-    const [showAddGoal, setShowAddGoal] = useState(false)
+    const [showAddGoal, setShowAddGoal] = useState(false);
 
-
-    
     const data = {
-          labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
-          datasets: [
+        labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
+        datasets: [
             {
-              label: '# of Votes',
-              data: [12, 19, 3, 5, 2, 3],
-              backgroundColor: [
-                'rgba(255, 99, 132, 0.2)',
-                'rgba(54, 162, 235, 0.2)',
-                'rgba(255, 206, 86, 0.2)',
-                'rgba(75, 192, 192, 0.2)',
-                'rgba(153, 102, 255, 0.2)',
-                'rgba(255, 159, 64, 0.2)',
-              ],
-              borderColor: [
-                'rgba(255, 99, 132, 1)',
-                'rgba(54, 162, 235, 1)',
-                'rgba(255, 206, 86, 1)',
-                'rgba(75, 192, 192, 1)',
-                'rgba(153, 102, 255, 1)',
-                'rgba(255, 159, 64, 1)',
-              ],
-              borderWidth: 1,
+                label: '# of Votes',
+                data: [12, 19, 3, 5, 2, 3],
+                backgroundColor: [
+                    'rgba(255, 99, 132, 0.2)',
+                    'rgba(54, 162, 235, 0.2)',
+                    'rgba(255, 206, 86, 0.2)',
+                    'rgba(75, 192, 192, 0.2)',
+                    'rgba(153, 102, 255, 0.2)',
+                    'rgba(255, 159, 64, 0.2)',
+                ],
+                borderColor: [
+                    'rgba(255, 99, 132, 1)',
+                    'rgba(54, 162, 235, 1)',
+                    'rgba(255, 206, 86, 1)',
+                    'rgba(75, 192, 192, 1)',
+                    'rgba(153, 102, 255, 1)',
+                    'rgba(255, 159, 64, 1)',
+                ],
+                borderWidth: 1,
             },
-          ],
-        };
-      
-        const pieOptions = {
-          responsive: true,
-          plugins: {
+        ],
+    };
+
+    const pieOptions = {
+        responsive: true,
+        plugins: {
             legend: {
-              position: 'top',
+                position: 'top',
             },
-          },
-        };
+        },
+    };
 
     useEffect(() => {
         getReadingTime();
@@ -145,12 +143,40 @@ const Charts = () => {
         }
     };
 
+    const getAllDatesInRange = (startDate, endDate) => {
+        const dateArray = [];
+        let currentDate = new Date(startDate);
+        const stopDate = new Date(endDate);
+        while (currentDate <= stopDate) {
+            dateArray.push(new Date(currentDate).toISOString().split('T')[0]);
+            currentDate.setDate(currentDate.getDate() + 1);
+        }
+        return dateArray;
+    };
+
+    const fillMissingDates = (data, valueKey) => {
+        if (data.length === 0) return [];
+
+        const allDates = getAllDatesInRange(data[0].date, data[data.length - 1].date);
+        const dataMap = data.reduce((acc, current) => {
+            acc[current.date] = current[valueKey];
+            return acc;
+        }, {});
+
+        return allDates.map(date => ({
+            date,
+            [valueKey]: dataMap[date] !== undefined ? dataMap[date] : 0
+        }));
+    };
+
+    const filledReadingTimes = fillMissingDates(readingTimes, 'mins_read');
+
     const chartData = {
-        labels: readingTimes.map(item => item.date).sort(),
+        labels: filledReadingTimes.map(item => item.date),
         datasets: [
             {
                 label: 'Reading Time',
-                data: readingTimes.map(item => parseFloat(item.mins_read)),
+                data: filledReadingTimes.map(item => parseFloat(item.mins_read)),
                 fill: false,
                 borderColor: 'rgba(75, 192, 192, 1)',
                 tension: 0.1
@@ -162,7 +188,7 @@ const Charts = () => {
         scales: {
             x: {
                 type: 'category',
-                labels: readingTimes.map(item => item.date).sort()
+                labels: filledReadingTimes.map(item => item.date)
             },
             y: {
                 beginAtZero: true
@@ -173,11 +199,10 @@ const Charts = () => {
     return (
         <div className="container mx-auto pb-20 pt-20">
             <div>
-            
                 <div>
-                <div className='flex'>
-                <h1 onClick={() => setShowAddGoal(true)} className='text-bold bg-red-800 hover:cursor-pointer text-white p-4 rounded-md'>Add a New Goal</h1>
-                </div>
+                    <div className='flex'>
+                        <h1 onClick={() => setShowAddGoal(true)} className='text-bold bg-red-800 hover:cursor-pointer text-white p-4 rounded-md'>Add a New Goal</h1>
+                    </div>
 
                     {showAddGoal && (
                         <form onSubmit={(e) => {
@@ -186,27 +211,25 @@ const Charts = () => {
                             addUserGoal();
                         }}>
                             <div className='flex justify-end'>
-                            <div onClick={() => setShowAddGoal(false)} className='text-white bg-red-500 p-1 rounded-full scale-150 hover:bg-red-700 hover:cursor-pointer'><IoIosClose/></div>
+                                <div onClick={() => setShowAddGoal(false)} className='text-white bg-red-500 p-1 rounded-full scale-150 hover:bg-red-700 hover:cursor-pointer'><IoIosClose /></div>
                             </div>
                             <div className='flex flex-col items-center'>
-                            <div>
-                            <label>Name:</label>
-                            <input onChange={(e) => setGoalName(e.target.value)} value={goalName} name='name' type='text' />
-                            <label>Minutes Done:</label>
-                            <input onChange={(e) => setMins_done(parseInt(e.target.value, 10))} value={mins_done} name='mins_done' type='number' />
-                            <label>Date:</label>
-                            <input onChange={(e) => setDate(e.target.value)} value={date} name='date' type='date' />
-                            <button type='submit' className='text-bold bg-red-800 text-white p-4 rounded-md'>Add a New Goal</button>
+                                <div>
+                                    <label>Name:</label>
+                                    <input onChange={(e) => setGoalName(e.target.value)} value={goalName} name='name' type='text' />
+                                    <label>Minutes Done:</label>
+                                    <input onChange={(e) => setMins_done(parseInt(e.target.value, 10))} value={mins_done} name='mins_done' type='number' />
+                                    <label>Date:</label>
+                                    <input onChange={(e) => setDate(e.target.value)} value={date} name='date' type='date' />
+                                    <button type='submit' className='text-bold bg-red-800 text-white p-4 rounded-md'>Add a New Goal</button>
+                                </div>
                             </div>
-                            </div>
-                        
                         </form>
                     )}
 
-    <div className='flex justify-center mt-14 mb-4'>
-                    <h1 className='text-bold text-white text-3xl'>Your Goal Logs:</h1>
-                </div>
-                    
+                    <div className='flex justify-center mt-14 mb-4'>
+                        <h1 className='text-bold text-white text-3xl'>Your Goal Logs:</h1>
+                    </div>
                 </div>
                 <div className='flex m-8 justify-center p-4'>
                     {Object.keys(goalTimes).map((goal) => (
@@ -223,12 +246,14 @@ const Charts = () => {
             <div>
                 {Object.entries(goalTimes).map(([goalName, goalData]) => {
                     if (showGoal !== goalName) return null;
-                    let sortedData = goalData.sort((a,b) => {return new Date(a.date) - new Date(b.date);})
-                    console.log(sortedData)
-                    let goalDates = goalData.map(goal => goal.date);
-                    let goalMins = goalData.map(goal => goal.mins_done);
 
-                    let goalChartData = {
+                    const sortedData = goalData.sort((a, b) => new Date(a.date) - new Date(b.date));
+                    const filledGoalData = fillMissingDates(sortedData, 'mins_done');
+                    
+                    const goalDates = filledGoalData.map(goal => goal.date);
+                    const goalMins = filledGoalData.map(goal => goal.mins_done);
+
+                    const goalChartData = {
                         labels: goalDates,
                         datasets: [
                             {
@@ -241,7 +266,7 @@ const Charts = () => {
                         ]
                     };
 
-                    let goalOptions = {
+                    const goalOptions = {
                         scales: {
                             x: {
                                 type: 'category',
@@ -273,39 +298,16 @@ const Charts = () => {
                     );
                 })}
             </div>
-            {/*
-            <div>
-                <h2 className="text-2xl font-bold mb-4 text-white mt-8">Reading Time Graph</h2>
-                <div className="flex justify-between bg-white p-4 rounded-lg shadow" style={{ height: '400px' }}>
-                    <div className='m-4'>
-                        <h2>Add Input</h2>
-                        <form onSubmit={(e) => {
-                            e.preventDefault();
-                            addReadingTime();
-                        }}>
-                            <label>Minutes Read:</label>
-                            <input onChange={(e) => setMins_read(parseFloat(e.target.value))} value={mins_read} name='mins_read' type='number' />
-                            <label>Date:</label>
-                            <input onChange={(e) => setDate(e.target.value)} value={date} name='date' type='date' />
-                            <button className='bg-blue-700 rounded-md p-2 text-white' type='submit'>Add Reading Time</button>
-                        </form>
-                    </div>
-                    <Line data={chartData} options={options} />
+            <div className='bg-white flex'>
+                <div className='w-1/4'>
+                    <h2>Pie Chart Example</h2>
+                    <Pie data={data} options={pieOptions} />
                 </div>
-            </div>  
-            */}
-      <div className='bg-white flex'>
-       <div className='w-1/4'>
-       <h2>Pie Chart Example</h2>
-      <Pie data={data} options={pieOptions} />
-       </div>
-       <div>
-            H
-       </div>
-      
-    </div>
-            
-    </div>
+                <div>
+                    {/* Other content */}
+                </div>
+            </div>
+        </div>
     );
 };
 
