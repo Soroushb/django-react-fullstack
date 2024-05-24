@@ -4,12 +4,14 @@ import api from "../api";
 import { useNavigate } from "react-router-dom";
 import LoadingIndicator from "./LoadingIndicator";
 
+
 function Note({ note, onDelete }) {
   const formattedDate = new Date(note.created_at).toLocaleDateString("en-US");
   const navigate = useNavigate();
 
   return (
     <div className="note-container">
+      
       <div className="max-w-xs bg-yellow-100 border border-yellow-300 shadow-md rounded-md p-4 mb-4">
         <div className="flex justify-between items-center mb-2">
           <h2 className="text-lg font-bold text-gray-800">{note.title}</h2>

@@ -14,6 +14,18 @@ const Charts = () => {
     const [showGoal, setShowGoal] = useState("");
     const [showAddGoal, setShowAddGoal] = useState(false);
 
+    const getTodayDate = () => {
+        const today = new Date();
+        const year = today.getFullYear();
+        const month = String(today.getMonth() + 1).padStart(2, '0');
+        const day = String(today.getDate()).padStart(2, '0');
+        return `${year}-${month}-${day}`;
+    };
+
+    const handleTodayClick = () => {
+        setDate(getTodayDate());
+    };
+
     const data = {
         labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
         datasets: [
@@ -289,7 +301,17 @@ const Charts = () => {
                                     <label>Minutes Done:</label>
                                     <input onChange={(e) => setMins_done(parseInt(e.target.value, 10))} value={mins_done} name='mins_done' type='number' />
                                     <label>Date:</label>
-                                    <input onChange={(e) => setDate(e.target.value)} value={date} name='date' type='date' />
+                                    <div className='flex'>
+                                        <input onChange={(e) => setDate(e.target.value)} value={date} name='date' type='date' />
+                                        <div className='flex justify-center align-middle items-center'>
+                                            <button onClick={(e) => {
+                                                e.preventDefault();
+                                                handleTodayClick();
+                                            }} className='border-red-900 m-2 border-2  flex items-center justify-center rounded-md h-1/2'>
+                                                <p className='p-2'>Today</p>
+                                            </button>
+                                        </div>
+                                    </div>
                                     <button className='bg-blue-700 rounded-md p-2 text-white' type='submit'>Add/Update Goal Time</button>
                                 </form>
                             </div>
@@ -304,7 +326,7 @@ const Charts = () => {
                     <Pie data={data} options={pieOptions} />
                 </div>
                 <div>
-                    {/* Other content */}
+                   
                 </div>
             </div>
         </div>

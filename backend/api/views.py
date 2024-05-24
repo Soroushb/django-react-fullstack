@@ -234,7 +234,6 @@ class GoalListRetrieveAPIView(generics.ListAPIView):
         return GoalList.objects.filter(user=user)
 
 
-
 class GoalListUpdate(generics.UpdateAPIView):
     queryset = GoalList.objects.all()
     serializer_class = GoalListSerializer
@@ -252,3 +251,5 @@ class GoalListUpdate(generics.UpdateAPIView):
         serializer.save()
         
         return Response(serializer.data)
+    
+    

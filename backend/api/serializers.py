@@ -17,6 +17,10 @@ class UserSerializer(serializers.ModelSerializer):
         extra_kwargs = {"password": {"write_only": True}}
 
     def create(self, validated_data):
+        username = validated_data.get('username')
+        if User.objects.filter(username__iexact=username).exists():
+            raise ValidationError(f"User with username '{username}' already exists.")
+    
         user = User.objects.create_user(**validated_data)
         return user
     

@@ -1,1 +1,6 @@
+<<<<<<< HEAD
 env/
+=======
+.env
+db.sqlite3
+>>>>>>> c11d77e8e7bba478ee8a7ff3ce3cf0e3d45dffbc

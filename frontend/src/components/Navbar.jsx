@@ -33,6 +33,8 @@ const Navbar = () => {
     navigate("/login");
   };
 
+  console.log(localStorage.getItem(ACCESS_TOKEN))
+
   return (
     <div className="bg-gray-100">
       <div className="container mx-auto px-4 py-6 flex justify-between items-center">
