@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import api from '../api';
 
 const Book = ({ id, list_type, type, setInProg, setToFinished, setToRead, inLibrary }) => {
+
   const [book, setBook] = useState(null);
 
   useEffect(() => {
@@ -43,7 +44,8 @@ const Book = ({ id, list_type, type, setInProg, setToFinished, setToRead, inLibr
   // Render the Book component conditionally based on 'type' and 'list_type'
   return (
     <>
-      {type === list_type && book && ( // Check if 'type' matches 'list_type' and 'book' is not null
+    <div>
+    {type === list_type && book && ( // Check if 'type' matches 'list_type' and 'book' is not null
         <div className="m-8 group">
           <span className="absolute top-0 left-full w-max bg-white shadow-lg p-2 rounded-md invisible group-hover:visible">{book?.title}</span>
           <div className="flex flex-col justify-center items-center max-w-40 h-full rounded overflow-hidden shadow-lg">
@@ -57,16 +59,35 @@ const Book = ({ id, list_type, type, setInProg, setToFinished, setToRead, inLibr
             </div>
             <div className="px-6 pt-4 pb-2">
               
+              {list_type == "to read" && 
+              (
+                <button onClick={handleAddToLibrary} className="inline-block bg-gray-200 px-3 py-1 text-sm font-semibold text-green-700 mr-2 mb-2">
+                Add to In Progress
+              </button>
+              )
+              }
+
+              {list_type == "progress" && 
+              (
+                <button onClick={handleAddToLibrary} className="inline-block bg-gray-200 px-3 py-1 text-sm font-semibold text-green-700 mr-2 mb-2">
+                  Mark as Finished
+              </button>
+              )
+              }
+
               {inLibrary && (
                 <button onClick={handleAddToLibrary} className="inline-block bg-gray-200 px-3 py-1 text-sm font-semibold text-green-700 mr-2 mb-2">
                 Add to library
               </button>
               )}
+
               
             </div>
           </div>
         </div>
       )}
+    </div>
+      
     </>
   );
 };

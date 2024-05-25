@@ -38,10 +38,12 @@ const Navbar = () => {
   return (
     <div className="bg-gray-100">
       <div className="container mx-auto px-4 py-6 flex justify-between items-center">
-        <div className="text-gray-800 text-2xl font-semibold cursor-pointer" onClick={() => navigate("/")}>LITERATURE HOUSE</div>
+        <div className="text-gray-900 border-2 border-gray-800 p-2 text-2xl font-semibold cursor-pointer" onClick={() => navigate("/")}>UVSU</div>
 
         {isLoggedin && (
           <>
+            <div className='lg:flex w-full items-center justify-between px-40 hidden'>
+
             <div className='flex flex-col items-center group hover:cursor-pointer' onClick={() => navigate("/books")}>
               <div className="text-gray-700 text-xl">Book Search</div>
               <div className='hidden group-hover:block bg-gray-700 w-2 h-2 rounded-full'></div>
@@ -61,6 +63,9 @@ const Navbar = () => {
               <div className="text-gray-700 text-xl">Goals</div>
               <div className='hidden group-hover:block bg-gray-700 w-2 h-2 rounded-full'></div>
             </div>
+
+            </div>
+          
 
 
             <div className="relative">

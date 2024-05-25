@@ -209,12 +209,18 @@ const Charts = () => {
     };
 
     return (
-        <div className="container mx-auto pb-20 pt-20">
+        <div className="container mx-auto pl-10 pr-10 pb-20 pt-20">
             <div>
                 <div>
-                    <div className='flex'>
-                        <h1 onClick={() => setShowAddGoal(true)} className='text-bold bg-red-800 hover:cursor-pointer text-white p-4 rounded-md'>Add a New Goal</h1>
-                    </div>
+                <div className='flex items-center justify-center'>
+                <div className='text-white w-1/2 bg-opacity-500 text-lg'>
+                <p className='text-center'>
+                   Welcome to your Goal Tracking page!<br/> Here, you can set and monitor your personal goals with ease. <br/> Use the "Add a New Goal" button to create new goals and specify the date and minutes you aim to achieve. <br/> You can view your progress over time through interactive charts, and easily update or delete goals as needed. <br/> Stay organized and motivated by keeping track of your accomplishments and pushing yourself to reach new milestones.
+                </p>
+            </div>
+        </div>
+                    
+                   
 
                     {showAddGoal && (
                         <form onSubmit={(e) => {
@@ -253,6 +259,9 @@ const Charts = () => {
                             {goal.toUpperCase()}
                         </div>
                     ))}
+                     <div className='flex'>
+                        <h1 onClick={() => setShowAddGoal(true)} className='text-bold bg-red-800 hover:cursor-pointer text-white m-2 p-4 rounded-lg'>Add a New Goal</h1>
+                    </div>
                 </div>
             </div>
             <div>

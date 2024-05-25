@@ -13,36 +13,32 @@ const Home = () => {
     const [content, setContent] = useState("");
     const [title, setTitle] = useState("");
     const [date, setDate] = useState("");
-    const [newNotes, setNewNotes] = useState([])
+    const [newNotes, setNewNotes] = useState([]);
 
     useEffect(() => {
         getNotes();
         const calender = flatpickr("#datepicker", {
             dateFormat: "Y-m-d",
             onChange: function(selectedDates, dateString) {
-              setDate(dateString)
-            
-          }
+                setDate(dateString);
+            }
         });
-        calender.open()
-    }, []); 
-
+        calender.open();
+    }, []);
 
     useEffect(() => {
-      if (date === "") return; 
-  
-      const selectedDate = new Date(date);
-      const formattedDate = selectedDate.toISOString().split('T')[0];
-  
-      const dateNotes = notes.filter(note => {
-          const noteDate = new Date(note.created_at).toISOString().split('T')[0];
-          return noteDate === formattedDate;
-      });
+        if (date === "") return;
 
-      setNewNotes(dateNotes)
-      
-  }, [date, notes]); 
-    
+        const selectedDate = new Date(date);
+        const formattedDate = selectedDate.toISOString().split('T')[0];
+
+        const dateNotes = notes.filter(note => {
+            const noteDate = new Date(note.created_at).toISOString().split('T')[0];
+            return noteDate === formattedDate;
+        });
+
+        setNewNotes(dateNotes);
+    }, [date, notes]);
 
     const getNotes = () => {
         api.get("/api/notes/")
@@ -75,59 +71,53 @@ const Home = () => {
             .catch((error) => alert(error));
     };
 
-
     return (
-        <div className="flex container p-20 w-full justify-between">
-
-            <div>
-            <div className="flex flex-col container p-10 items-center justify-center">
-            <h1 className="text-white text-bold text-xl m-4">View Your Notes</h1>
-            <div className="flex items-center">
-                <input  type="text" id="datepicker" className="p-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500" placeholder="Select Date" />
+        <div className="container mx-auto p-4">
+            <div className="flex flex-col lg:flex-row justify-between">
+                <div className="flex flex-col items-center lg:w-1/2">
+                    <h1 className="text-white font-bold text-xl m-4">View Your Notes</h1>
+                    <div className="flex items-center mb-4 w-full">
+                        <input type="text" id="datepicker" className="p-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 w-full" placeholder="Select Date" />
+                    </div>
+                    <div className="w-full">
+                        {newNotes?.map((note) => (
+                            <Note note={note} onDelete={deleteNote} key={note.id} />
+                        ))}
+                    </div>
+                </div>
+                <div className="flex flex-col items-center lg:w-1/2 mt-8 lg:mt-0">
+                    <h2 className="text-white font-bold text-xl mb-4">Create a Note</h2>
+                    <form onSubmit={createNote} className="w-full">
+                        <div className="mb-4">
+                            <label htmlFor="title" className="block mb-1">Title:</label>
+                            <input
+                                type="text"
+                                id="title"
+                                name="title"
+                                required
+                                onChange={(e) => setTitle(e.target.value)}
+                                value={title}
+                                className="p-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 w-full"
+                            />
+                        </div>
+                        <div className="mb-4">
+                            <label htmlFor="content" className="block mb-1">Content:</label>
+                            <textarea
+                                id="content"
+                                name="content"
+                                required
+                                value={content}
+                                onChange={(e) => setContent(e.target.value)}
+                                className="p-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 w-full"
+                            ></textarea>
+                        </div>
+                        <div className="text-center">
+                            <input type="submit" value="Submit" className="px-4 py-2 bg-blue-500 text-white rounded-md shadow-sm hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2" />
+                        </div>
+                    </form>
+                </div>
             </div>
-            <div className="p-4">
-              
-              {newNotes?.map((note) => (
-                
-                  <Note note={note} onDelete={deleteNote} key={note.id} />
-              ))}
-            </div>
-            </div>
-            </div>
-            <div>
-
-           
-            <h2 className="text-white m-4 text-xl">Create a Note</h2>
-            <form onSubmit={createNote}>
-                <label htmlFor="title">Title:</label>
-                <br />
-                <input
-                    type="text"
-                    id="title"
-                    name="title"
-                    required
-                    onChange={(e) => setTitle(e.target.value)}
-                    value={title}
-                />
-                <label htmlFor="content">Content:</label>
-                <br />
-                <textarea
-                    id="content"
-                    name="content"
-                    required
-                    value={content}
-                    onChange={(e) => setContent(e.target.value)}
-                ></textarea>
-                <br />
-                <input type="submit" value="Submit" />
-            </form>
         </div>
-
-            </div>
-            
-            
-            
-    
     );
 };
 
