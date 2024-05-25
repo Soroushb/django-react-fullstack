@@ -118,7 +118,7 @@ const Charts = () => {
             );
             setGoalTimes(updatedGoalTimes);
             await api.put(`/api/goal-logs/${existingGoal.id}/`, { mins_done, date: formattedDate, name: goalName })
-            .catch((err) => console.log(err));
+                .catch((err) => console.log(err));
         } else {
             api.post(`/api/goal-logs/`, { name: goalName, date: formattedDate, mins_done })
                 .then((res) => {
@@ -212,15 +212,13 @@ const Charts = () => {
         <div className="container mx-auto pl-10 pr-10 pb-20 pt-20">
             <div>
                 <div>
-                <div className='flex items-center justify-center'>
-                <div className='text-white w-1/2 bg-opacity-500 text-lg'>
-                <p className='text-center'>
-                   Welcome to your Goal Tracking page!<br/> Here, you can set and monitor your personal goals with ease. <br/> Use the "Add a New Goal" button to create new goals and specify the date and minutes you aim to achieve. <br/> You can view your progress over time through interactive charts, and easily update or delete goals as needed. <br/> Stay organized and motivated by keeping track of your accomplishments and pushing yourself to reach new milestones.
-                </p>
-            </div>
-        </div>
-                    
-                   
+                    <div className='flex items-center justify-center'>
+                        <div className='text-white w-1/2 bg-opacity-500 text-lg'>
+                            <p className='text-center'>
+                                Welcome to your Goal Tracking page!<br /> Here, you can set and monitor your personal goals with ease. <br /> Use the "Add a New Goal" button to create new goals and specify the date and minutes you aim to achieve. <br /> You can view your progress over time through interactive charts, and easily update or delete goals as needed. <br /> Stay organized and motivated by keeping track of your accomplishments and pushing yourself to reach new milestones.
+                            </p>
+                        </div>
+                    </div>
 
                     {showAddGoal && (
                         <form onSubmit={(e) => {
@@ -259,7 +257,7 @@ const Charts = () => {
                             {goal.toUpperCase()}
                         </div>
                     ))}
-                     <div className='flex'>
+                    <div className='flex'>
                         <h1 onClick={() => setShowAddGoal(true)} className='text-bold bg-red-800 hover:cursor-pointer text-white m-2 p-4 rounded-lg'>Add a New Goal</h1>
                     </div>
                 </div>
@@ -270,9 +268,12 @@ const Charts = () => {
 
                     const sortedData = goalData.sort((a, b) => new Date(a.date) - new Date(b.date));
                     const filledGoalData = fillMissingDates(sortedData, 'mins_done');
-                    
+
                     const goalDates = filledGoalData.map(goal => goal.date);
-                    const goalMins = filledGoalData.map(goal => goal.mins_done);
+                    const goalMins = filledGoalData.map(goal => parseFloat(goal.mins_done) || 0);
+
+                    const avg = (goalMins.reduce((sum, a) => sum + a, 0) / goalMins.length).toFixed(0);
+                    console.log(avg);
 
                     const goalChartData = {
                         labels: goalDates,
@@ -324,7 +325,10 @@ const Charts = () => {
                                     <button className='bg-blue-700 rounded-md p-2 text-white' type='submit'>Add/Update Goal Time</button>
                                 </form>
                             </div>
-                            <Line data={goalChartData} options={goalOptions} />
+                            <div className='flex flex-col w-full'>
+                            <h2 className='bg-gray-700 p-2 w-1/2 self-center text-center rounded-md text-white'>Average: {avg} Minutes</h2>
+                            <Line className='self-center mt-10' data={goalChartData} options={goalOptions} />
+                            </div>
                         </div>
                     );
                 })}
