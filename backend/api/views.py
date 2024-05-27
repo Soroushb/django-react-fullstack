@@ -4,9 +4,9 @@ from rest_framework import generics, viewsets, status
 from rest_framework.views import APIView
 from django.shortcuts import get_object_or_404
 from rest_framework.generics import ListCreateAPIView, RetrieveAPIView, UpdateAPIView, DestroyAPIView
-from .serializers import UserSerializer, NoteSerializer, BookSerializer, BookListSerializer, UserProfileSerializer,ReadingLogSerializer, GoalLogSerializer, GoalListSerializer
+from .serializers import UserSerializer, NoteSerializer, BookSerializer, BookListSerializer, UserProfileSerializer,ReadingLogSerializer, GoalLogSerializer, GoalListSerializer, BookLogsSerializer
 from rest_framework.permissions import IsAuthenticated, AllowAny
-from .models import Note, Book, BookList, UserProfile, ReadingLog, GoalLog, GoalList
+from .models import Note, Book, BookList, UserProfile, ReadingLog, GoalLog, GoalList, BookLogs
 from rest_framework.response import Response
 
 # Create your views here.
@@ -85,6 +85,7 @@ class NoteDelete(generics.DestroyAPIView):
 class CreateUserView(generics.CreateAPIView):
     queryset = User.objects.all()
     serializer_class = UserSerializer
+    
     permission_classes = [AllowAny]
 
     
@@ -138,6 +139,12 @@ class BookCreate(ListCreateAPIView):
 class BookDetail(RetrieveAPIView):
     queryset = Book.objects.all()
     serializer_class = BookSerializer
+
+class BookLogsDetail(generics.RetrieveUpdateDestroyAPIView):
+    queryset = BookLogs.objects.all()
+    serializer_class = BookLogsSerializer
+    permission_classes = [IsAuthenticated]
+
 
 class BookUpdate(UpdateAPIView):
     queryset = Book.objects.all()
@@ -196,6 +203,8 @@ class GoalLogListCreate(generics.ListCreateAPIView):
 class GoalLogDetail(UpdateAPIView):
     queryset = GoalLog.objects.all()
     serializer_class = GoalListSerializer
+
+
 
 class GoalListCreate(APIView):
     permission_classes = [IsAuthenticated]

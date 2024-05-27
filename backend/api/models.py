@@ -84,3 +84,13 @@ class DayPillars(models.Model):
     name = models.CharField(max_length=200)
     hours = models.DecimalField(max_digits=5, decimal_places=2, default=0.00)
 
+
+class BookLogs(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    book = models.ForeignKey(Book, on_delete=models.CASCADE)
+    pages = models.IntegerField() 
+    pagesRead = models.IntegerField()
+    deadLine = models.DateField(default=timezone)
+    def __str__(self):
+        return f"{self.user.username}'s Book Details"
+    

@@ -1,6 +1,6 @@
 from django.contrib.auth.models import User
 from rest_framework import serializers
-from .models import Note, Book, BookList, UserProfile, ReadingLog, GoalLog, GoalList, DayPillars, DayPlan
+from .models import Note, Book, BookList, UserProfile, ReadingLog, GoalLog, GoalList, DayPillars, DayPlan, BookLogs
 from django.shortcuts import get_object_or_404
 from rest_framework.exceptions import ValidationError
 
@@ -71,4 +71,9 @@ class DayPlanSerializer(serializers.ModelSerializer):
 class DayPillarsSerializer(serializers.ModelSerializer):
     class Meta:
         model = DayPillars
+        fields = '__all__'
+
+class BookLogsSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = BookLogs
         fields = '__all__'
