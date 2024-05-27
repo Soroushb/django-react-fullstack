@@ -3,10 +3,12 @@ import { Link } from 'react-router-dom';
 import Profile from './Profile';
 import { ACCESS_TOKEN, REFRESH_TOKEN } from "../constants"
 import { useNavigate } from 'react-router-dom';
+import { IoIosMenu } from "react-icons/io";
 
 const Navbar = () => {
   const [isLoggedin, setIsLoggedin] = useState(false);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const [showMobileMenu, setShowMobileMenu] = useState(false)
   const navigate = useNavigate();
 
   const toggleDropdown = () => {
@@ -42,6 +44,20 @@ const Navbar = () => {
 
         {isLoggedin && (
           <>
+            <div className="lg:hidden scale-150">
+              <IoIosMenu onClick={() => setShowMobileMenu(!showMobileMenu)}/>
+              {showMobileMenu && (
+                <div>
+                <div className="absolute right-0 mt-2 w-18 bg-white rounded-lg shadow-lg py-2">
+                <Link to="/profile" className="block px-4 text-xs py-2 text-gray-800 hover:bg-purple-200">Profile</Link>
+                <Link to="/goals" className="block px-4 text-xs py-2 text-gray-800 hover:bg-purple-200">Goals</Link>
+                <Link to="/mybooks" className="block px-4 text-xs py-2 text-gray-800 hover:bg-purple-200">Books</Link>
+                <button onClick={handleLogout} className="block text-xs px-4 py-2 text-gray-800 hover:bg-purple-200">Logout</button>
+              </div>
+                </div>
+              )}
+              
+            </div>
             <div className='lg:flex w-full items-center justify-between px-40 hidden'>
 
             <div className='flex flex-col items-center group hover:cursor-pointer' onClick={() => navigate("/books")}>
@@ -64,7 +80,7 @@ const Navbar = () => {
               <div className='hidden group-hover:block bg-gray-700 w-2 h-2 rounded-full'></div>
             </div>
 
-            </div>
+           
           
 
 
@@ -80,6 +96,7 @@ const Navbar = () => {
               <button onClick={handleLogout} className="block px-4 py-2 text-gray-800 hover:bg-purple-200">Logout</button>
             </div>
           )}
+        </div>
         </div>
           </>
         )}

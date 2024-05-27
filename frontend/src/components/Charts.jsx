@@ -209,58 +209,95 @@ const Charts = () => {
     };
 
     return (
-        <div className="container mx-auto pl-10 pr-10 pb-20 pt-20">
-            <div>
-                <div>
-                    <div className='flex items-center justify-center'>
-                        <div className='text-white w-1/2 bg-opacity-500 text-lg'>
-                            <p className='text-center'>
-                                Welcome to your Goal Tracking page!<br /> Here, you can set and monitor your personal goals with ease. <br /> Use the "Add a New Goal" button to create new goals and specify the date and minutes you aim to achieve. <br /> You can view your progress over time through interactive charts, and easily update or delete goals as needed. <br /> Stay organized and motivated by keeping track of your accomplishments and pushing yourself to reach new milestones.
-                            </p>
-                        </div>
-                    </div>
+        
+        <>
+        <div className='lg:hidden xl:hidden container mx-auto'>
+        <div>
+            
+                {Object.entries(goalTimes).map(([goalName, goalData]) => {
+                    if (showGoal !== goalName) return null;
 
-                    {showAddGoal && (
-                        <form onSubmit={(e) => {
-                            e.preventDefault();
-                            setGoalName(showGoal);
-                            addUserGoal();
-                        }}>
-                            <div className='flex justify-end'>
-                                <div onClick={() => setShowAddGoal(false)} className='text-white bg-red-500 p-1 rounded-full scale-150 hover:bg-red-700 hover:cursor-pointer'><IoIosClose /></div>
+                    const sortedData = goalData.sort((a, b) => new Date(a.date) - new Date(b.date));
+                    const filledGoalData = fillMissingDates(sortedData, 'mins_done');
+
+                    const goalDates = filledGoalData.map(goal => goal.date);
+                    const goalMins = filledGoalData.map(goal => parseFloat(goal.mins_done) || 0);
+
+                    const avg = (goalMins.reduce((sum, a) => sum + a, 0) / goalMins.length).toFixed(0);
+                    console.log(avg);
+
+                    const goalChartData = {
+                        labels: goalDates,
+                        datasets: [
+                            {
+                                label: goalName,
+                                data: goalMins,
+                                fill: false,
+                                borderColor: 'rgba(75, 192, 192, 1)',
+                                tension: 0.1
+                            }
+                        ]
+                    };
+
+                    const goalOptions = {
+                        scales: {
+                            x: {
+                                type: 'category',
+                                labels: goalDates
+                            },
+                            y: {
+                                beginAtZero: true
+                            }
+                        }
+                    };
+
+                    return (
+                        <div key={goalName} className='flex lg:flex-row flex-col justify-between  p-5 rounded-lg lg:h-400' >
+                            
+                            <div className='flex flex-col w-full'>
+                            {Object.keys(goalTimes).map((goal) => (<>
+                            <div 
+                                key={goal}
+                                onClick={() => setShowGoal(goal)}
+                                className='text-white flex m-1'>
+                            {goal}
                             </div>
-                            <div className='flex flex-col items-center'>
-                                <div>
-                                    <label>Name:</label>
-                                    <input onChange={(e) => setGoalName(e.target.value)} value={goalName} name='name' type='text' />
+                            </>))}
+                            <Line className='self-center bg-white mt-10' data={goalChartData} options={goalOptions} />
+                            <h2 className='bg-blue-700 p-2 w-1/2 self-center m-2 text-center rounded-md text-white'>Average: {avg} Minutes</h2>
+
+                            </div>
+                            <div className='m-4 scale-75'>
+                                <form onSubmit={(e) => {
+                                    e.preventDefault();
+                                    setGoalName(showGoal);
+                                    addUserGoal();
+                                }}>
                                     <label>Minutes Done:</label>
                                     <input onChange={(e) => setMins_done(parseInt(e.target.value, 10))} value={mins_done} name='mins_done' type='number' />
                                     <label>Date:</label>
-                                    <input onChange={(e) => setDate(e.target.value)} value={date} name='date' type='date' />
-                                    <button type='submit' className='text-bold bg-red-800 text-white p-4 rounded-md'>Add a New Goal</button>
-                                </div>
+                                    <div className='flex lg:flex-row flex-col'>
+                                        <input onChange={(e) => setDate(e.target.value)} value={date} name='date' type='date' />
+                                        <div className='flex justify-center align-middle items-center'>
+                                            <button onClick={(e) => {
+                                                e.preventDefault();
+                                                handleTodayClick();
+                                            }} className='border-red-900 m-2 border-2  flex items-center justify-center rounded-md h-1/2'>
+                                                <p className='p-2'>Today</p>
+                                            </button>
+                                        </div>
+                                    </div>
+                                    <button className='bg-blue-700 rounded-md p-2 text-white' type='submit'>Add/Update Goal Time</button>
+                                </form>
                             </div>
-                        </form>
-                    )}
-
-                    <div className='flex justify-center mt-14 mb-4'>
-                        <h1 className='text-bold text-white text-3xl'>Your Goal Logs:</h1>
-                    </div>
-                </div>
-                <div className='flex m-8 justify-center p-4'>
-                    {Object.keys(goalTimes).map((goal) => (
-                        <div
-                            key={goal}
-                            onClick={() => setShowGoal(goal)}
-                            className={`${showGoal === goal ? "bg-white text-purple-800" : "bg-purple-600 text-white"} p-4 rounded-lg hover:scale-110 hover:cursor-pointer m-2`}
-                        >
-                            {goal.toUpperCase()}
                         </div>
-                    ))}
-                    <div className='flex'>
-                        <h1 onClick={() => setShowAddGoal(true)} className='text-bold bg-red-800 hover:cursor-pointer text-white m-2 p-4 rounded-lg'>Add a New Goal</h1>
-                    </div>
-                </div>
+                    );
+                })}
+            </div>
+        </div>
+        <div className="container hidden lg:block xl:block  mx-auto pl-10 pr-10 pb-20 pt-20">
+            <div>
+                
             </div>
             <div>
                 {Object.entries(goalTimes).map(([goalName, goalData]) => {
@@ -301,7 +338,39 @@ const Charts = () => {
                     };
 
                     return (
-                        <div key={goalName} className='flex justify-between bg-white p-5 rounded-lg' style={{ height: '400px' }}>
+                        <div key={goalName} className='flex lg:flex-row flex-col justify-between bg-white p-5 rounded-lg lg:h-400' >
+                            <div className='flex flex-col w-1/2'>
+
+                            <div>
+                
+
+                {showAddGoal && (
+                
+                    <form onSubmit={(e) => {
+                        e.preventDefault();
+                        setGoalName(showGoal);
+                        addUserGoal();
+                    }}>
+                        <div className='flex justify-stretch'>
+                        <h1>Add a New Goal</h1>
+                            <div onClick={() => setShowAddGoal(false)} className='text-white bg-red-500 p-1 rounded-full scale-150 hover:bg-red-700 hover:cursor-pointer'><IoIosClose /></div>
+                        </div>
+                        <div className='flex flex-col items-center'>
+                            <div>
+
+                                <label>Name:</label>
+                                <input onChange={(e) => setGoalName(e.target.value)} value={goalName} name='name' type='text' />
+                                <label>Minutes Done:</label>
+                                <input onChange={(e) => setMins_done(parseInt(e.target.value, 10))} value={mins_done} name='mins_done' type='number' />
+                                <label>Date:</label>
+                                <input onChange={(e) => setDate(e.target.value)} value={date} name='date' type='date' />
+                                <button type='submit' className='text-bold bg-red-800 text-white p-4 rounded-md'>Add a New Goal</button>
+                            </div>
+                        </div>
+                    </form>
+                )}
+              </div>
+            
                             <div className='m-4'>
                                 <form onSubmit={(e) => {
                                     e.preventDefault();
@@ -311,7 +380,7 @@ const Charts = () => {
                                     <label>Minutes Done:</label>
                                     <input onChange={(e) => setMins_done(parseInt(e.target.value, 10))} value={mins_done} name='mins_done' type='number' />
                                     <label>Date:</label>
-                                    <div className='flex'>
+                                    <div className='flex lg:flex-row flex-col'>
                                         <input onChange={(e) => setDate(e.target.value)} value={date} name='date' type='date' />
                                         <div className='flex justify-center align-middle items-center'>
                                             <button onClick={(e) => {
@@ -322,18 +391,41 @@ const Charts = () => {
                                             </button>
                                         </div>
                                     </div>
-                                    <button className='bg-blue-700 rounded-md p-2 text-white' type='submit'>Add/Update Goal Time</button>
+                                    <button className='bg-blue-700 rounded-md p-2 text-white' type='submit'>Update Goal Time</button>
                                 </form>
                             </div>
-                            <div className='flex flex-col w-full'>
-                            <h2 className='bg-gray-700 p-2 w-1/2 self-center text-center rounded-md text-white'>Average: {avg} Minutes</h2>
-                            <Line className='self-center mt-10' data={goalChartData} options={goalOptions} />
                             </div>
+
+                            <div className='flex flex-col w-full'>
+                            <div className='flex lg:flex-row flex-col m-8 justify-center p-4'>
+                    {Object.keys(goalTimes).map((goal) => (
+                        <div
+                            key={goal}
+                            onClick={() => setShowGoal(goal)}
+                            className={`${showGoal === goal ? "bg-white border-2 border-black text-gray-800" : "bg-gray-800 text-white"} p-2 rounded-lg hover:scale-110 hover:cursor-pointer m-2`}
+                        >
+                            {goal.toLowerCase()}
                         </div>
+                    ))}
+                      
+                      <div className='flex'>
+                        <h1 onClick={() => setShowAddGoal(true)} className='text-bold bg-red-800 hover:cursor-pointer text-white m-2 p-4 rounded-lg'>Add a New Goal</h1>
+                    </div>
+                    </div>
+                  
+                    
+                            <h2 className='bg-blue-700 p-2 w-1/2 self-center text-center rounded-md text-white'>Average: {avg} Minutes</h2>
+
+                            <Line className='self-center mt-10' data={goalChartData} options={goalOptions} />
+                        </div>
+                        </div>
+
+
                     );
                 })}
             </div>
-            <div className='bg-white flex'>
+            {/*
+                 <div className='bg-white flex'>
                 <div className='w-1/4'>
                     <h2>Pie Chart Example</h2>
                     <Pie data={data} options={pieOptions} />
@@ -342,7 +434,11 @@ const Charts = () => {
                    
                 </div>
             </div>
+            */}
+           
         </div>
+        </>
+        
     );
 };
 

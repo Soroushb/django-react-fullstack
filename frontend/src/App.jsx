@@ -7,6 +7,7 @@ import Books from "./pages/Books"
 import Navbar from "./components/Navbar"
 import ProtectedRoute from "./components/ProtectedRoute"
 import MyBooks from "./pages/MyBooks"
+import Notes from "./pages/Notes"
 import './styles.css'
 import './index.css'; // Make sure this file exists if you're importing it
 import Account from "./components/Account"
@@ -42,7 +43,7 @@ function App() {
           <Route path="/books" element={<ProtectedRoute><Books/></ProtectedRoute>} />
           <Route path="/profile" element={<ProtectedRoute><Account/></ProtectedRoute>} />
           <Route path="/register" element={<RegisterAndLogout/>}/>
-          <Route path="/notes" element={<ProtectedRoute><Writings/></ProtectedRoute>}/>
+          <Route path="/notes" element={<ProtectedRoute><Notes/></ProtectedRoute>}/>
           <Route path="/goals" element={<ProtectedRoute><Goals/></ProtectedRoute>}/>
           <Route path="/myBooks" element={<ProtectedRoute><MyBooks/></ProtectedRoute>}/>
           <Route path="*" element={<NotFound/>}></Route>

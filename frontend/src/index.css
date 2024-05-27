@@ -4,7 +4,7 @@
 @tailwind utilities;
 
 body{
-    background-image: linear-gradient(to bottom right, #4B0082, #2DD881);
+    background-image: linear-gradient(to bottom right, #24043b, #0f5abd);
     height: 100%;
 }
 
