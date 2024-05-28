@@ -87,3 +87,4 @@ class Goals(models.Model):
     name = models.CharField(max_length=200)
     deadline = models.DateField(default=default_deadline)
     description = models.CharField(max_length=400, default="")
+    created_at = models.DateTimeField(auto_now_add = True)

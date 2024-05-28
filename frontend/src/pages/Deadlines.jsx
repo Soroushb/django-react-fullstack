@@ -1,12 +1,11 @@
 import { useEffect, useState } from 'react';
 import api from '../api';
-import Goal from '../components/Goal';
-import { IoIosClose } from 'react-icons/io';
+import Goal from '../components/Goal'; 
 
 const Deadlines = () => {
   const [goals, setGoals] = useState([]);
-  const today = new Date();
-  const formattedDate = today.toISOString().split('T')[0]; // 'YYYY-MM-DD'
+  const [name, setName] = useState('');
+  const [deadline, setDeadline] = useState('');
 
   useEffect(() => {
     getGoals();
@@ -14,8 +13,7 @@ const Deadlines = () => {
 
   const getGoals = () => {
     api.get('api/goals/')
-      .then((res) => res.data)
-      .then((data) => setGoals(data))
+      .then((res) => setGoals(res.data))
       .catch((err) => console.log(err));
   };
 
@@ -24,7 +22,7 @@ const Deadlines = () => {
       .then((res) => {
         if (res.status === 204) {
           alert('Goal was deleted.');
-          getGoals(); // Fetch the updated list of goals after deletion
+          getGoals(); 
         } else {
           alert('Failed to delete the goal.');
         }
@@ -32,34 +30,74 @@ const Deadlines = () => {
       .catch((error) => alert(error));
   };
 
+  const createGoal = (e) => {
+    e.preventDefault();
+    api.post('api/goals/', { name, deadline })
+      .then((res) => {
+        if (res.status === 201) {
+          alert('New Goal was added.');
+          getGoals(); 
+          setName(''); 
+          setDeadline('');
+        } else {
+          alert('Failed to create a goal.');
+        }
+      })
+      .catch((error) => alert(error));
+  };
+
+  const updateGoal = (e) => {
+
+  }
+
   return (
     <div className='flex flex-col container items-center mx-auto lg:h-400 justify-center'>
-      <h1 className='text-white mt-12 text-4xl'>Your Goals</h1>
-      {goals.map((goal) => (
-        <div key={goal.id} className='flex justify-between w-full'>
-          <div className='flex justify-between rounded-e-lg m-2 bg-white w-4/5'>
-            <div className='flex items-center justify-center m-4 h-20 rounded-md w-4/5'>
-              {goal.name}
-            </div>
-            <div
-              onClick={() => {
-                deleteGoal(goal.id);
-                console.log(goal.id);
-              }}
-              className='text-red-900 scale-150 mt-5 hover:cursor-pointer'
-            >
-              <IoIosClose />
-            </div>
-          </div>
-          <div>
-            <div className='flex items-center justify-center m-4 h-20 bg-white rounded-md w-4/5'>
-              <div className='flex flex-col justify-center'>
-                <Goal goal={goal} />
-              </div>
-            </div>
+      <h1 className='text-white m-12  text-4xl'>Your Goals</h1>
+      <div className='flex w-full'>
+      <div>
+      <form onSubmit={createGoal} className='mb-4'>
+        <div className='mb-4'>
+          <h1 className='text-2xl text-center text-blue-900 p-2 rounded-lg'>Add a Goal</h1>
+          <label htmlFor='name' className='block text-black mb-2'>Goal Name:</label>
+          <input
+            type='text'
+            id='name'
+            name='name'
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+            className='p-2 border border-gray-300 rounded-md w-full'
+            required
+          />
+        </div>
+        <div className='mb-4'>
+          <label htmlFor='deadline' className='block text-black mb-2'>Deadline:</label>
+          <input
+            type='date'
+            id='deadline'
+            name='deadline'
+            value={deadline}
+            onChange={(e) => setDeadline(e.target.value)}
+            className='p-2 border border-gray-300 rounded-md w-full'
+            required
+          />
+        </div>
+        <button type='submit' className='px-4 py-2 bg-blue-500 text-white rounded-md'>Add Goal</button>
+      </form>
+      </div>
+      
+        <div className='grid grid-cols-2 w-full'>
+        {goals.map((goal) => (
+        <div key={goal.id} className='flex justify-center w-full'>
+          <div className='flex flex-col rounded-lg m-2 bg-white w-4/5'>
+            <Goal goal={goal} onDelete={deleteGoal} />
           </div>
         </div>
       ))}
+
+        </div>
+      
+      </div>
+      
     </div>
   );
 };
