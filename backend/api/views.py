@@ -1,4 +1,6 @@
 from django.shortcuts import render
+from datetime import datetime
+from django.utils.dateparse import parse_datetime
 from django.contrib.auth.models import User
 from rest_framework import generics, viewsets, status
 from rest_framework.views import APIView
@@ -266,7 +268,17 @@ class GoalListCreate(generics.ListCreateAPIView):
         return self.queryset.filter(user=self.request.user)
 
     def perform_create(self, serializer):
-        serializer.save(user=self.request.user)
+        deadline_str = self.request.data.get('deadline')
+        if not deadline_str: 
+            raise ValueError("Deadline is Required")
+        
+        deadline = parse_datetime(deadline_str)
+        if not deadline:
+            raise ValueError("Invalid deadline format")
+        if deadline > datetime.now():
+            serializer.save(user = self.request.user)
+        else: 
+            raise ValueError("Deadline must be in the future.")
 
 class GoalDetail(generics.RetrieveUpdateDestroyAPIView):
     queryset = Goals.objects.all()
