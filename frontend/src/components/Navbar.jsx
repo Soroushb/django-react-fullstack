@@ -50,7 +50,8 @@ const Navbar = () => {
                 <div>
                 <div className="absolute right-0 mt-2 w-18 bg-white rounded-lg shadow-lg py-2">
                 <Link to="/profile" className="block px-4 text-xs py-2 text-gray-800 hover:bg-purple-200">Profile</Link>
-                <Link to="/goals" className="block px-4 text-xs py-2 text-gray-800 hover:bg-purple-200">Goals</Link>
+                <Link to="/goals" className="block px-4 text-xs py-2 text-gray-800 hover:bg-purple-200">Goal Log</Link>
+                <Link to="/deadlines" className="block px-4 text-xs py-2 text-gray-800 hover:bg-purple-200">Deadlines</Link>
                 <Link to="/mybooks" className="block px-4 text-xs py-2 text-gray-800 hover:bg-purple-200">Books</Link>
                 <button onClick={handleLogout} className="block text-xs px-4 py-2 text-gray-800 hover:bg-purple-200">Logout</button>
               </div>
@@ -76,11 +77,14 @@ const Navbar = () => {
             </div>
 
             <div className='flex flex-col items-center group hover:cursor-pointer' onClick={() => navigate("/goals")}>
-              <div className="text-gray-700 text-xl">Goals</div>
+              <div className="text-gray-700 text-xl">Goal Logs</div>
               <div className='hidden group-hover:block bg-gray-700 w-2 h-2 rounded-full'></div>
             </div>
 
-           
+            <div className='flex flex-col items-center group hover:cursor-pointer' onClick={() => navigate("/deadlines")}>
+              <div className="text-gray-700 text-xl">Deadlines</div>
+              <div className='hidden group-hover:block bg-gray-700 w-2 h-2 rounded-full'></div>
+            </div>
           
 
 

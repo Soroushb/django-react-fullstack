@@ -4,9 +4,9 @@ from rest_framework import generics, viewsets, status
 from rest_framework.views import APIView
 from django.shortcuts import get_object_or_404
 from rest_framework.generics import ListCreateAPIView, RetrieveAPIView, UpdateAPIView, DestroyAPIView
-from .serializers import UserSerializer, NoteSerializer, BookSerializer, BookListSerializer, UserProfileSerializer,ReadingLogSerializer, GoalLogSerializer, GoalListSerializer, BookLogsSerializer
+from .serializers import UserSerializer, NoteSerializer, BookSerializer, BookListSerializer, UserProfileSerializer,ReadingLogSerializer, GoalLogSerializer, GoalListSerializer, GoalsSerializer
 from rest_framework.permissions import IsAuthenticated, AllowAny
-from .models import Note, Book, BookList, UserProfile, ReadingLog, GoalLog, GoalList, BookLogs
+from .models import Note, Book, BookList, UserProfile, ReadingLog, GoalLog, GoalList, Goals
 from rest_framework.response import Response
 
 # Create your views here.
@@ -140,10 +140,6 @@ class BookDetail(RetrieveAPIView):
     queryset = Book.objects.all()
     serializer_class = BookSerializer
 
-class BookLogsDetail(generics.RetrieveUpdateDestroyAPIView):
-    queryset = BookLogs.objects.all()
-    serializer_class = BookLogsSerializer
-    permission_classes = [IsAuthenticated]
 
 
 class BookUpdate(UpdateAPIView):
@@ -261,4 +257,21 @@ class GoalListUpdate(generics.UpdateAPIView):
         
         return Response(serializer.data)
     
-    
+class GoalListCreate(generics.ListCreateAPIView):
+    queryset = Goals.objects.all()
+    serializer_class = GoalsSerializer
+    permission_classes = [IsAuthenticated]
+
+    def get_queryset(self):
+        return self.queryset.filter(user=self.request.user)
+
+    def perform_create(self, serializer):
+        serializer.save(user=self.request.user)
+
+class GoalDetail(generics.RetrieveUpdateDestroyAPIView):
+    queryset = Goals.objects.all()
+    serializer_class = GoalsSerializer
+    permission_classes = [IsAuthenticated]
+
+    def get_queryset(self):
+        return self.queryset.filter(user=self.request.user)

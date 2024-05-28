@@ -1,9 +1,7 @@
 from django.urls import path
 from . import views
 
-
 urlpatterns = [
-
     path("notes/", views.NoteListCreate.as_view(), name="note-list"),
     path("notes/delete/<int:pk>", views.NoteDelete.as_view(), name="delete-note"),
     path("books/", views.BookListCreate.as_view(), name="book-list"),
@@ -21,8 +19,7 @@ urlpatterns = [
     path('goal-lists/retrieve/', views.GoalListRetrieveAPIView.as_view(), name='goal-list-retrieve'),
     path('goal-lists/<int:pk>/', views.GoalListDetail.as_view(), name='goal-list-detail'),
     path('goal-lists/update/<int:pk>/', views.GoalListUpdate.as_view(), name='goal-list-update'),
-    
     path("profile/", views.UserProfileViewSet.as_view(), name="user_profile"),
-
-    
+    path("goals/", views.GoalListCreate.as_view(), name="goal-list-create"),
+    path("goals/<int:pk>/", views.GoalDetail.as_view(), name="goal-detail"),
 ]

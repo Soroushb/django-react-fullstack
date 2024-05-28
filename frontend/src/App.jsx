@@ -14,6 +14,7 @@ import Account from "./components/Account"
 import Writings from "./pages/Writings"
 import Charts from "./components/Charts"
 import Goals from "./pages/Goals"
+import Deadlines from "./pages/Deadlines"
 
 function Logout(){
   localStorage.clear()
@@ -45,6 +46,7 @@ function App() {
           <Route path="/register" element={<RegisterAndLogout/>}/>
           <Route path="/notes" element={<ProtectedRoute><Notes/></ProtectedRoute>}/>
           <Route path="/goals" element={<ProtectedRoute><Goals/></ProtectedRoute>}/>
+          <Route path="/deadlines" element={<ProtectedRoute><Deadlines/></ProtectedRoute>} />
           <Route path="/myBooks" element={<ProtectedRoute><MyBooks/></ProtectedRoute>}/>
           <Route path="*" element={<NotFound/>}></Route>
         </Routes>

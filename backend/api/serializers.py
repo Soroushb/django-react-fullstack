@@ -1,6 +1,6 @@
 from django.contrib.auth.models import User
 from rest_framework import serializers
-from .models import Note, Book, BookList, UserProfile, ReadingLog, GoalLog, GoalList, DayPillars, DayPlan, BookLogs
+from .models import Note, Book, BookList, UserProfile, ReadingLog, GoalLog, GoalList,  DayPlan, Goals
 from django.shortcuts import get_object_or_404
 from rest_framework.exceptions import ValidationError
 
@@ -68,12 +68,10 @@ class DayPlanSerializer(serializers.ModelSerializer):
         model = DayPlan
         fields = '__all__'
 
-class DayPillarsSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = DayPillars
-        fields = '__all__'
 
-class BookLogsSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = BookLogs
+
+class GoalsSerializer(serializers.ModelSerializer):
+    class Meta: 
+        model = Goals
         fields = '__all__'
+        read_only_fields = ['user']  # Make user field read-only

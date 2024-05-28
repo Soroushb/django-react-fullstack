@@ -351,9 +351,9 @@ const Charts = () => {
                         setGoalName(showGoal);
                         addUserGoal();
                     }}>
-                        <div className='flex justify-stretch'>
-                        <h1>Add a New Goal</h1>
-                            <div onClick={() => setShowAddGoal(false)} className='text-white bg-red-500 p-1 rounded-full scale-150 hover:bg-red-700 hover:cursor-pointer'><IoIosClose /></div>
+                        <div className='flex justify-between'>
+                        <div className='text-bold text-xl mb-4'>Add a New Goal</div>
+                        <div onClick={() => setShowAddGoal(false)} className='text-white h-full bg-red-500 p-1 rounded-full scale-150 hover:bg-red-700 hover:cursor-pointer'><IoIosClose /></div>
                         </div>
                         <div className='flex flex-col items-center'>
                             <div>
@@ -402,7 +402,7 @@ const Charts = () => {
                         <div
                             key={goal}
                             onClick={() => setShowGoal(goal)}
-                            className={`${showGoal === goal ? "bg-white border-2 border-black text-gray-800" : "bg-gray-800 text-white"} p-2 rounded-lg hover:scale-110 hover:cursor-pointer m-2`}
+                            className={`${showGoal === goal ? "bg-white border-2 border-black text-gray-800" : "bg-gray-800 text-white"} flex items-center p-2 rounded-lg hover:scale-110 hover:cursor-pointer m-2`}
                         >
                             {goal.toLowerCase()}
                         </div>
