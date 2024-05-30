@@ -15,8 +15,8 @@ const Navbar = () => {
     setIsDropdownOpen(!isDropdownOpen);
   };
 
-  const checkUser = () => {
-    const user = localStorage.getItem(ACCESS_TOKEN);
+  const checkUser = async () => {
+    const user = await localStorage.getItem(ACCESS_TOKEN);
     setIsLoggedin(!!user); 
   };
 
