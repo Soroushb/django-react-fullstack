@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import  { useState, useEffect } from "react";
 import api from "../api";
 import "../styles/Home.css";
 import Note from "../components/Note";
@@ -7,6 +7,7 @@ import flatpickr from "flatpickr";
 import "flatpickr/dist/flatpickr.min.css";
 
 const Home = () => {
+
     const navigate = useNavigate();
 
     const [notes, setNotes] = useState([]);
@@ -14,17 +15,41 @@ const Home = () => {
     const [title, setTitle] = useState("");
     const [date, setDate] = useState("");
     const [newNotes, setNewNotes] = useState([]);
+    const [highlightDates, setHighlightDates] = useState([]);
+
+    const fetchNotes = async () => {
+        try {
+            const res = await api.get("/api/notes/");
+            const data = res.data;
+            setNotes(data);
+            const highlightDates = data.map((note) => new Date(note.created_at).toISOString().split('T')[0]);
+            setHighlightDates(highlightDates);
+        } catch (error) {
+            navigate("login");
+        }
+    };
 
     useEffect(() => {
-        getNotes();
+         fetchNotes();
+    }, [navigate]);
+
+    useEffect(() => {
         const calender = flatpickr("#datepicker", {
             dateFormat: "Y-m-d",
             onChange: function(selectedDates, dateString) {
                 setDate(dateString);
+            },
+            onDayCreate: (dObj, dStr, fp, dayElem) => {
+                const dateStr = dayElem.dateObj.toISOString().split('T')[0];
+
+                if (highlightDates.includes(dateStr)) {
+                    dayElem.classList.add('highlight');
+                }
             }
         });
+
         calender.open();
-    }, []);
+    }, [highlightDates]);
 
     useEffect(() => {
         if (date === "") return;
@@ -40,35 +65,27 @@ const Home = () => {
         setNewNotes(dateNotes);
     }, [date, notes]);
 
-    const getNotes = () => {
-        api.get("/api/notes/")
-            .then((res) => res.data)
-            .then((data) => {
-                setNotes(data);
-                console.log(data);
-            })
-            .catch(() => navigate("login"));
-    };
-
-    const deleteNote = (id) => {
-        api.delete(`/api/notes/delete/${id}`)
-            .then((res) => {
-                if (res.status === 204) alert("Note was deleted.");
-                else alert("Failed to delete the note.");
-                getNotes();
-            })
-            .catch((error) => alert(error));
-    };
-
-    const createNote = (e) => {
+    const createNote = async (e) => {
         e.preventDefault();
-        api.post("/api/notes/", { content, title })
-            .then((res) => {
-                if (res.status === 201) alert("Note Created.");
-                else alert("Failed to make the note.");
-                getNotes();
-            })
-            .catch((error) => alert(error));
+        try {
+            const res = await api.post("/api/notes/", { content, title });
+            if (res.status === 201) alert("Note Created.");
+            else alert("Failed to make the note.");
+            fetchNotes();
+        } catch (error) {
+            alert(error);
+        }
+    };
+
+    const deleteNote = async (id) => {
+        try {
+            const res = await api.delete(`/api/notes/delete/${id}`);
+            if (res.status === 204) alert("Note was deleted.");
+            else alert("Failed to delete the note.");
+            fetchNotes();
+        } catch (error) {
+            alert(error);
+        }
     };
 
     return (
@@ -78,6 +95,14 @@ const Home = () => {
                     <h1 className="text-white font-bold text-xl m-4">View Your Notes</h1>
                     <div className="flex items-center mb-4 w-full">
                         <input type="text" id="datepicker" className="p-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 w-full" placeholder="Select Date" />
+                        <style>
+                            {`
+                                .highlight {
+                                    background-color: #FFD700 !important;
+                                    color: #000 !important;
+                                }
+                            `}
+                        </style>
                     </div>
                     <div className="w-full">
                         {newNotes?.map((note) => (

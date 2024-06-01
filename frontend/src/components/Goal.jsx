@@ -1,12 +1,13 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { formatDistanceToNow } from 'date-fns';
 import { IoIosClose } from 'react-icons/io';
 
 
-const Goal = ({ goal, onDelete, onCreate }) => {
+const Goal = ({ goal, onDelete, onUpdate }) => {
 
   const [name, setName] = useState("")
   const [deadline, setDeadline] = useState("")
+  const [isFinished, setIsFinished] = useState(false)
 
 
   if (!goal || !goal.deadline || !goal.created_at) {
@@ -22,6 +23,13 @@ const Goal = ({ goal, onDelete, onCreate }) => {
   const progressPercentage = (elapsedTime / totalDuration) * 100;
 
   const timeRemaining = formatDistanceToNow(deadlineDate, { addSuffix: true });
+  console.log(progressPercentage)
+
+  useEffect(() => {
+    if (progressPercentage > 100) {
+      setIsFinished(true);
+    }
+  }, [progressPercentage]);
 
   return (
     <div className='flex flex-col'>
@@ -41,6 +49,12 @@ const Goal = ({ goal, onDelete, onCreate }) => {
       <p>{formattedDeadline}</p>
       <p>Deadline {timeRemaining}</p>
       <div className='bg-blue-900 text-white p-1.5 rounded-lg mt-1 hover:cursor-pointer'>Update Goal</div> 
+      <div>
+        <label>Deadline:</label>
+        <input onChange={(e) => {}} type='date' name='deadline' value={deadline} />
+
+      </div>
+      {isFinished && (<p className='text-red-900'>Deadline has passed.</p>)}
       <div className='p-4 w-full'>
         <progress className='w-full rounded-lg' value={progressPercentage} max="100" />
       </div>

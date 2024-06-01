@@ -3,16 +3,20 @@ import { Line, Pie } from 'react-chartjs-2';
 import api from '../api';
 import Chart from 'chart.js/auto';
 import { IoIosClose } from "react-icons/io";
+import { IoMdArrowDropdown } from "react-icons/io";
+
 
 const Charts = () => {
     const [readingTimes, setReadingTimes] = useState([]);
     const [mins_read, setMins_read] = useState("");
     const [date, setDate] = useState("");
     const [goalName, setGoalName] = useState("");
+    const [addGoalName, setAddGoalName] = useState("")
     const [mins_done, setMins_done] = useState(0);
     const [goalTimes, setGoalTimes] = useState({});
     const [showGoal, setShowGoal] = useState("");
     const [showAddGoal, setShowAddGoal] = useState(false);
+    const [showDropDown, setShowDropDown] = useState(false)
 
     const getTodayDate = () => {
         const today = new Date();
@@ -103,7 +107,7 @@ const Charts = () => {
         return dateObj.toISOString().split('T')[0];
     };
 
-    const addUserGoal = async () => {
+    const addUserGoal = async (goalName) => {
         const formattedDate = formatDateForServer(date);
         const existingGoal = Object.values(goalTimes).flatMap(item => item)
             .find(item => item.date === formattedDate && item.name === goalName);
@@ -349,7 +353,7 @@ const Charts = () => {
                     <form onSubmit={(e) => {
                         e.preventDefault();
                         setGoalName(showGoal);
-                        addUserGoal();
+                        addUserGoal(addGoalName);
                     }}>
                         <div className='flex justify-between'>
                         <div className='text-bold text-xl mb-4'>Add a New Goal</div>
@@ -359,7 +363,7 @@ const Charts = () => {
                             <div>
 
                                 <label>Name:</label>
-                                <input onChange={(e) => setGoalName(e.target.value)} value={goalName} name='name' type='text' />
+                                <input onChange={(e) => setAddGoalName(e.target.value)} value={addGoalName} name='name' type='text' />
                                 <label>Minutes Done:</label>
                                 <input onChange={(e) => setMins_done(parseInt(e.target.value, 10))} value={mins_done} name='mins_done' type='number' />
                                 <label>Date:</label>
@@ -397,24 +401,35 @@ const Charts = () => {
                             </div>
 
                             <div className='flex flex-col w-full'>
-                            <div className='flex lg:flex-row flex-col m-8 justify-center p-4'>
-                    {Object.keys(goalTimes).map((goal) => (
-                        <div
-                            key={goal}
-                            onClick={() => setShowGoal(goal)}
-                            className={`${showGoal === goal ? "bg-white border-2 border-black text-gray-800" : "bg-gray-800 text-white"} flex items-center p-2 rounded-lg hover:scale-110 hover:cursor-pointer m-2`}
-                        >
-                            {goal.toLowerCase()}
-                        </div>
-                    ))}
-                      
-                      <div className='flex'>
-                        <h1 onClick={() => setShowAddGoal(true)} className='text-bold bg-red-800 hover:cursor-pointer text-white m-2 p-4 rounded-lg'>Add a New Goal</h1>
+                            <div className='flex lg:flex-row flex-col m-8 justify-between items-center p-4'>
+                            <div>
+                            <h1 className='flex hover:cursor-pointer shadow-lg p-4 hover:scale-110'  onClick={() => setShowDropDown(!showDropDown)}>Select an activity <IoMdArrowDropdown className='mt-1 text-blue-800 ml-1 scale-150'/></h1>
+                            {showDropDown && (
+                                <div className='absolute bg-white shadow-lg'>
+                                {Object.keys(goalTimes).map((goal) => (
+                                    <>
+                                    <div
+                                        key={goal}
+                                        onClick={() => {setShowGoal(goal); setShowDropDown(false)}}
+                                        className={`${showGoal === goal ? "bg-white border-2 border-black text-gray-800" : " text-gray-800"} flex items-center p-2 rounded-lg hover:scale-110 hover:cursor-pointer m-2`}
+                                    >
+                                        {goal.toLowerCase()}
+                                    </div>
+                                    
+                                    </>
+                                ))}
+                                  
+                                  </div>
+                            )}
+                            </div>
+                            
+                    <div className='text-2xl hover:scale-110  bg-blue-800 text-white rounded-md p-3 hover:cursor-pointer'>{goalName.toUpperCase().slice(0,14)}{goalName.length > 15 ? (<>...</>) : (<></>)}</div>
+                    <div className=''>
+                        <h1 onClick={() => setShowAddGoal(true)} className='text-bold bg-red-800 hover:cursor-pointer hover:scale-110 text-white m-2 p-4 rounded-lg'>Add a New Goal</h1>
                     </div>
                     </div>
-                  
-                    
-                            <h2 className='bg-blue-700 p-2 w-1/2 self-center text-center rounded-md text-white'>Average: {avg} Minutes</h2>
+                
+                            <h2 className='bg-blue-700 p-2 w-1/2 self-center hover:scale-110 text-center rounded-md text-white'>Average: {avg} Minutes</h2>
 
                             <Line className='self-center mt-10' data={goalChartData} options={goalOptions} />
                         </div>
