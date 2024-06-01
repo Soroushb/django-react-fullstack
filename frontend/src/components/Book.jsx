@@ -23,7 +23,7 @@ const Book = ({ id, list_type, type, setInProg, setToFinished, setToRead, inLibr
 
   
   const handleAddToLibrary = () => {
-    const confirmMessage = `Do you want to add "${book.title}" to ${type}?`;
+    const confirmMessage = `Do you want to add "${book.title}" to ${type == "to read" ? "in progress" : "Finished"}?`;
     if (window.confirm(confirmMessage)) {
       switch (type) {
         case 'progress':
@@ -61,7 +61,7 @@ const Book = ({ id, list_type, type, setInProg, setToFinished, setToRead, inLibr
               
               {list_type == "to read" && 
               (
-                <button onClick={handleAddToLibrary} className="inline-block bg-gray-200 px-3 py-1 text-sm font-semibold text-green-700 mr-2 mb-2">
+                <button onClick={handleAddToLibrary} className="inline-block bg-gray-200 rounded-md p-2 text-sm font-semibold text-green-700 mr-2 mb-2">
                 Add to In Progress
               </button>
               )
@@ -69,7 +69,7 @@ const Book = ({ id, list_type, type, setInProg, setToFinished, setToRead, inLibr
 
               {list_type == "progress" && 
               (
-                <button onClick={handleAddToLibrary} className="inline-block bg-gray-200 px-3 py-1 text-sm font-semibold text-green-700 mr-2 mb-2">
+                <button onClick={handleAddToLibrary} className="inline-block bg-gray-200 rounded-md  p-2 text-sm font-semibold text-green-700 mr-2 mb-2">
                   Mark as Finished
               </button>
               )
