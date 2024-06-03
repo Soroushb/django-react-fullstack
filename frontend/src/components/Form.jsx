@@ -121,8 +121,10 @@ const Form = ({route, method}) => {
               data-twe-ripple-color="light">
               Login
             </button>
+            <button className="bg-blue-500 mb-10 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded w-full" type="submit">{name}</button>
+
             {method === "login" && (
-            <div className="flex flex-col items-center justify-center mb-10">
+            <div className="flex flex-col items-center justify-center">
               <p>Don't have an account? </p>
             <p className="flex justify-center items-center cursor-pointer hover:scale-110  mb-0 mt-2 pt-1 text-sm font-semibold bg-gray-500 text-white p-4 rounded-full">
               <a
@@ -132,7 +134,7 @@ const Form = ({route, method}) => {
             </p>
             </div>)}
             {method === "register" && (
-            <div className="flex flex-col items-center justify-center mb-10">
+            <div className="flex flex-col items-center justify-center ">
             <p>Already have an account? </p>
             <p className="flex justify-center items-center cursor-pointer hover:scale-110   mb-0 mt-2 pt-1 text-sm font-semibold bg-gray-500 text-white p-4 rounded-full">
             <a
@@ -141,7 +143,6 @@ const Form = ({route, method}) => {
               >LOGIN</a>
           </p>
           </div>)}
-            <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded w-full" type="submit">{name}</button>
 
           </div>
         </form>
