@@ -8,7 +8,7 @@ const Goal = ({ goal, onDelete, onUpdate }) => {
   const [name, setName] = useState("")
   const [deadline, setDeadline] = useState("")
   const [isFinished, setIsFinished] = useState(false)
-
+  const [showDeadline, setShowDeadline] = useState(false)
 
   if (!goal || !goal.deadline || !goal.created_at) {
     return null;
@@ -48,10 +48,28 @@ const Goal = ({ goal, onDelete, onUpdate }) => {
       <p className='text-center font-bold'>Deadline</p>
       <p>{formattedDeadline}</p>
       <p>Deadline {timeRemaining}</p>
-      <div className='bg-blue-900 text-white p-1.5 rounded-lg mt-1 hover:cursor-pointer'>Update Goal</div> 
+      {!showDeadline && <div onClick={() => setShowDeadline(true)} className='bg-blue-900 text-white p-1.5 rounded-lg mt-1 hover:cursor-pointer'>Update Goal</div> }
       <div>
-        <label>Deadline:</label>
-        <input onChange={(e) => {}} type='date' name='deadline' value={deadline} />
+        {showDeadline && (
+          <>
+            <div className='flex flex-col'>
+            <div>
+            <label>Name:</label>
+            <input onChange={(e) => {setName(e.target.value)}} className='m-2 rounded-md' type='text' name='name' value={name} />
+            </div>
+            <div>
+            <label>Deadline:</label>
+            <input onChange={(e) => {setDeadline(e.target.value)}} className='m-2 bg-blue-200 rounded-md' type='date' name='deadline' value={deadline} />
+            </div>
+            <div className='flex justify-between p-2'>
+            <div onClick={() => {onUpdate({id: goal?.id, name, deadline}); setShowDeadline(false)}} className='bg-blue-900 w-25 text-white p-1.5 rounded-lg mt-1 hover:cursor-pointer'>Update Goal</div> 
+            <div onClick={() => setShowDeadline(false)} className='rounded-md bg-gray-200 shadow-sm p-2 hover:cursor-pointer'>Cancel</div>
+            </div>
+            </div>
+           
+          </>
+        )}
+        
 
       </div>
       {isFinished && (<p className='text-red-900'>Deadline has passed.</p>)}

@@ -6,6 +6,7 @@ const Deadlines = () => {
   const [goals, setGoals] = useState([]);
   const [name, setName] = useState('');
   const [deadline, setDeadline] = useState('');
+  const [showAddGoal, setShowAddGoal] = useState(false)
 
   useEffect(() => {
     getGoals();
@@ -46,12 +47,23 @@ const Deadlines = () => {
       .catch((error) => alert(error));
   };
 
-  const updateGoal = (e) => {
-
+  const updateGoal = (updatedGoal) => {
+    console.log(updatedGoal.id)
+    api.put(`api/goals/${updatedGoal?.id}/`, {name: updatedGoal?.name, deadline: updatedGoal?.deadline})
+    .then((res) => {
+      if(res.status === 200){
+        alert(`goal was updated.`)
+        getGoals()
+      }
+    })
+    .catch((err) => console.log(err));
+    
+    
   }
 
   return (
-    <div className='flex flex-col container items-center mx-auto lg:h-400 justify-center'>
+    <div>
+    <div className='hidden lg:flex lg:flex-col container items-center mx-auto lg:h-400 justify-center'>
       <h1 className='text-white m-12  text-4xl'>Your Goals</h1>
       <div className='flex w-full'>
       <div>
@@ -89,7 +101,7 @@ const Deadlines = () => {
         {goals.map((goal) => (
         <div key={goal.id} className='flex justify-center w-full'>
           <div className='flex flex-col rounded-lg m-2 bg-white w-4/5'>
-            <Goal goal={goal} onDelete={deleteGoal} />
+            <Goal goal={goal} onDelete={deleteGoal} onUpdate={updateGoal} />
           </div>
         </div>
       ))}
@@ -98,6 +110,54 @@ const Deadlines = () => {
       
       </div>
       
+    </div>
+    <div className='lg:hidden flex flex-col justify-center items-center'>
+    <h1 className='text-white m-12  text-4xl'>Your Goals</h1>
+    <div onClick={() => setShowAddGoal(!showAddGoal)} className='bg-blue-800 hover:cursor-pointer p-3 rounded-md w-fit text-white'>Add a Goal</div>
+    
+    {showAddGoal && (<div>
+      <form onSubmit={createGoal} className='mb-4 mt-14'>
+        <div className='mb-4'>
+          <h1 className='text-2xl text-center text-blue-900 p-2 rounded-lg'>Add a Goal</h1>
+          <label htmlFor='name' className='block text-black mb-2'>Goal Name:</label>
+          <input
+            type='text'
+            id='name'
+            name='name'
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+            className='p-2 border border-gray-300 rounded-md w-full'
+            required
+          />
+        </div>
+        <div className='mb-4'>
+          <label htmlFor='deadline' className='block text-black mb-2'>Deadline:</label>
+          <input
+            type='date'
+            id='deadline'
+            name='deadline'
+            value={deadline}
+            onChange={(e) => setDeadline(e.target.value)}
+            className='p-2 border border-gray-300 rounded-md w-full'
+            required
+          />
+        </div>
+        <button type='submit' className='px-4 py-2 bg-blue-500 text-white rounded-md'>Add Goal</button>
+      </form>
+      </div>)}
+
+      <div className='grid grid-cols-1 mt-10 w-full'>
+        {goals.map((goal) => (
+        <div key={goal.id} className='flex justify-center w-full'>
+          <div className='flex flex-col rounded-lg m-2 bg-white w-4/5'>
+            <Goal goal={goal} onDelete={deleteGoal} onUpdate={updateGoal} />
+          </div>
+        </div>
+      ))}
+
+        </div>
+
+    </div>
     </div>
   );
 };

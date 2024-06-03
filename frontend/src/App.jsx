@@ -9,7 +9,7 @@ import ProtectedRoute from "./components/ProtectedRoute"
 import MyBooks from "./pages/MyBooks"
 import Notes from "./pages/Notes"
 import './styles.css'
-import './index.css'; // Make sure this file exists if you're importing it
+import './index.css'; 
 import Account from "./components/Account"
 import Writings from "./pages/Writings"
 import Charts from "./components/Charts"
