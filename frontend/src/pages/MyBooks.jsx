@@ -69,11 +69,11 @@ const MyBooks = () => {
                     {booksToRead.length > 0 ? (
                         <div className="max-w-screen-lg mx-auto mt-8 mb-8">
                             <div className="flex flex-col items-center m-10 rounded-lg p-6">
-                                <div className='flex hover:cursor-pointer bg-slate-900 rounded-full border-2 border-gray-200'>
+                                <div className='flex hover:cursor-pointer  text-center items-center bg-slate-900 lg:rounded-full border-2 border-gray-200'>
                                 <h1 onClick={() => setType("to read")} className={`${type == "to read" ? "text-blue-500" : "text-white"} lg:text-2xl font-bold mb-4 m-5  hover:scale-110`}>To Read</h1>
-                                <div className='border-gray-200 border-r-2'></div>
+                                <div className='border-gray-200 border-r-2'>.</div>
                                 <h1 onClick={() => setType("in progress")} className={`${type == "in progress" ? "text-blue-500" : "text-white"} lg:text-2xl font-bold mb-4 m-5  hover:scale-110`}>In Progress </h1>
-                                <div className='border-gray-200 border-r-2'></div>
+                                <div className='border-gray-200 border-r-2'>.</div>
                                 <h1 onClick={() => setType("finished")} className={`${type == "finished" ? "text-blue-500" : "text-white"} lg:text-2xl font-bold mb-4 m-5  hover:scale-110`}>Finished</h1>
                                 </div>
                                 {type == "to read" && (

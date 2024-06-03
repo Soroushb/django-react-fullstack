@@ -1,6 +1,8 @@
 import { useEffect, useState } from 'react';
 import api from '../api';
 import Goal from '../components/Goal'; 
+import { IoIosClose } from 'react-icons/io';
+
 
 const Deadlines = () => {
   const [goals, setGoals] = useState([]);
@@ -118,6 +120,9 @@ const Deadlines = () => {
     {showAddGoal && (<div>
       <form onSubmit={createGoal} className='mb-4 mt-14'>
         <div className='mb-4'>
+          <div className='flex justify-end'> 
+          <IoIosClose onClick={() => setShowAddGoal(false)} className='right-0 flex text-red-700'/>
+          </div>
           <h1 className='text-2xl text-center text-blue-900 p-2 rounded-lg'>Add a Goal</h1>
           <label htmlFor='name' className='block text-black mb-2'>Goal Name:</label>
           <input
