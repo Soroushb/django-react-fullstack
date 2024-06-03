@@ -151,6 +151,7 @@ class BookUpdate(UpdateAPIView):
 class BookDelete(DestroyAPIView):
     queryset = Book.objects.all()
     serializer_class = BookSerializer
+    
 
 class UsernameByUserId(generics.RetrieveAPIView):
     permission_classes = [IsAuthenticated]

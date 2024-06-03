@@ -21,6 +21,20 @@ const Book = ({ id, list_type, type, setInProg, setToFinished, setToRead, inLibr
   };
 
 
+  const deleteBook = async () => {
+
+    try {
+
+      const res = await api.delete(`/api/books/${id}/delete/`);
+      if (res.status === 204) alert("Book was deleted.");
+      else alert("Failed to delete the book.");
+      getBook()
+
+      } catch (error) {
+          alert(error);
+      }
+      }
+
   
   const handleAddToLibrary = () => {
     const confirmMessage = `Do you want to add "${book.title}" to ${type == "to read" ? "in progress" : "Finished"}?`;
@@ -45,6 +59,7 @@ const Book = ({ id, list_type, type, setInProg, setToFinished, setToRead, inLibr
   return (
     <>
     <div>
+    <div onClick={deleteBook} className='text-red-500'>X</div>
     {type === list_type && book && ( // Check if 'type' matches 'list_type' and 'book' is not null
         <div className="m-8 group">
           <span className="absolute top-0 left-full w-max bg-white shadow-lg p-2 rounded-md invisible group-hover:visible">{book?.title}</span>
