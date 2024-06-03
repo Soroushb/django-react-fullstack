@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { IoIosClose } from "react-icons/io";
 import api from '../api';
 
 const Book = ({ id, orgId, list_type, type, setInProg, setToFinished, setToRead, inLibrary }) => {
@@ -58,8 +59,7 @@ const Book = ({ id, orgId, list_type, type, setInProg, setToFinished, setToRead,
   // Render the Book component conditionally based on 'type' and 'list_type'
   return (
     <>
-    <div>
-    <div onClick={deleteBook} className='text-red-500'>X</div>
+    <div className='lg:mt-20'>
     {type === list_type && book && ( // Check if 'type' matches 'list_type' and 'book' is not null
         <div className="m-8 group">
           <span className="absolute top-0 left-full w-max bg-white shadow-lg p-2 rounded-md invisible group-hover:visible">{book?.title}</span>
@@ -77,7 +77,7 @@ const Book = ({ id, orgId, list_type, type, setInProg, setToFinished, setToRead,
               
               {list_type == "to read" && 
               (
-                <button onClick={handleAddToLibrary} className="inline-block bg-gray-200 rounded-md p-2 text-sm font-semibold text-green-700 mr-2 mb-2">
+                <button onClick={handleAddToLibrary} className="flex justify-center  bg-gray-200 rounded-md p-2 text-sm font-semibold text-green-700 mr-2 mb-2">
                 Add to In Progress
               </button>
               )
@@ -85,7 +85,7 @@ const Book = ({ id, orgId, list_type, type, setInProg, setToFinished, setToRead,
 
               {list_type == "progress" && 
               (
-                <button onClick={handleAddToLibrary} className="inline-block bg-gray-200 rounded-md  p-2 text-sm font-semibold text-green-700 mr-2 mb-2">
+                <button onClick={handleAddToLibrary} className="flex justify-center  bg-gray-200 rounded-md  p-2 text-sm font-semibold text-green-700 mr-2 mb-2">
                   Mark as Finished
               </button>
               )
@@ -96,6 +96,9 @@ const Book = ({ id, orgId, list_type, type, setInProg, setToFinished, setToRead,
                 Add to library
               </button>
               )}
+
+            <div onClick={deleteBook} className='flex justify-center rounded-md bg-gray-200 text-red-600'>Delete</div>
+
 
               
             </div>

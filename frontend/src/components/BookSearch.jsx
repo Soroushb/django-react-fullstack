@@ -65,6 +65,8 @@ const BookSearch = () => {
                     const bookListRes = await api.post("/api/books/", bookListData);
                     if (bookListRes.status === 201) {
                         alert("Book added to your library");
+                        setShowError(false)
+                        getMyBooks()
                     } else {
                         alert("Failed to add book to BookList");
                     }

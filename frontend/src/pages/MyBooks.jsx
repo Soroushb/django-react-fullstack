@@ -79,7 +79,7 @@ const MyBooks = () => {
                                 {type == "to read" && (
                                     <>
                                     {booksToRead.length > 0 ? (
-                                        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+                                        <div className=" grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
                                             {booksToRead.map((book) => (
                                                 <div
                                                     key={book.id}
@@ -98,7 +98,7 @@ const MyBooks = () => {
                                 {type == "in progress" && (
                                     <>
                                     {inProgress.length > 0 ? (
-                                        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+                                        <div className="grid mt-14 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
                                             {inProgress.map((book) => (
                                                 <div
                                                     key={book.id}
@@ -110,7 +110,7 @@ const MyBooks = () => {
                                             ))}
                                         </div>
                                     ) : (
-                                        <p className="text-gray-600">No books in progress</p>
+                                        <p className="text-gray-600">No books in progress...</p>
                                     )}
                                     </>  
                                 )}
@@ -128,7 +128,7 @@ const MyBooks = () => {
                                             ))}
                                         </div>
                                     ) : (
-                                        <p className="text-gray-600">No books in progress</p>
+                                        <p className="text-white text-2xl mt-16 h-screen">No books in progress</p>
                                     )}
                                     </>  
                                 )}
