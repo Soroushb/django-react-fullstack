@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import api from '../api';
 
-const Book = ({ id, list_type, type, setInProg, setToFinished, setToRead, inLibrary }) => {
+const Book = ({ id, orgId, list_type, type, setInProg, setToFinished, setToRead, inLibrary }) => {
 
   const [book, setBook] = useState(null);
 
@@ -71,6 +71,7 @@ const Book = ({ id, list_type, type, setInProg, setToFinished, setToRead, inLibr
           </div>
               </div>
               <p className="text-gray-300 text-base">Rating: {book.rating}</p>
+              <h1 className='text-white'>{book?.orgId}</h1>
             </div>
             <div className="px-6 pt-4 pb-2">
               

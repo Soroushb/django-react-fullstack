@@ -1,46 +1,83 @@
 import api from '../api';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import LoadingIndicator from './LoadingIndicator';
 import { useNavigate } from 'react-router-dom';
+import { getYear } from 'date-fns';
 
 const BookSearch = () => {
     const [books, setBooks] = useState([]);
     const [searchTerm, setSearchTerm] = useState('');
     const [loading, setLoading] = useState(false);
+    const [myBooks, setMyBooks] = useState([])
+    const [bookIds, setBookIds] = useState([])
+    const [showError, setShowError] = useState(false);
     const navigate = useNavigate()
     const [submitClicked, setSubmitClicked] = useState(false)
     let bookType = ""
-    console.log(books)
+
+
+    useEffect(() => {
+        getMyBooks()
+        const bookIds = myBooks.map((book) => book.orgId)
+    }, [])
+
+    useEffect(() => {
+        const ids = myBooks.map((book) => book.orgId);
+        setBookIds(ids);
+    }, [myBooks])
+
+    console.log(bookIds)
+
+    const getMyBooks = async () => {
+        await api.get('/api/books/')
+            .then((res) => res.data)
+            .then((data) => {
+                setMyBooks(data);
+            })
+            .catch(() => {
+                navigate("/login");
+            });
+    };
 
     const handleBookClick = async (book, bookType) => {
-        try {
-            console.log(bookType)
-            const { title, author, publicationYear, rating, ratings, smallImageURL, url } = book;
-            const res = await api.post("/api/book/", { title, author, published_year: publicationYear, rating, ratings, smallImageURL, url  });
-            
-            if (res.status === 201) {
 
-                // Add the book to the user's BookList
-                const bookId = res.data.id;
-                const bookListData = {
-                    list_type: bookType,
-                    book: bookId, // Use the book ID, not the entire book object
-                    user: 1 // Replace '6' with the current user's ID retrieved from token
-                };
 
-                const bookListRes = await api.post("/api/books/", bookListData);
-                if (bookListRes.status === 201) {
-                    alert("Book added to your library");
+        if (bookIds.includes(book?.id)){
+            setShowError(true)
+        }else{
+
+            try {
+                const { id, title, author, publicationYear, rating, ratings, smallImageURL, url } = book;
+    
+    
+                const res = await api.post("/api/book/", { orgId: id, title, author, published_year: publicationYear, rating, ratings, smallImageURL, url  });
+                
+                if (res.status === 201) {
+    
+                    const bookId = res.data.id;
+                    const bookListData = {
+                        list_type: bookType,
+                        book: bookId, // Use the book ID, not the entire book object
+                        user: 1, // Replace '6' with the current user's ID retrieved from token
+                        orgId: id
+                    };
+    
+                    const bookListRes = await api.post("/api/books/", bookListData);
+                    if (bookListRes.status === 201) {
+                        alert("Book added to your library");
+                    } else {
+                        alert("Failed to add book to BookList");
+                    }
                 } else {
-                    alert("Failed to add book to BookList");
+                    alert("Failed to create the book");
                 }
-            } else {
-                alert("Failed to create the book");
+            } catch (error) {
+                console.error('Error creating or adding book:', error);
+                alert('Failed to create or add the book. Check console for details.');
             }
-        } catch (error) {
-            console.error('Error creating or adding book:', error);
-            alert('Failed to create or add the book. Check console for details.');
         }
+        
+        
     };
 
     const handleSearch = async (event) => {
@@ -101,9 +138,10 @@ const BookSearch = () => {
         </button>
     </div>
 </form>
-
-
-
+        
+        {showError && (
+                    <div className='flex justify-center text-center text-red-600 text-xl'>The book already exists in your library</div>
+        )}
 
             <div className='flex flex-wrap w-full justify-center'>
             {loading && <LoadingIndicator/>}

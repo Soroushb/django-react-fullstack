@@ -8,7 +8,7 @@ const MyBooks = () => {
     const navigate = useNavigate();
 
     const [myBooks, setMyBooks] = useState([]);
-    const [type, setType] = useState("in progress")
+    const [type, setType] = useState("to read")
     
 
     useEffect(() => {
@@ -56,6 +56,7 @@ const MyBooks = () => {
             });
     };
 
+    console.log(myBooks)
     const booksToRead = myBooks.filter(book => book.list_type === "to read");
     const inProgress = myBooks.filter(book => book.list_type === "progress");
     const finished = myBooks.filter(book => book.list_type === "finished");

@@ -38,6 +38,7 @@ class BookList(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     book = models.ForeignKey(Book, on_delete=models.CASCADE)
     list_type = models.CharField(max_length=20)  #'favorite', 'to_read', 'finished'
+    orgId = models.IntegerField(default=1)
 
 
 class ReadingLog(models.Model):
