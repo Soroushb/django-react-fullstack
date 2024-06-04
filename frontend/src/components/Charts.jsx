@@ -282,7 +282,7 @@ const Charts = () => {
                             <div className='flex justify-center text-center text-2xl hover:scale-110  bg-blue-800 text-white rounded-md p-3 hover:cursor-pointer'>{goalName.toUpperCase().slice(0,14)}{goalName.length > 15 ? (<>...</>) : (<></>)}</div>
                             <h2 className='bg-blue-700 p-2 w-1/2 self-center m-2 text-center rounded-md text-white'>Average: <br/> {avg} Minutes</h2>
 
-                            <Line className='self-center bg-white mt-10' data={goalChartData} options={goalOptions} />
+                            <Line className='self-center bg-slate-800 mt-10' data={goalChartData} options={goalOptions} />
 
                             </div>
                             <div className='m-4 scale-75'>

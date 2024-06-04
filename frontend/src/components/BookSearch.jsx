@@ -44,6 +44,8 @@ const BookSearch = () => {
 
         if (bookIds.includes(book?.id)){
             setShowError(true)
+            alert("This book already exists in your library")
+
         }else{
 
             try {
@@ -76,6 +78,7 @@ const BookSearch = () => {
             } catch (error) {
                 console.error('Error creating or adding book:', error);
                 alert('Failed to create or add the book. Check console for details.');
+                
             }
         }
         
@@ -116,7 +119,7 @@ const BookSearch = () => {
             <div className='flex flex-col  justify-center items-center'>
             <h1 className="text-3xl font-bold mb-4 text-white">Search For Books:</h1>
             <h2 className="flex flex-col items-center text-2xl font-bold mb-4 text-gray-200">Add them to your 
-            <h1 onClick={() => navigate("/mybooks")} className="text-2xl font-bold mb-4 text-purple-800 bg-white p-2 rounded-md mt-2 hover:scale-105 hover:cursor-pointer">  Library</h1></h2>
+            <h1 onClick={() => navigate("/mybooks")} className="text-3xl mb-4 font-bold text-white bg-slate-800 p-2 rounded-md mt-2 hover:scale-105 hover:cursor-pointer">  Library</h1></h2>
             </div>
    
             <form className="max-w-md mx-auto bg-transparent relative" onSubmit={handleSearch}>

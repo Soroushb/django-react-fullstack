@@ -32,14 +32,14 @@ const Goal = ({ goal, onDelete, onUpdate }) => {
   }, [progressPercentage]);
 
   return (
-    <div className='flex flex-col'>
+    <div className='flex flex-col text-white bg-slate-800'>
       <div className='flex w-full justify-between'>
         <div className='font-bold text-3xl p-3'>
         {goal?.name}
         </div>
         <div
         onClick={() => onDelete(goal.id)}
-        className='text-red-900 p-3 scale-150 hover:cursor-pointer'
+        className='text-white p-3 scale-150 hover:cursor-pointer'
         >
         <IoIosClose />
       </div>
@@ -55,15 +55,18 @@ const Goal = ({ goal, onDelete, onUpdate }) => {
             <div className='flex flex-col'>
             <div>
             <label>Name:</label>
-            <input onChange={(e) => {setName(e.target.value)}} className='m-2 rounded-md' type='text' name='name' value={name} />
+            <input onChange={(e) => {setName(e.target.value)}} className='m-2 rounded-md text-black p-1' type='text' name='name' value={name} />
             </div>
             <div>
             <label>Deadline:</label>
-            <input onChange={(e) => {setDeadline(e.target.value)}} className='m-2 bg-blue-200 rounded-md' type='date' name='deadline' value={deadline} />
+            <input onChange={(e) => {
+              const newDate = new Date(e.target.value).toISOString().split('T')[0]
+              if(newDate > new Date().toISOString().split('T')[0]) setDeadline(e.target.value)
+              }} className='m-2 bg-blue-500 rounded-md' type='date' name='deadline' value={deadline} />
             </div>
             <div className='flex justify-between p-2'>
             <div onClick={() => {onUpdate({id: goal?.id, name, deadline}); setShowDeadline(false)}} className='bg-blue-900 w-25 text-white p-1.5 rounded-lg mt-1 hover:cursor-pointer'>Update Goal</div> 
-            <div onClick={() => setShowDeadline(false)} className='rounded-md bg-gray-200 shadow-sm p-2 hover:cursor-pointer'>Cancel</div>
+            <div onClick={() => setShowDeadline(false)} className='rounded-md bg-gray-200 text-gray-800 shadow-sm p-2 hover:cursor-pointer'>Cancel</div>
             </div>
             </div>
            
@@ -72,7 +75,7 @@ const Goal = ({ goal, onDelete, onUpdate }) => {
         
 
       </div>
-      {isFinished && (<p className='text-red-900'>Deadline has passed.</p>)}
+      {isFinished && (<p className='text-white'>Deadline has passed.</p>)}
       <div className='p-4 w-full'>
         <progress className='w-full rounded-lg' value={progressPercentage} max="100" />
       </div>

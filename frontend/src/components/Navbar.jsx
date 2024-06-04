@@ -38,9 +38,9 @@ const Navbar = () => {
   console.log(localStorage.getItem(ACCESS_TOKEN))
 
   return (
-    <div className="bg-gray-100">
+    <div className="bg-gray-900 text-white">
       <div className="container mx-auto px-4 py-6 flex justify-between items-center">
-        <div className="text-gray-900 border-2 border-gray-800 p-2 text-2xl font-semibold cursor-pointer" onClick={() => navigate("/")}>UVSU</div>
+        <div className=" text-white border-2 border-gray-400 p-2 text-2xl font-semibold cursor-pointer" onClick={() => navigate("/")}>UVSU</div>
 
         {isLoggedin && (
           <>
@@ -48,7 +48,7 @@ const Navbar = () => {
               <IoIosMenu onClick={() => setShowMobileMenu(!showMobileMenu)}/>
               {showMobileMenu && (
                 <div>
-                <div className="absolute right-0 mt-2 w-18 bg-white rounded-lg shadow-lg py-2">
+                <div className="absolute right-0 top-0 mt-2 w-18 bg-white rounded-lg shadow-lg py-2">
                 <Link to="/profile" className="block px-4 text-xs py-2 text-gray-800 hover:bg-purple-200">Profile</Link>
                 <Link to="/goals" className="block px-4 text-xs py-2 text-gray-800 hover:bg-purple-200">Goal Log</Link>
                 <Link to="/deadlines" className="block px-4 text-xs py-2 text-gray-800 hover:bg-purple-200">Deadlines</Link>
@@ -59,30 +59,30 @@ const Navbar = () => {
               )}
               
             </div>
-            <div className='lg:flex w-full items-center justify-between px-40 hidden'>
+            <div className='lg:flex w-full text-white items-center justify-between px-40 hidden'>
 
             <div className='flex flex-col items-center group hover:cursor-pointer' onClick={() => navigate("/books")}>
-              <div className="text-gray-700 text-xl">Book Search</div>
+              <div className=" text-xl">Book Search</div>
               <div className='hidden group-hover:block bg-gray-700 w-2 h-2 rounded-full'></div>
             </div>
 
             <div className='flex flex-col items-center group hover:cursor-pointer' onClick={() => navigate("/mybooks")}>
-              <div className="text-gray-700 text-xl">My Books</div>
+              <div className=" text-xl">My Books</div>
               <div className='hidden group-hover:block bg-gray-700 w-2 h-2 rounded-full'></div>
             </div>
 
             <div className='flex flex-col items-center group hover:cursor-pointer' onClick={() => navigate("/notes")}>
-              <div className="text-gray-700 text-xl">Notes</div>
+              <div className=" text-xl">Notes</div>
               <div className='hidden group-hover:block bg-gray-700 w-2 h-2 rounded-full'></div>
             </div>
 
             <div className='flex flex-col items-center group hover:cursor-pointer' onClick={() => navigate("/goals")}>
-              <div className="text-gray-700 text-xl">Goal Logs</div>
+              <div className=" text-xl">Goal Logs</div>
               <div className='hidden group-hover:block bg-gray-700 w-2 h-2 rounded-full'></div>
             </div>
 
             <div className='flex flex-col items-center group hover:cursor-pointer' onClick={() => navigate("/deadlines")}>
-              <div className="text-gray-700 text-xl">Deadlines</div>
+              <div className=" text-xl">Deadlines</div>
               <div className='hidden group-hover:block bg-gray-700 w-2 h-2 rounded-full'></div>
             </div>
           

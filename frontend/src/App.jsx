@@ -15,6 +15,7 @@ import Writings from "./pages/Writings"
 import Charts from "./components/Charts"
 import Goals from "./pages/Goals"
 import Deadlines from "./pages/Deadlines"
+import Footer from "./components/Footer"
 
 function Logout(){
   localStorage.clear()
@@ -52,6 +53,7 @@ function App() {
         </Routes>
         </div>
         </div>
+        <Footer/>
       </BrowserRouter>
     
     </>
