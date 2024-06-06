@@ -117,18 +117,18 @@ const BookSearch = () => {
         <div className="min-h-screen">
         <div className='m-12 overflow-x-hidden h-full'>
             <div className='flex flex-col  justify-center items-center'>
-            <h1 className="text-3xl font-bold mb-4 text-white">Search For Books:</h1>
-            <h2 className="flex flex-col items-center text-2xl font-bold mb-4 text-gray-200">Add them to your 
-            <h1 onClick={() => navigate("/mybooks")} className="text-3xl mb-4 font-bold text-white bg-slate-800 p-2 rounded-md mt-2 hover:scale-105 hover:cursor-pointer">  Library</h1></h2>
+            <h1 className="text-3xl font-bold mb-4 font-primary text-white">Search For Books:</h1>
+            <h2 className="flex flex-col items-center text-2xl font-bold mb-4 font-secondary text-gray-200">Add them to your 
+            <h1 onClick={() => navigate("/mybooks")} className="text-3xl font-primary mb-4 font-bold text-white bg-slate-800 p-2 rounded-md mt-2 hover:scale-105 hover:cursor-pointer">  Library</h1></h2>
             </div>
    
             <form className="max-w-md mx-auto bg-transparent relative" onSubmit={handleSearch}>
-    <label htmlFor="default-search" className="sr-only">Search</label>
+    <label htmlFor="default-search" className="sr-only font-secondary">Search</label>
     <div className="relative">
         <input
             type="search"
             id="default-search"
-            className="block w-full md:w-96 p-4 text-sm text-gray-200 rounded-lg bg-transparent focus:ring-blue-500 focus:border-blue-500 placeholder-gray-400 focus:placeholder-opacity-75"
+            className="block font-secondary w-full md:w-96 p-4 text-sm text-gray-200 rounded-lg bg-transparent focus:ring-blue-500 focus:border-blue-500 placeholder-gray-400 focus:placeholder-opacity-75"
             placeholder="Search Books and Authors..."
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
@@ -137,7 +137,7 @@ const BookSearch = () => {
         <button
             type="submit"
             onClick={() => setSubmitClicked(true)}
-            className="text-white absolute top-1/2 transform -translate-y-1/2 right-2 bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2"
+            className="text-white font-secondary absolute top-1/2 transform -translate-y-1/2 right-2 bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2"
         >
             Search
         </button>

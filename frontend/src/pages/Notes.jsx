@@ -89,10 +89,10 @@ const Home = () => {
     };
 
     return (
-        <div className="container mx-auto p-4">
+        <div className="container mx-auto p-4 font-primary">
             <div className="flex flex-col lg:flex-row justify-between">
                 <div className="flex flex-col items-center lg:w-1/2">
-                    <h1 className="text-white font-bold text-xl m-4">View Your Notes</h1>
+                    <h1 className="text-white font-bold text-2xl m-4 font-primary">View Your Notes</h1>
                     <div className="flex items-center mb-4 w-full">
                         <input type="text" id="datepicker" className="p-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 w-full" placeholder="Select Date" />
                         <style>
@@ -111,7 +111,7 @@ const Home = () => {
                     </div>
                 </div>
                 <div className="flex flex-col items-center lg:w-1/2 mt-8 lg:mt-0">
-                    <h2 className="text-white font-bold text-xl mb-4">Create a Note</h2>
+                    <h2 className="text-white font-bold text-2xl font-primary mt-4 mb-4">Create a Note</h2>
                     <form onSubmit={createNote} className="w-full">
                         <div className="mb-4">
                             <label htmlFor="title" className="block mb-1">Title:</label>
@@ -137,7 +137,7 @@ const Home = () => {
                             ></textarea>
                         </div>
                         <div className="text-center">
-                            <input type="submit" value="Submit" className="px-4 py-2 bg-blue-500 text-white rounded-md shadow-sm hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2" />
+                            <input type="submit" value="Submit" className="px-4 py-2 font-bold bg-blue-500 text-white rounded-md shadow-sm hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2" />
                         </div>
                     </form>
                 </div>

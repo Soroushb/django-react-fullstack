@@ -66,13 +66,13 @@ const Deadlines = () => {
   return (
     <div>
     <div className='hidden lg:flex lg:flex-col container items-center mx-auto lg:h-400 justify-center'>
-      <h1 className='text-white m-12  text-4xl'>Your Goals</h1>
+      <h1 className='text-white m-12 font-primary text-4xl'>Your Goals</h1>
       <div className='flex w-full'>
       <div>
       <form onSubmit={createGoal} className='mb-4'>
         <div className='mb-4'>
-          <h1 className='text-2xl text-center text-blue-900 p-2 rounded-lg'>Add a Goal</h1>
-          <label htmlFor='name' className='block text-black mb-2'>Goal Name:</label>
+          <h1 className='text-2xl text-center text-blue-900 p-2 font-secondary rounded-lg'>Add a Goal</h1>
+          <label htmlFor='name' className='block text-black font-secondary mb-2'>Goal Name:</label>
           <input
             type='text'
             id='name'
@@ -84,7 +84,7 @@ const Deadlines = () => {
           />
         </div>
         <div className='mb-4'>
-          <label htmlFor='deadline' className='block text-black mb-2'>Deadline:</label>
+          <label htmlFor='deadline' className='block font-secondary text-black mb-2'>Deadline:</label>
           <input
             type='date'
             id='deadline'
@@ -95,14 +95,14 @@ const Deadlines = () => {
             required
           />
         </div>
-        <button type='submit' className='px-4 py-2 bg-blue-500 text-white rounded-md'>Add Goal</button>
+        <button type='submit' className='px-4 py-2 font-secondary bg-blue-500 text-white rounded-md'>Add Goal</button>
       </form>
       </div>
       
         <div className='grid grid-cols-2 w-full'>
         {goals.map((goal) => (
         <div key={goal.id} className='flex justify-center w-full'>
-          <div className='flex flex-col rounded-lg m-2 bg-white w-4/5'>
+          <div className='flex bg-slate-800 flex-col rounded-lg m-2  w-4/5'>
             <Goal goal={goal} onDelete={deleteGoal} onUpdate={updateGoal} />
           </div>
         </div>

@@ -10,7 +10,8 @@ export default {
   theme: {
     extend: {},
     fontFamily: {
-      'playfair': ['"Playfair Display"', 'serif'],
+      primary: ['Playfair Display', 'serif'],
+      secondary: ['Mulish', 'sans-serif'],
     },
   },
   plugins: [],

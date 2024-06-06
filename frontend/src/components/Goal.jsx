@@ -9,6 +9,7 @@ const Goal = ({ goal, onDelete, onUpdate }) => {
   const [deadline, setDeadline] = useState("")
   const [isFinished, setIsFinished] = useState(false)
   const [showDeadline, setShowDeadline] = useState(false)
+  const [error, setError] = useState(false)
 
   if (!goal || !goal.deadline || !goal.created_at) {
     return null;
@@ -32,41 +33,46 @@ const Goal = ({ goal, onDelete, onUpdate }) => {
   }, [progressPercentage]);
 
   return (
-    <div className='flex flex-col text-white bg-slate-800'>
+    <div className='flex flex-col  text-white bg-slate-800'>
       <div className='flex w-full justify-between'>
-        <div className='font-bold text-3xl p-3'>
+        <div className='font-bold text-3xl font-secondary p-3'>
         {goal?.name}
         </div>
         <div
         onClick={() => onDelete(goal.id)}
-        className='text-white p-3 scale-150 hover:cursor-pointer'
+        className='text-white p-3 scale-150 font-secondary hover:cursor-pointer'
         >
         <IoIosClose />
       </div>
       </div>
       <div className='flex flex-col justify-center items-center w-full'>
-      <p className='text-center font-bold'>Deadline</p>
+      <p className='text-center font-secondary font-bold'>Deadline</p>
       <p>{formattedDeadline}</p>
       <p>Deadline {timeRemaining}</p>
-      {!showDeadline && <div onClick={() => setShowDeadline(true)} className='bg-blue-900 text-white p-1.5 rounded-lg mt-1 hover:cursor-pointer'>Update Goal</div> }
+      {!showDeadline && <div onClick={() => setShowDeadline(true)} className='bg-blue-900 font-secondary text-white p-1.5 rounded-lg mt-1 hover:cursor-pointer'>Update Goal</div> }
       <div>
         {showDeadline && (
           <>
             <div className='flex flex-col'>
             <div>
-            <label>Name:</label>
-            <input onChange={(e) => {setName(e.target.value)}} className='m-2 rounded-md text-black p-1' type='text' name='name' value={name} />
+            {error &&   <div className='text-red-500 flex text-center text-small'>Please check your inputs</div>}
+            <label className='font-secondary'>Name:</label>
+            <input  required onChange={(e) => {setName(e.target.value)}} className='m-2 font-secondary rounded-md text-black p-1' type='text' name='name' value={name} />
             </div>
             <div>
-            <label>Deadline:</label>
+            <label className='font-secondary'>Deadline:</label>
             <input onChange={(e) => {
               const newDate = new Date(e.target.value).toISOString().split('T')[0]
-              if(newDate > new Date().toISOString().split('T')[0]) setDeadline(e.target.value)
-              }} className='m-2 bg-blue-500 rounded-md' type='date' name='deadline' value={deadline} />
+              if(newDate > new Date().toISOString().split('T')[0]) {
+                setDeadline(e.target.value)
+              }else{
+                setError(true)
+              }
+              }} className='m-2 font-secondary bg-blue-500 rounded-md' type='date' name='deadline' value={deadline} />
             </div>
             <div className='flex justify-between p-2'>
-            <div onClick={() => {onUpdate({id: goal?.id, name, deadline}); setShowDeadline(false)}} className='bg-blue-900 w-25 text-white p-1.5 rounded-lg mt-1 hover:cursor-pointer'>Update Goal</div> 
-            <div onClick={() => setShowDeadline(false)} className='rounded-md bg-gray-200 text-gray-800 shadow-sm p-2 hover:cursor-pointer'>Cancel</div>
+            <div onClick={() => {onUpdate({id: goal?.id, name, deadline}); !name || !deadline ? setError(true) : setShowDeadline(false)}} className='bg-blue-900 w-25 text-white p-1.5 font-secondary rounded-lg mt-1 hover:cursor-pointer'>Update Goal</div> 
+            <div onClick={() => setShowDeadline(false)} className='rounded-md bg-gray-200 text-gray-800 shadow-sm p-2 font-secondary hover:cursor-pointer'>Cancel</div>
             </div>
             </div>
            

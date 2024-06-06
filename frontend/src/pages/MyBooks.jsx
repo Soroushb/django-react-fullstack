@@ -70,11 +70,11 @@ const MyBooks = () => {
                         <div className="max-w-screen-lg mx-auto lg:mt-8 mb-8">
                             <div className="flex flex-col items-center m-10 rounded-lg lg:p-6">
                                 <div className='flex hover:cursor-pointer  text-center items-center bg-slate-900 lg:rounded-full border-2 border-gray-200'>
-                                <h1 onClick={() => setType("to read")} className={`${type == "to read" ? "text-blue-500" : "text-white"} lg:text-2xl font-bold mb-4 m-5  hover:scale-110`}>To Read</h1>
+                                <h1 onClick={() => setType("to read")} className={`${type == "to read" ? "text-blue-500" : "text-white"} font-primary lg:text-2xl font-bold mb-4 m-5  hover:scale-110`}>To Read</h1>
                                 <div className='border-gray-200 border-r-2'>.</div>
-                                <h1 onClick={() => setType("in progress")} className={`${type == "in progress" ? "text-blue-500" : "text-white"} lg:text-2xl font-bold mb-4 m-5  hover:scale-110`}>In Progress </h1>
+                                <h1 onClick={() => setType("in progress")} className={`${type == "in progress" ? "text-blue-500" : "text-white"} font-primary lg:text-2xl font-bold mb-4 m-5  hover:scale-110`}>In Progress </h1>
                                 <div className='border-gray-200 border-r-2'>.</div>
-                                <h1 onClick={() => setType("finished")} className={`${type == "finished" ? "text-blue-500" : "text-white"} lg:text-2xl font-bold mb-4 m-5  hover:scale-110`}>Finished</h1>
+                                <h1 onClick={() => setType("finished")} className={`${type == "finished" ? "text-blue-500" : "text-white"} font-primary lg:text-2xl font-bold mb-4 m-5  hover:scale-110`}>Finished</h1>
                                 </div>
                                 {type == "to read" && (
                                     <>
@@ -91,7 +91,7 @@ const MyBooks = () => {
                                             ))}
                                         </div>
                                     ) : (
-                                        <p className="text-gray-600">No books in progress</p>
+                                        <p className="text-gray-600 font-secondary">No books in progress</p>
                                     )}
                                     </>  
                                 )}
@@ -110,7 +110,7 @@ const MyBooks = () => {
                                             ))}
                                         </div>
                                     ) : (
-                                        <p className="text-gray-600">No books in progress...</p>
+                                        <p className="text-gray-600 font-secondary">No books in progress...</p>
                                     )}
                                     </>  
                                 )}
@@ -128,7 +128,7 @@ const MyBooks = () => {
                                             ))}
                                         </div>
                                     ) : (
-                                        <p className="text-white text-2xl mt-16 h-screen">No books in progress</p>
+                                        <p className="text-white text-2xl mt-16 h-screen font-secondary">No books in progress</p>
                                     )}
                                     </>  
                                 )}

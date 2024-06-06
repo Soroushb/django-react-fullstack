@@ -40,7 +40,7 @@ const Navbar = () => {
   return (
     <div className="bg-gray-900 text-white">
       <div className="container mx-auto px-4 py-6 flex justify-between items-center">
-        <div className=" text-white border-2 border-gray-400 p-2 text-2xl font-semibold cursor-pointer" onClick={() => navigate("/")}>UVSU</div>
+        <div className="font-primary text-white border-2 border-gray-400 p-2 text-2xl font-semibold cursor-pointer" onClick={() => navigate("/")}>UVSU</div>
 
         {isLoggedin && (
           <>
@@ -62,34 +62,36 @@ const Navbar = () => {
             <div className='lg:flex w-full text-white items-center justify-between px-40 hidden'>
 
             <div className='flex flex-col items-center group hover:cursor-pointer' onClick={() => navigate("/books")}>
-              <div className=" text-xl">Book Search</div>
+              <div className="font-secondary text-xl">Book Search</div>
               <div className='hidden group-hover:block bg-gray-700 w-2 h-2 rounded-full'></div>
             </div>
 
             <div className='flex flex-col items-center group hover:cursor-pointer' onClick={() => navigate("/mybooks")}>
-              <div className=" text-xl">My Books</div>
+              <div className="font-secondary text-xl">My Books</div>
               <div className='hidden group-hover:block bg-gray-700 w-2 h-2 rounded-full'></div>
             </div>
 
             <div className='flex flex-col items-center group hover:cursor-pointer' onClick={() => navigate("/notes")}>
-              <div className=" text-xl">Notes</div>
+              <div className="font-secondary text-xl">Notes</div>
               <div className='hidden group-hover:block bg-gray-700 w-2 h-2 rounded-full'></div>
             </div>
 
+
+
             <div className='flex flex-col items-center group hover:cursor-pointer' onClick={() => navigate("/goals")}>
-              <div className=" text-xl">Goal Logs</div>
+              <div className="font-secondary text-xl">Goal Logs</div>
               <div className='hidden group-hover:block bg-gray-700 w-2 h-2 rounded-full'></div>
             </div>
 
             <div className='flex flex-col items-center group hover:cursor-pointer' onClick={() => navigate("/deadlines")}>
-              <div className=" text-xl">Deadlines</div>
+              <div className="font-secondary text-xl">Deadlines</div>
               <div className='hidden group-hover:block bg-gray-700 w-2 h-2 rounded-full'></div>
             </div>
           
-
+            </div>
 
             <div className="relative">
-          <button onClick={toggleDropdown} className="text-white focus:outline-none">
+          <button onClick={toggleDropdown} className="text-white scale-75 lg:scale-100 focus:outline-none">
             <Profile />
           </button>
 
@@ -101,7 +103,7 @@ const Navbar = () => {
             </div>
           )}
         </div>
-        </div>
+        
           </>
         )}
 

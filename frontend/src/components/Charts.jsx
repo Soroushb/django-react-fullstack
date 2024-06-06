@@ -313,10 +313,10 @@ const Charts = () => {
                 })}
             </div>
         </div>
-        <div className="container hidden lg:block xl:block  mx-auto pl-10 pr-10 pb-20 pt-20">
-            <div>
-                
-            </div>
+        {console.log(Object.keys(goalTimes))}
+        {Object.keys(goalTimes).length > 0  ? (
+            <div className="container hidden lg:block xl:block  mx-auto pl-10 pr-10 pb-20 pt-20">
+            
             <div>
                 {Object.entries(goalTimes).map(([goalName, goalData]) => {
                     if (showGoal !== goalName) return null;
@@ -466,6 +466,41 @@ const Charts = () => {
             */}
            
         </div>
+        ) : (
+            <>
+    <div className='flex m-12 justify-between'>
+        <div className='m-4 justify-start self-start'>
+            <h1 className='text-white flex justify-center mb-6 text-2xl font-primary'>Add Activity</h1>
+            <form onSubmit={(e) => {
+                e.preventDefault();
+                setGoalName(showGoal);
+                addUserGoal();
+            }}>
+                <label>Minutes Done:</label>
+                <input onChange={(e) => setMins_done(parseInt(e.target.value, 10))} value={mins_done} name='mins_done' type='number' />
+                <label>Date:</label>
+                <div className='flex lg:flex-row flex-col'>
+                    <input onChange={(e) => setDate(e.target.value)} value={date} name='date' type='date' />
+                    <div className='flex justify-center align-middle items-center'>
+                        <button onClick={(e) => {
+                            e.preventDefault();
+                            handleTodayClick();
+                        }} className='border-red-900 m-2 border-2  flex items-center justify-center rounded-md h-1/2'>
+                            <p className='p-2'>Today</p>
+                        </button>
+                    </div>
+                </div>
+                <button className='bg-blue-700 rounded-md p-2 text-white' type='submit'>Update Goal Time</button>
+            </form>
+        </div>
+        <div className='text-3xl h-screen font-secondary text-white m-20'>
+            No Activity  
+        </div>
+    </div>
+</>
+
+        )}
+        
         </>
         
     );

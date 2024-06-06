@@ -44,13 +44,13 @@ const Form = ({route, method}) => {
     <section className="h-screen">
   <div className="h-full">
     <div
-      className="flex h-full flex-wrap items-center justify-center bg-gradient-to-br from-purple-900 to-emerald-400">
+      className="flex h-full flex-wrap items-center justify-center bg-gradient-to-br from-slate-900 to-purple-900">
 
       <div className="mb-12 md:mb-0 md:w-8/12 lg:w-5/12 xl:w-5/12">
         <form onSubmit={handleSubmit} >
           <div
             className="flex flex-col items-center justify-center">
-            <p className="mb-0 me-4 text-lg">Sign in with</p>
+            <p className="mb-0 me-4 text-lg font-secondary">Sign in with</p>
             
           <button className="mt-2 scale-125 hover:scale-150"><FaGoogle/> </button>
           </div>
@@ -58,53 +58,55 @@ const Form = ({route, method}) => {
           <div
             className="my-4 flex items-center before:mt-0.5 before:flex-1 before:border-t before:border-neutral-300 after:mt-0.5 after:flex-1 after:border-t after:border-neutral-300 dark:before:border-neutral-500 dark:after:border-neutral-500">
             <p
-              className="mx-4 mb-0 text-center font-semibold dark:text-white">
+              className="mx-4 font-secondary mb-0 text-center font-semibold dark:text-white">
               Or
             </p>
           </div>
           {password && username && method === "login" && error && (
           <div className="flex justify-center align-middle">
-          <p className="text-red-700">Your credentials are incorrect.</p>
+          <p className="text-red-700 font-secondary">Your credentials are incorrect.</p>
           </div>
           )}
 
           {password && username && method == "register" && error && (
           <div className="flex justify-center align-middle">
-          <p className="text-red-700">Account already exists!</p>
+          <p className="text-red-700 font-secondary">Account already exists!</p>
           </div>
           )}
 
           {!password && username && submitClicked && (
           <div className="flex justify-center align-middle">
-          <p className="text-red-700">Please input your password.</p>
+          <p className="text-red-700 font-secondary" >Please input your password.</p>
           </div>
           )}
 
           {password && !username && submitClicked && (
           <div className="flex justify-center align-middle">
-          <p className="text-red-700">Please input your username.</p>
+          <p className="text-red-700 font-secondary">Please input your username.</p>
           </div>
           )}
 
           <div className="relative mb-6" data-twe-input-wrapper-init>
-          <label>
+          <label className="font-secondary">
               Username
             </label>
             <input
               value={username} onChange={(e) => setUsername(e.target.value)}
               type="text"
               id="exampleFormControlInput2"
+              className="font-secondary"
               placeholder="Username" />
             
           </div>
 
           <div className="relative" data-twe-input-wrapper-init>
-          <label>
+          <label className="font-secondary">
               Password
             </label>
             <input
               value={password} onChange={(e) => setPassword(e.target.value)}
               type="password"
+              className="font-secondary"
               id="exampleFormControlInput22"
               placeholder="Password" />
           </div>
@@ -116,30 +118,30 @@ const Form = ({route, method}) => {
           <div className="text-center lg:text-left">
             <button
               type="button"
-              className="inline-block w-full rounded bg-primary px-7 pb-2 pt-3 text-sm font-medium uppercase leading-normal text-white shadow-primary-3 transition duration-150 ease-in-out hover:bg-primary-accent-300 hover:shadow-primary-2 focus:bg-primary-accent-300 focus:shadow-primary-2 focus:outline-none focus:ring-0 active:bg-primary-600 active:shadow-primary-2 dark:shadow-black/30 dark:hover:shadow-dark-strong dark:focus:shadow-dark-strong dark:active:shadow-dark-strong"
+              className="font-secondary inline-block w-full rounded bg-primary px-7 pb-2 pt-3 text-sm font-medium uppercase leading-normal text-white shadow-primary-3 transition duration-150 ease-in-out hover:bg-primary-accent-300 hover:shadow-primary-2 focus:bg-primary-accent-300 focus:shadow-primary-2 focus:outline-none focus:ring-0 active:bg-primary-600 active:shadow-primary-2 dark:shadow-black/30 dark:hover:shadow-dark-strong dark:focus:shadow-dark-strong dark:active:shadow-dark-strong"
               data-twe-ripple-init
-              data-twe-ripple-color="light">
+              data-twe-ripple-color="light ">
               Login
             </button>
             <button className="bg-blue-500 mb-10 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded w-full" type="submit">{name}</button>
 
             {method === "login" && (
             <div className="flex flex-col items-center justify-center">
-              <p>Don't have an account? </p>
+              <p className="font-secondary">Don't have an account? </p>
             <p className="flex justify-center items-center cursor-pointer hover:scale-110  mb-0 mt-2 pt-1 text-sm font-semibold bg-gray-500 text-white p-4 rounded-full">
               <a
                 href="/register"
-                className="text-danger transition mt-2 duration-150 ease-in-out hover:text-danger-600 focus:text-danger-600 active:text-danger-700"
+                className="text-danger font-secondary transition mt-2 duration-150 ease-in-out hover:text-danger-600 focus:text-danger-600 active:text-danger-700"
                 >REGISTER</a>
             </p>
             </div>)}
             {method === "register" && (
-            <div className="flex flex-col items-center justify-center ">
+            <div className="flex flex-col font-secondary items-center justify-center ">
             <p>Already have an account? </p>
             <p className="flex justify-center items-center cursor-pointer hover:scale-110   mb-0 mt-2 pt-1 text-sm font-semibold bg-gray-500 text-white p-4 rounded-full">
             <a
               href="/login"
-              className="text-danger transition mt-2 duration-150 ease-in-out hover:text-danger-600 focus:text-danger-600 active:text-danger-700"
+              className="text-danger font-secondary transition mt-2 duration-150 ease-in-out hover:text-danger-600 focus:text-danger-600 active:text-danger-700"
               >LOGIN</a>
           </p>
           </div>)}
