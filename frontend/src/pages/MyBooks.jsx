@@ -137,7 +137,9 @@ const MyBooks = () => {
             
                         </div>
                     ) : (
-                        <LoadingIndicator />
+                        <div>
+                            <div className='font-secondary m-20 h-screen text-3xl text-white'>No Books in Your Library</div>
+                        </div>
                     )}
                 </div>
                 {/* <div className="flex flex-col items-center lg:w-1/3 mt-8 lg:mt-0 bg-gray-800 p-4 rounded-md">
