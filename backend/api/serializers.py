@@ -7,7 +7,7 @@ from rest_framework.exceptions import ValidationError
 class UserProfileSerializer(serializers.ModelSerializer):
     class Meta:
         model = UserProfile
-        fields = ['bio', 'picture']
+        fields = ['bio', 'picture', 'user']
 
 
 class UserSerializer(serializers.ModelSerializer):
@@ -23,6 +23,17 @@ class UserSerializer(serializers.ModelSerializer):
     
         user = User.objects.create_user(**validated_data)
         return user
+    
+    def update(self, instance, validated_data):
+        username = validated_data.get('username', instance.username)
+        if User.objects.filter(username__iexact=username).exclude(id=instance.id).exists():
+            raise ValidationError(f"User with username '{username}' already exists.")
+        
+        instance.username = username
+        instance.password = instance.password
+        instance.save()
+        return instance
+    
     
 
 class NoteSerializer(serializers.ModelSerializer):

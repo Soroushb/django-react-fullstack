@@ -54,63 +54,29 @@ const Account = () => {
   return (
   
     <div className="container mx-auto mt-10 ">
-<div className="flex items-center">
+<div className="flex items-center bg-gray-200 p-10 rounded-md h-screen">
       {/* Avatar */}
       <div className="w-16 h-16 rounded-full overflow-hidden">
         <img className="object-cover w-full h-full" src={baseURL + profile?.picture} width="20px" height={20} alt="Avatar" />
       </div>
 
       {/* Bio Text */}
-      <div className="ml-4">
-        <h1 className="text-xl font-bold">{username}</h1>
-        <p className="text-gray-600">{profile?.bio}</p>
+      <div className="flex flex-col">
+
+        <div className='self-start'>
+        <div>
+        <h1 className="text-3xl font-secondary">Username: </h1>
+        <h1 className="text-3xl font-secondary font-bold">{username}</h1>
+        </div>
+        <div className='mt-4'>
+        <h1 className="text-3xl font-secondary">Bio: </h1>
+        <p className="text-gray-800 font-secondary font-xl">{profile?.bio}</p>
+        </div>
+        </div>
+      
       </div>
     </div>
-      <div className="grid grid-cols-2 gap-8">
-        {/* Box 1: Books */}
-        <div className="rounded-lg shadow-md overflow-hidden">
-          <div className="bg-gradient-to-r from-blue-400 to-blue-600 p-6 rounded-t-lg">
-            <h2 className="text-2xl font-bold text-white mb-4">Books</h2>
-          </div>
-          {/* Additional content for Books can be added here */}
-          <div className="bg-gradient-to-r from-blue-400 to-blue-600 p-6 rounded-b-lg">
-            {/* Additional content for Books can be added here */}
-          </div>
-        </div>
-
-        {/* Box 2: Health */}
-        <div className="rounded-lg shadow-md overflow-hidden">
-          <div className="bg-gradient-to-r from-green-400 to-green-600 p-6 rounded-t-lg">
-            <h2 className="text-2xl font-bold text-white mb-4">Health</h2>
-          </div>
-          {/* Additional content for Health can be added here */}
-          <div className="bg-gradient-to-r from-green-400 to-green-600 p-6 rounded-b-lg">
-            {/* Additional content for Health can be added here */}
-          </div>
-        </div>
-
-        {/* Box 3: Goals */}
-        <div className="rounded-lg shadow-md overflow-hidden" onClick={() => navigate("/goals")}>
-          <div className="bg-gradient-to-r from-yellow-400 to-yellow-600 p-6 rounded-t-lg">
-            <h2 className="text-2xl font-bold text-white mb-4">Goals</h2>
-          </div>
-          {/* Additional content for Goals can be added here */}
-          <div className="bg-gradient-to-r from-yellow-400 to-yellow-600 p-6 rounded-b-lg">
-            {/* Additional content for Goals can be added here */}
-          </div>
-        </div>
-
-        {/* Box 4: Reflections */}
-        <div className="rounded-lg shadow-md overflow-hidden" onClick={() => navigate("/notes")}>
-          <div className="bg-gradient-to-r from-purple-400 to-purple-600 p-6 rounded-t-lg">
-            <h2 className="text-2xl font-bold text-white mb-4">Reflections</h2>
-          </div>
-          {/* Additional content for Reflections can be added here */}
-          <div className="bg-gradient-to-r from-purple-400 to-purple-600 p-6 rounded-b-lg">
-            {/* Additional content for Reflections can be added here */}
-          </div>
-        </div>
-      </div>
+      
     </div>
   );
 };

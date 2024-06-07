@@ -60,6 +60,21 @@ class UserProfileViewSet(APIView):
         except UserProfile.DoesNotExist:
             return Response({"detail": "UserProfile does not exist for this user."}, status=status.HTTP_404_NOT_FOUND)
 
+class UserUpdateView(UpdateAPIView):
+    queryset = User.objects.all()
+    serializer_class = UserSerializer
+    permission_classes = [IsAuthenticated]
+
+    def get_object(self):
+        return self.request.user
+
+    def update(self, request, *args, **kwargs):
+        partial = kwargs.pop('partial', True)
+        instance = self.get_object()
+        serializer = self.get_serializer(instance, data=request.data, partial=partial)
+        serializer.is_valid(raise_exception=True)
+        self.perform_update(serializer)
+        return Response(serializer.data) 
 
 class NoteListCreate(generics.ListCreateAPIView):
     serializer_class = NoteSerializer
@@ -202,6 +217,13 @@ class GoalLogListCreate(generics.ListCreateAPIView):
 class GoalLogDetail(UpdateAPIView):
     queryset = GoalLog.objects.all()
     serializer_class = GoalListSerializer
+    permission_classes = [IsAuthenticated]
+
+class GoalLogDelete(DestroyAPIView):
+    queryset = GoalLog.objects.all()
+    serializer_class = GoalLogSerializer
+    permission_classes = [IsAuthenticated]
+
 
 
 

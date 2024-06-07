@@ -102,6 +102,17 @@ const Charts = () => {
             .catch((err) => console.log(err));
     };
 
+    const deleteGoalLog = async (id) => {
+
+        try{
+        const res = await api.delete(`/api/goal-logs/${id}/delete/`)
+        if(res === 204)alert("Activity Deleted")
+        getGoalList()
+        }catch(err){
+            alert(err)
+        } 
+    }
+
     const formatDateForServer = (date) => {
         const dateObj = new Date(date);
         return dateObj.toISOString().split('T')[0];
@@ -393,7 +404,7 @@ const Charts = () => {
                                 <form onSubmit={(e) => {
                                     e.preventDefault();
                                     setGoalName(showGoal);
-                                    addUserGoal();
+                                    addUserGoal(addGoalName);
                                 }}>
                                     <label>Minutes Done:</label>
                                     <input onChange={(e) => setMins_done(parseInt(e.target.value, 10))} value={mins_done} name='mins_done' type='number' />
@@ -437,7 +448,19 @@ const Charts = () => {
                             )}
                             </div>
                             
-                    <div className='text-2xl hover:scale-110  bg-blue-800 text-white rounded-md p-3 hover:cursor-pointer'>{goalName.toUpperCase().slice(0,14)}{goalName.length > 15 ? (<>...</>) : (<></>)}</div>
+                            <div className='relative text-2xl hover:scale-110 bg-blue-800 text-white rounded-md p-3 hover:cursor-pointer flex items-start'>
+  <span className='flex-1'>
+    {goalName.toUpperCase().slice(0, 14)}
+  </span>
+  {goalName.length > 15 && (
+    <span>
+      ...
+    </span>
+  )}
+  <div className='absolute top-0 right-0'>
+    <IoIosClose onClick={() => {deleteGoalLog(goalData[0].id); console.log(goalData)}} className='text-red-400' />
+  </div>
+</div>
                     <div className=''>
                         <h1 onClick={() => setShowAddGoal(true)} className='text-bold bg-red-800 hover:cursor-pointer hover:scale-110 text-white m-2 p-4 rounded-lg'>Add a New Goal</h1>
                     </div>
@@ -469,29 +492,30 @@ const Charts = () => {
         ) : (
             <>
     <div className='flex m-12 justify-between'>
-        <div className='m-4 justify-start self-start'>
+        <div className='m-4 justify-center self-start align-middle'>
             <h1 className='text-white flex justify-center mb-6 text-2xl font-primary'>Add Activity</h1>
             <form onSubmit={(e) => {
-                e.preventDefault();
-                setGoalName(showGoal);
-                addUserGoal();
-            }}>
-                <label>Minutes Done:</label>
-                <input onChange={(e) => setMins_done(parseInt(e.target.value, 10))} value={mins_done} name='mins_done' type='number' />
-                <label>Date:</label>
-                <div className='flex lg:flex-row flex-col'>
-                    <input onChange={(e) => setDate(e.target.value)} value={date} name='date' type='date' />
-                    <div className='flex justify-center align-middle items-center'>
-                        <button onClick={(e) => {
-                            e.preventDefault();
-                            handleTodayClick();
-                        }} className='border-red-900 m-2 border-2  flex items-center justify-center rounded-md h-1/2'>
-                            <p className='p-2'>Today</p>
-                        </button>
-                    </div>
-                </div>
-                <button className='bg-blue-700 rounded-md p-2 text-white' type='submit'>Update Goal Time</button>
-            </form>
+                        e.preventDefault();
+                        setGoalName(showGoal);
+                        addUserGoal(addGoalName);
+                    }}>
+                        <div className='flex justify-between'>
+                        <div className='text-bold text-xl mb-4'>Add a New Goal</div>
+                        <div onClick={() => setShowAddGoal(false)} className='text-white h-full bg-red-500 p-1 rounded-full scale-150 hover:bg-red-700 hover:cursor-pointer'><IoIosClose /></div>
+                        </div>
+                        <div className='flex flex-col items-center'>
+                            <div>
+
+                                <label>Name:</label>
+                                <input onChange={(e) => setAddGoalName(e.target.value)} value={addGoalName} name='name' type='text' />
+                                <label>Minutes Done:</label>
+                                <input onChange={(e) => setMins_done(parseInt(e.target.value, 10))} value={mins_done} name='mins_done' type='number' />
+                                <label>Date:</label>
+                                <input onChange={(e) => setDate(e.target.value)} value={date} name='date' type='date' />
+                                <button type='submit' className='text-bold bg-red-800 text-white p-4 rounded-md'>Add a New Goal</button>
+                            </div>
+                        </div>
+                    </form>
         </div>
         <div className='text-3xl h-screen font-secondary text-white m-20'>
             No Activity  
