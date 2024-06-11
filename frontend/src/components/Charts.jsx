@@ -392,7 +392,17 @@ const Charts = () => {
                                 <label>Minutes Done:</label>
                                 <input onChange={(e) => setMins_done(parseInt(e.target.value, 10))} value={mins_done} name='mins_done' type='number' />
                                 <label>Date:</label>
+                                <div className='flex'>
                                 <input onChange={(e) => setDate(e.target.value)} value={date} name='date' type='date' />
+                                <div className='flex justify-center align-middle items-center'>
+                                            <button onClick={(e) => {
+                                                e.preventDefault();
+                                                handleTodayClick();
+                                            }} className='border-red-900 m-2 border-2  flex items-center justify-center rounded-md h-1/2'>
+                                                <p className='p-2'>Today</p>
+                                            </button>
+                                </div>
+                                </div>
                                 <button type='submit' className='text-bold bg-red-800 text-white p-4 rounded-md'>Add a New Goal</button>
                             </div>
                         </div>
@@ -490,9 +500,44 @@ const Charts = () => {
            
         </div>
         ) : (
-            <>
-    <div className='flex m-12 justify-between'>
-        <div className='m-4 justify-center self-start align-middle'>
+    <>
+    <div className='m-12 lg:flex justify-between'>
+        <div className='m-4 hidden lg:flex justify-between self-start align-middle'>
+            <div className='flex flex-col'>
+            <h1 className='text-white flex justify-center mb-6 text-2xl font-primary'>Add Activity</h1>
+            <form onSubmit={(e) => {
+                        e.preventDefault();
+                        setGoalName(showGoal);
+                        addUserGoal(addGoalName);
+                    }}>
+                        <div className='flex justify-between'>
+                        <div className='text-bold text-xl mb-4'>Add a New Goal</div>
+                        </div>
+                        <div className='flex flex-col items-center'>
+                            <div>
+
+                                <label>Name:</label>
+                                <input onChange={(e) => setAddGoalName(e.target.value)} value={addGoalName} name='name' type='text' />
+                                <label>Minutes Done:</label>
+                                <input onChange={(e) => setMins_done(parseInt(e.target.value, 10))} value={mins_done} name='mins_done' type='number' />
+                                <label>Date:</label>
+                                <input onChange={(e) => setDate(e.target.value)} value={date} name='date' type='date' />
+                                <div className='flex justify-center align-middle items-center'>
+                                            <button onClick={(e) => {
+                                                e.preventDefault();
+                                                handleTodayClick();
+                                            }} className='border-red-900 m-2 border-2  flex items-center justify-center rounded-md h-1/2'>
+                                                <p className='p-2'>Today</p>
+                                            </button>
+                                </div>
+                                <button type='submit' className='text-bold bg-red-800 text-white p-4 rounded-md'>Add a New Goal</button>
+                            </div>
+                        </div>
+                    </form>
+            </div>
+            
+        </div>
+        <div className='m-4 lg:hidden justify-center self-start align-middle'>
             <h1 className='text-white flex justify-center mb-6 text-2xl font-primary'>Add Activity</h1>
             <form onSubmit={(e) => {
                         e.preventDefault();
@@ -512,7 +557,9 @@ const Charts = () => {
                                 <input onChange={(e) => setMins_done(parseInt(e.target.value, 10))} value={mins_done} name='mins_done' type='number' />
                                 <label>Date:</label>
                                 <input onChange={(e) => setDate(e.target.value)} value={date} name='date' type='date' />
+                                
                                 <button type='submit' className='text-bold bg-red-800 text-white p-4 rounded-md'>Add a New Goal</button>
+                                
                             </div>
                         </div>
                     </form>
@@ -521,7 +568,7 @@ const Charts = () => {
             No Activity  
         </div>
     </div>
-</>
+    </>
 
         )}
         

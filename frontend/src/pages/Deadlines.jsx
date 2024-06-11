@@ -46,7 +46,7 @@ const Deadlines = () => {
           alert('Failed to create a goal.');
         }
       })
-      .catch((error) => alert(error));
+      .catch((error) => alert("deadline must be in the future"));
   };
 
   const updateGoal = (updatedGoal) => {
@@ -67,7 +67,7 @@ const Deadlines = () => {
     <div>
     <div className='hidden lg:flex lg:flex-col container items-center mx-auto lg:h-400 justify-center'>
       <h1 className='text-white m-12 font-primary text-4xl'>Your Goals</h1>
-      <div className='flex w-full'>
+      <div className='flex w-full justify-between'>
       <div>
       <form onSubmit={createGoal} className='mb-4'>
         <div className='mb-4'>
@@ -98,7 +98,8 @@ const Deadlines = () => {
         <button type='submit' className='px-4 py-2 font-secondary bg-blue-500 text-white rounded-md'>Add Goal</button>
       </form>
       </div>
-      
+
+      {goals.length > 0 ? (
         <div className='grid grid-cols-2 w-full'>
         {goals.map((goal) => (
         <div key={goal.id} className='flex justify-center w-full'>
@@ -109,6 +110,13 @@ const Deadlines = () => {
       ))}
 
         </div>
+      ) :  <>
+      <div className='flex w-1/2 h-screen justify-center'>
+      <div className='font-secondary text-3xl text-center text-white'>No Goals</div>
+      </div>
+      </>}
+     
+        
       
       </div>
       
@@ -152,14 +160,25 @@ const Deadlines = () => {
       </div>)}
 
       <div className='grid grid-cols-1 mt-10 w-full'>
-        {goals.map((goal) => (
-        <div key={goal.id} className='flex justify-center w-full'>
-          <div className='flex flex-col rounded-lg m-2 bg-white w-4/5'>
-            <Goal goal={goal} onDelete={deleteGoal} onUpdate={updateGoal} />
-          </div>
-        </div>
-      ))}
-
+        {goals.length > 0 ? (
+          <>
+          {goals.map((goal) => (
+            <div key={goal.id} className='flex justify-center w-full'>
+              <div className='flex flex-col rounded-lg m-2 bg-white w-4/5'>
+                <Goal goal={goal} onDelete={deleteGoal} onUpdate={updateGoal} />
+              </div>
+            </div>
+            
+          ))} </>
+    
+        ) : (
+          <>
+            <div className='flex mt-20 h-screen justify-center'>
+              <div className='font-secondary text-3xl text-center text-white'>No Goals</div>
+            </div>
+          </>
+        )}
+        
         </div>
 
     </div>
