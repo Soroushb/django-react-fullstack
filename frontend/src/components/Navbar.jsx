@@ -40,11 +40,11 @@ const Navbar = () => {
   return (
     <div className="bg-gray-900 text-white">
       <div className="container mx-auto px-4 py-6 flex justify-between items-center">
-        <div className="font-primary text-white border-2 border-gray-400 p-2 text-2xl font-semibold cursor-pointer" onClick={() => navigate("/")}>UVSU</div>
+        <div className="font-primary text-white border-2 border-gray-400 p-2 text-2xl  cursor-pointer" onClick={() => navigate("/")}>Goal-Tracker</div>
 
-        {isLoggedin && (
+        {isLoggedin ? (
           <>
-            <div className="lg:hidden scale-150">
+            {/* <div className="lg:hidden scale-150">
               <IoIosMenu onClick={() => setShowMobileMenu(!showMobileMenu)}/>
               {showMobileMenu && (
                 <div>
@@ -58,7 +58,7 @@ const Navbar = () => {
                 </div>
               )}
               
-            </div>
+            </div> */}
             {/* <div className='lg:flex w-full text-white items-center justify-between px-40 hidden'>
 
             <div className='flex flex-col items-center group hover:cursor-pointer' onClick={() => navigate("/books")}>
@@ -91,19 +91,30 @@ const Navbar = () => {
             </div> */}
 
             <div className="relative">
-          <button onClick={toggleDropdown} className="text-white scale-75 lg:scale-100 focus:outline-none">
-            <Profile />
-          </button>
+              <div className='flex'>
+              <button className='text-white hidden lg:flex text-2xl font-secondary m-5'>Dashboard</button>
+              <button onClick={toggleDropdown} className="text-white scale-75 lg:scale-100 focus:outline-none">
+                <Profile />
+              </button>
+              </div>
+            
 
           {isDropdownOpen && (
             <div className="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg py-2">
-              <Link to="/profile" className="block px-4 py-2 text-gray-800 hover:bg-purple-200">My Profile</Link>
-              <Link to="/settings" className="block px-4 py-2 text-gray-800 hover:bg-purple-200">Settings</Link>
-              <button onClick={handleLogout} className="block px-4 py-2 text-gray-800 hover:bg-purple-200">Logout</button>
+              <Link to="/goals" className="block px-4 py-2 text-gray-800 text-xl font-secondary hover:bg-purple-200">Progress Monitor</Link>
+              <Link to="/deadlines" className="block px-4 py-2 text-gray-800 text-xl font-secondary hover:bg-purple-200">Goals & Deadlines</Link>
+              <Link to="/books" className="block px-4 py-2 text-gray-800 text-xl font-secondary hover:bg-purple-200">Book Search</Link>
+              <Link to="/mybooks" className="block px-4 py-2 text-gray-800 text-xl font-secondary hover:bg-purple-200">Your Library</Link>
+              <Link to="/notes" className="block px-4 py-2 text-gray-800 text-xl font-secondary hover:bg-purple-200">Notes</Link>
+              <button onClick={handleLogout} className="block px-4 py-2 text-gray-800 text-xl font-secondary hover:bg-purple-200">Logout</button>
             </div>
           )}
         </div>
         
+          </>
+        ) : (
+          <>
+          <button onClick={() => navigate("/register")} className='text-slate-900 font-secondary text-lg p-2 bg-gray-200 rounded-md'>Sign Up</button>
           </>
         )}
 
