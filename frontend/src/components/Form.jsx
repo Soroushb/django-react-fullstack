@@ -129,20 +129,20 @@ const Form = ({route, method}) => {
             <div className="flex flex-col items-center justify-center">
               <p className="font-secondary">Don't have an account? </p>
             <p className="flex justify-center items-center cursor-pointer hover:scale-110  mb-0 mt-2 pt-1 text-sm font-semibold bg-gray-500 text-white p-4 rounded-full">
-              <a
-                href="/register"
+              <div
+                onClick={() => navigate("/register")}
                 className="text-danger font-secondary transition mt-2 duration-150 ease-in-out hover:text-danger-600 focus:text-danger-600 active:text-danger-700"
-                >REGISTER</a>
+                >REGISTER</div>
             </p>
             </div>)}
             {method === "register" && (
             <div className="flex flex-col font-secondary items-center justify-center ">
             <p>Already have an account? </p>
             <p className="flex justify-center items-center cursor-pointer hover:scale-110   mb-0 mt-2 pt-1 text-sm font-semibold bg-gray-500 text-white p-4 rounded-full">
-            <a
-              href="/login"
+            <div
+              onClick={() => navigate("/login")}
               className="text-danger font-secondary transition mt-2 duration-150 ease-in-out hover:text-danger-600 focus:text-danger-600 active:text-danger-700"
-              >LOGIN</a>
+              >LOGIN</div>
           </p>
           </div>)}
 
