@@ -39,7 +39,7 @@ function App() {
       <div>
       <div className='routes'>
         <Routes>
-          <Route path="/" element={<ProtectedRoute><Home/></ProtectedRoute>}/>
+          <Route path="/" element={<Home/>}/>
           <Route path="/login" element={<Login/>}/>
           <Route path="/logout" element={<Logout/>}/>
           <Route path="/books" element={<ProtectedRoute><Books/></ProtectedRoute>} />

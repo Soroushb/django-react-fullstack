@@ -59,7 +59,7 @@ const Navbar = () => {
               )}
               
             </div>
-            <div className='lg:flex w-full text-white items-center justify-between px-40 hidden'>
+            {/* <div className='lg:flex w-full text-white items-center justify-between px-40 hidden'>
 
             <div className='flex flex-col items-center group hover:cursor-pointer' onClick={() => navigate("/books")}>
               <div className="font-secondary text-xl">Book Search</div>
@@ -88,7 +88,7 @@ const Navbar = () => {
               <div className='hidden group-hover:block bg-gray-700 w-2 h-2 rounded-full'></div>
             </div>
           
-            </div>
+            </div> */}
 
             <div className="relative">
           <button onClick={toggleDropdown} className="text-white scale-75 lg:scale-100 focus:outline-none">
