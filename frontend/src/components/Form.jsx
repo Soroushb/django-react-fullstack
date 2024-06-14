@@ -44,7 +44,7 @@ const Form = ({route, method}) => {
     <section className="h-screen">
   <div className="h-full">
     <div
-      className="flex h-full flex-wrap items-center justify-center bg-gradient-to-br from-slate-900 to-purple-900">
+      className="flex h-full flex-wrap items-center justify-center">
 
       <div className="mb-12 md:mb-0 md:w-8/12 lg:w-5/12 xl:w-5/12">
         <form onSubmit={handleSubmit} >

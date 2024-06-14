@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from 'react';
-import { Line, Pie } from 'react-chartjs-2';
+import { useEffect, useState } from 'react';
+import { Line } from 'react-chartjs-2';
 import api from '../api';
 import Chart from 'chart.js/auto';
 import { IoIosClose } from "react-icons/io";
@@ -8,7 +8,6 @@ import { IoMdArrowDropdown } from "react-icons/io";
 
 const Charts = () => {
     const [readingTimes, setReadingTimes] = useState([]);
-    const [mins_read, setMins_read] = useState("");
     const [date, setDate] = useState("");
     const [goalName, setGoalName] = useState("");
     const [addGoalName, setAddGoalName] = useState("")
@@ -17,6 +16,7 @@ const Charts = () => {
     const [showGoal, setShowGoal] = useState("");
     const [showAddGoal, setShowAddGoal] = useState(false);
     const [showDropDown, setShowDropDown] = useState(false)
+    const [showAddMobile, setShowAddMobile] = useState(false)
 
     const getTodayDate = () => {
         const today = new Date();
@@ -30,41 +30,6 @@ const Charts = () => {
         setDate(getTodayDate());
     };
 
-    const data = {
-        labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
-        datasets: [
-            {
-                label: '# of Votes',
-                data: [12, 19, 3, 5, 2, 3],
-                backgroundColor: [
-                    'rgba(255, 99, 132, 0.2)',
-                    'rgba(54, 162, 235, 0.2)',
-                    'rgba(255, 206, 86, 0.2)',
-                    'rgba(75, 192, 192, 0.2)',
-                    'rgba(153, 102, 255, 0.2)',
-                    'rgba(255, 159, 64, 0.2)',
-                ],
-                borderColor: [
-                    'rgba(255, 99, 132, 1)',
-                    'rgba(54, 162, 235, 1)',
-                    'rgba(255, 206, 86, 1)',
-                    'rgba(75, 192, 192, 1)',
-                    'rgba(153, 102, 255, 1)',
-                    'rgba(255, 159, 64, 1)',
-                ],
-                borderWidth: 1,
-            },
-        ],
-    };
-
-    const pieOptions = {
-        responsive: true,
-        plugins: {
-            legend: {
-                position: 'top',
-            },
-        },
-    };
 
     useEffect(() => {
         getReadingTime();
@@ -148,27 +113,6 @@ const Charts = () => {
         }
     };
 
-    const addReadingTime = async () => {
-        const formattedDate = formatDateForServer(date);
-        const existingIndex = readingTimes.findIndex(item => item.date === formattedDate);
-
-        if (existingIndex !== -1) {
-            const updatedReadingTimes = [...readingTimes];
-            updatedReadingTimes[existingIndex] = { ...updatedReadingTimes[existingIndex], mins_read };
-            setReadingTimes(updatedReadingTimes);
-            await api.put(`/api/reading-logs/${readingTimes[existingIndex].id}/`, { mins_read, date: formattedDate });
-            alert("Reading time updated");
-        } else {
-            const res = await api.post("/api/reading-logs/", { mins_read, date: formattedDate });
-
-            if (res.status === 201) {
-                alert("New data added");
-                getReadingTime();
-            } else {
-                console.log("Error");
-            }
-        }
-    };
 
     const getAllDatesInRange = (startDate, endDate) => {
         const dateArray = [];
@@ -196,32 +140,6 @@ const Charts = () => {
         }));
     };
 
-    const filledReadingTimes = fillMissingDates(readingTimes, 'mins_read');
-
-    const chartData = {
-        labels: filledReadingTimes.map(item => item.date),
-        datasets: [
-            {
-                label: 'Reading Time',
-                data: filledReadingTimes.map(item => parseFloat(item.mins_read)),
-                fill: false,
-                borderColor: 'rgba(75, 192, 192, 1)',
-                tension: 0.1
-            }
-        ]
-    };
-
-    const options = {
-        scales: {
-            x: {
-                type: 'category',
-                labels: filledReadingTimes.map(item => item.date)
-            },
-            y: {
-                beginAtZero: true
-            }
-        }
-    };
 
     return (
         
@@ -271,7 +189,48 @@ const Charts = () => {
                             
                             <div className='flex flex-col w-full'>
                             <div>
-                            <h1 className='flex hover:cursor-pointer text-white shadow-lg p-4 hover:scale-110'  onClick={() => setShowDropDown(!showDropDown)}>Select an activity <IoMdArrowDropdown className='mt-1 text-blue-800 ml-1 scale-150'/></h1>
+                            <div className='flex justify-center m-3'>
+                            <button onClick={() => setShowAddMobile(true)} className='p-2 bg-red-700 rounded-md text-white font-secondary hover:scale-105'>Add Activity</button>
+                            </div>
+
+                        {showAddMobile && (
+
+<form onSubmit={(e) => {
+    e.preventDefault();
+    setGoalName(showGoal);
+    addUserGoal(addGoalName);
+}}>
+    <div className='flex justify-between'>
+    <div className='text-bold text-lg mb-4'>Add a New Goal</div>
+    <div onClick={() => setShowAddMobile(false)} className='text-white h-full bg-red-500 p-1 rounded-full hover:bg-red-700 hover:cursor-pointer'><IoIosClose /></div>
+    </div>
+    <div className='flex flex-col items-center'>
+        <div>
+
+            <label className='text-sm'>Name:</label>
+            <input onChange={(e) => setAddGoalName(e.target.value)} value={addGoalName} name='name' type='text' />
+            <label className='text-sm'>Minutes Done:</label>
+            <input onChange={(e) => setMins_done(parseInt(e.target.value, 10))} value={mins_done} name='mins_done' type='number' />
+            <label className='text-sm'>Date:</label>
+            <div className='flex'>
+            <input onChange={(e) => setDate(e.target.value)} value={date} name='date' type='date' />
+            <div className='flex justify-center align-middle items-center'>
+                        <button onClick={(e) => {
+                            e.preventDefault();
+                            handleTodayClick();
+                        }} className='border-red-900 m-2 border-2 text-sm flex items-center justify-center rounded-md h-1/2'>
+                            <p className='p-2'>Today</p>
+                        </button>
+            </div>
+            </div>
+            <button type='submit' className='text-bold bg-red-800 text-white p-4 rounded-md'>Add a New Goal</button>
+        </div>
+    </div>
+</form>
+                        )}
+                    
+                            
+                            <h1 className='flex hover:cursor-pointer text-white shadow-lg p-4 mt-4 hover:scale-110'  onClick={() => setShowDropDown(!showDropDown)}>Select an activity <IoMdArrowDropdown className='mt-1 text-blue-800 ml-1 scale-150'/></h1>
                             {showDropDown && (
                                 <div className='absolute bg-white shadow-lg'>
                                 {Object.keys(goalTimes).map((goal) => (
@@ -291,16 +250,18 @@ const Charts = () => {
                             )}
                             </div>
                             <div className='flex justify-center text-center text-2xl hover:scale-110  bg-blue-800 text-white rounded-md p-3 hover:cursor-pointer'>{goalName.toUpperCase().slice(0,14)}{goalName.length > 15 ? (<>...</>) : (<></>)}</div>
-                            <h2 className='bg-blue-700 p-2 w-1/2 self-center m-2 text-center rounded-md text-white'>Average: <br/> {avg} Minutes</h2>
+                            {avg && (<h2 className='bg-blue-700 p-2 w-1/2 self-center m-2 text-center rounded-md text-white'>Average: <br/> {avg} Minutes</h2>)}
 
                             <Line className='self-center bg-slate-800 mt-10' data={goalChartData} options={goalOptions} />
-
                             </div>
+                            
+                           {!showAddGoal && (
+
                             <div className='m-4 scale-75'>
                                 <form onSubmit={(e) => {
                                     e.preventDefault();
                                     setGoalName(showGoal);
-                                    addUserGoal();
+                                    addUserGoal(addGoalName);
                                 }}>
                                     <label>Minutes Done:</label>
                                     <input onChange={(e) => setMins_done(parseInt(e.target.value, 10))} value={mins_done} name='mins_done' type='number' />
@@ -318,7 +279,9 @@ const Charts = () => {
                                     </div>
                                     <button className='bg-blue-700 rounded-md p-2 text-white' type='submit'>Add/Update Goal Time</button>
                                 </form>
-                            </div>
+
+
+                            </div>)}
                         </div>
                     );
                 })}
@@ -408,8 +371,9 @@ const Charts = () => {
                         </div>
                     </form>
                 )}
-              </div>
-            
+              </div>    
+
+                            {!showAddGoal && (
                             <div className='m-4'>
                                 <form onSubmit={(e) => {
                                     e.preventDefault();
@@ -433,6 +397,7 @@ const Charts = () => {
                                     <button className='bg-blue-700 rounded-md p-2 text-white' type='submit'>Update Goal Time</button>
                                 </form>
                             </div>
+                            )}
                             </div>
 
                             <div className='flex flex-col w-full'>
@@ -468,7 +433,6 @@ const Charts = () => {
     </span>
   )}
   <div className='absolute top-0 right-0'>
-    <IoIosClose onClick={() => {deleteGoalLog(goalData[0].id); console.log(goalData)}} className='text-red-400' />
   </div>
 </div>
                     <div className=''>
@@ -476,7 +440,7 @@ const Charts = () => {
                     </div>
                     </div>
                 
-                            <h2 className='bg-blue-700 p-2 w-1/2 self-center hover:scale-110 text-center rounded-md text-white'>Average: {avg} Minutes</h2>
+                    {avg && (<h2 className='bg-blue-700 p-2 w-1/2 self-center m-2 text-center rounded-md text-white'>Average: <br/> {avg} Minutes</h2>)}
 
                             <Line className='self-center mt-10' data={goalChartData} options={goalOptions} />
                         </div>

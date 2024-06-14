@@ -305,9 +305,8 @@ const Home = () => {
                     </div>
                 </motion.div>
                 )}
-                
+
             </div>
-            <IoIosArrowForward/>
 
             </div>
         </>
