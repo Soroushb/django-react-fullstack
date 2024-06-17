@@ -6,7 +6,7 @@ const Footer = () => {
     <footer className="bg-gray-900 text-white py-8 mt-12 ">
       <div className="container mx-auto flex flex-col md:flex-row justify-between items-center">
         <div className="mb-4 md:mb-0">
-          <h1 className="text-2xl font-primary font-bold">UVSU</h1>
+          <h1 className="text-2xl font-primary font-bold text-center">Goal-Tracker</h1>
           <p className="text-gray-400 font-secondary">Compare yourself to yourself.</p>
         </div>
         <div className="flex space-x-4 mb-4 md:mb-0">
