@@ -7,7 +7,6 @@ import { IoMdArrowDropdown } from "react-icons/io";
 
 
 const Charts = () => {
-    const [readingTimes, setReadingTimes] = useState([]);
     const [date, setDate] = useState("");
     const [goalName, setGoalName] = useState("");
     const [addGoalName, setAddGoalName] = useState("")
@@ -67,45 +66,47 @@ const Charts = () => {
             .catch((err) => console.log(err));
     };
 
-    const deleteGoalLog = async (id) => {
+    // const deleteGoalLog = async (id) => {
 
-        try{
-        const res = await api.delete(`/api/goal-logs/${id}/delete/`)
-        if(res === 204)alert("Activity Deleted")
-        getGoalList()
-        }catch(err){
-            alert(err)
-        } 
-    }
+    //     try{
+    //     const res = await api.delete(`/api/goal-logs/${id}/delete/`)
+    //     if(res === 204)alert("Activity Deleted")
+    //     getGoalList()
+    //     }catch(err){
+    //         alert(err)
+    //     } 
+    // }
 
     const formatDateForServer = (date) => {
         const dateObj = new Date(date);
         return dateObj.toISOString().split('T')[0];
     };
 
-    const addUserGoal = async (goalName) => {
+    const addUserGoal = async (newGoalName) => {
+
+        const finalGoalName = newGoalName ? newGoalName : goalName
         const formattedDate = formatDateForServer(date);
         const existingGoal = Object.values(goalTimes).flatMap(item => item)
-            .find(item => item.date === formattedDate && item.name === goalName);
+            .find(item => item.date === formattedDate && item.name === finalGoalName);
 
         if (existingGoal) {
             const goalType = Object.keys(goalTimes).find(key =>
-                goalTimes[key].some(item => item.date === formattedDate && item.name === goalName)
+                goalTimes[key].some(item => item.date === formattedDate && item.name === finalGoalName)
             );
             const updatedGoalTimes = { ...goalTimes };
             updatedGoalTimes[goalType] = updatedGoalTimes[goalType].map(item =>
-                item.date === formattedDate && item.name === goalName ? { ...item, mins_done } : item
+                item.date === formattedDate && item.name === finalGoalName ? { ...item, mins_done } : item
             );
             setGoalTimes(updatedGoalTimes);
-            await api.put(`/api/goal-logs/${existingGoal.id}/`, { mins_done, date: formattedDate, name: goalName })
+            await api.put(`/api/goal-logs/${existingGoal.id}/`, { mins_done, date: formattedDate, name: finalGoalName })
                 .catch((err) => console.log(err));
         } else {
-            api.post(`/api/goal-logs/`, { name: goalName, date: formattedDate, mins_done })
+            api.post(`/api/goal-logs/`, { name: finalGoalName, date: formattedDate, mins_done })
                 .then((res) => {
                     console.log("New goal added:", res.data);
                     setGoalName(""); // Clear the input field
                     getGoalList();
-                    alert(`New ${goalName} added.`);
+                    alert(`New ${finalGoalName} added.`);
                 })
                 .catch((err) => {
                     console.error("Error adding new goal:", err);

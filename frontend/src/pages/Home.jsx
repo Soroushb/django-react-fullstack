@@ -5,7 +5,7 @@ import graph from "../styles/img/graph.png";
 import book from "../styles/img/bok.png";
 import sandClock from "../styles/img/sand-clock.png"
 import "../styles/Home.css";
-import { IoIosArrowForward } from "react-icons/io";
+import { IoIosArrowForward, IoIosArrowBack } from "react-icons/io";
 
 const Home = () => {
 
@@ -211,7 +211,11 @@ const Home = () => {
                         </motion.div>
                     </div>
                 </motion.div>
-                
+                            
+                <div className="text-white flex mt-9">
+                    <IoIosArrowBack onClick={() => setPage(page - 1)} className="bg-slate-800 p-1 text-3xl m-1"/>
+                    <IoIosArrowForward onClick={() => setPage(page + 1)} className="bg-slate-800 p-1 text-3xl m-1"/>
+                </div>
 
                 {page === 1 && (
   <motion.div
@@ -219,7 +223,7 @@ const Home = () => {
       visible: { y: 0 },
       hidden: { y: -100 },
     }}
-    className="flex flex-col justify-between w-full mt-4"
+    className="flex flex-col justify-between w-full"
     initial="hidden"
     whileInView="visible"
     transition={{ duration: 0.7 }}
@@ -267,7 +271,7 @@ const Home = () => {
 
 {page === 2 && (
   <motion.div
-    className="flex flex-col justify-between w-full mt-4"
+    className="flex flex-col justify-between w-full "
     initial={{ x: 100, opacity: 0 }}
     animate={{ x: 0, opacity: 1 }}
     transition={{ duration: 0.7 }}
@@ -316,7 +320,7 @@ const Home = () => {
 
 {page === 3 && (
   <motion.div
-    className="flex flex-col justify-between w-full mt-4"
+    className="flex flex-col justify-between w-full "
     initial={{ x: 100, opacity: 0 }}
     animate={{ x: 0, opacity: 1 }}
     transition={{ duration: 0.7 }}
