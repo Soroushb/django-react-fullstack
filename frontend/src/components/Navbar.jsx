@@ -40,7 +40,7 @@ const Navbar = () => {
   return (
     <div className="bg-gray-900 text-white">
       <div className="container mx-auto px-4 py-6 flex justify-between items-center">
-        <div className="font-primary text-white border-2 border-gray-400 p-2 text-2xl  cursor-pointer" onClick={() => navigate("/")}>Goal-Tracker</div>
+        <div className="font-primary text-white p-2 text-2xl  cursor-pointer" onClick={() => navigate("/")}>Goal-Tracker</div>
 
         {isLoggedin ? (
           <>
@@ -92,7 +92,6 @@ const Navbar = () => {
 
             <div className="relative">
               <div className='flex'>
-              <button className='text-white hidden lg:flex text-2xl font-secondary m-5'>Dashboard</button>
               <button onClick={toggleDropdown} className="text-white scale-75 lg:scale-100 focus:outline-none">
                 <Profile />
               </button>

@@ -182,7 +182,7 @@ const Charts = () => {
                             y: {
                                 beginAtZero: true
                             }
-                        }
+                          }
                     };
 
                     return (
@@ -190,9 +190,7 @@ const Charts = () => {
                             
                             <div className='flex flex-col w-full'>
                             <div>
-                            <div className='flex justify-center m-3'>
-                            <button onClick={() => setShowAddMobile(true)} className='p-2 bg-red-700 rounded-md text-white font-secondary hover:scale-105'>Add Activity</button>
-                            </div>
+                            
 
                         {showAddMobile && (
 
@@ -202,7 +200,7 @@ const Charts = () => {
     addUserGoal(addGoalName);
 }}>
     <div className='flex justify-between'>
-    <div className='text-bold text-lg mb-4'>Add a New Goal</div>
+    <div className='text-bold text-lg mb-4'>Add a  New Goal</div>
     <div onClick={() => setShowAddMobile(false)} className='text-white h-full bg-red-500 p-1 rounded-full hover:bg-red-700 hover:cursor-pointer'><IoIosClose /></div>
     </div>
     <div className='flex flex-col items-center'>
@@ -231,7 +229,13 @@ const Charts = () => {
                         )}
                     
                             
+                            <div className='flex flex-col justify-center'>
+                            <div className='flex justify-center m-3'>
+                            <button onClick={() => setShowAddMobile(true)} className='p-2 bg-red-700 rounded-md text-white font-secondary hover:scale-105'>Add Activity</button>
+                            </div>
                             <h1 className='flex hover:cursor-pointer text-white shadow-lg p-4 mt-4 hover:scale-110'  onClick={() => setShowDropDown(!showDropDown)}>Select an activity <IoMdArrowDropdown className='mt-1 text-blue-800 ml-1 scale-150'/></h1>
+                            
+                            </div>
                             {showDropDown && (
                                 <div className='absolute bg-white shadow-lg'>
                                 {Object.keys(goalTimes).map((goal) => (

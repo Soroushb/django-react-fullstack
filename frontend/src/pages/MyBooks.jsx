@@ -66,7 +66,7 @@ const MyBooks = () => {
         <div className="flex w-full justify-center p-4 overflow-x-hidden">
             <div className="flex flex-col lg:flex-row justify-between">
                 <div className="flex flex-col items-center ">
-                    {booksToRead.length > 0 ? (
+                    {(booksToRead.length > 0 || inProgress.length > 0 || finished.length > 0 ) ? (
                         <div className="max-w-screen-lg mx-auto lg:mt-8 mb-8">
                             <div className="flex flex-col items-center m-10 rounded-lg lg:p-6">
                                 <div className='flex hover:cursor-pointer  text-center items-center bg-slate-900 lg:rounded-full border-2 border-gray-200'>
@@ -91,7 +91,7 @@ const MyBooks = () => {
                                             ))}
                                         </div>
                                     ) : (
-                                        <p className="text-gray-600 font-secondary">No books in progress</p>
+                                        <p className="text-white text-2xl mt-16 h-screen font-secondary">No books to read...</p>
                                     )}
                                     </>  
                                 )}
@@ -110,7 +110,7 @@ const MyBooks = () => {
                                             ))}
                                         </div>
                                     ) : (
-                                        <p className="text-gray-600 font-secondary">No books in progress...</p>
+                                        <p className="text-white text-2xl mt-16 h-screen font-secondary">No books in progress...</p>
                                     )}
                                     </>  
                                 )}
@@ -128,7 +128,7 @@ const MyBooks = () => {
                                             ))}
                                         </div>
                                     ) : (
-                                        <p className="text-white text-2xl mt-16 h-screen font-secondary">No books in progress</p>
+                                        <p className="text-white text-2xl mt-16 h-screen font-secondary">No books finished...</p>
                                     )}
                                     </>  
                                 )}

@@ -3,11 +3,11 @@
 @tailwind components;
 @tailwind utilities;
 
-body{
-    background-image: linear-gradient(to bottom right, #24043b, #0f5abd);
-    height: 100%;
-        font-family: 'Playfair Display', serif;
-}
+  body{
+      background-image: linear-gradient(to bottom right, #1c0c27, #000000);
+      height: 100%;
+      font-family: 'Montserrat', sans-serif;
+      }
 
 /* LoadingIndicator.css */
 .loading-container {

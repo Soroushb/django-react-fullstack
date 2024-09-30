@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useRef } from "react";
-import { useNavigate } from "react-router-dom";
+import { Form, useNavigate } from "react-router-dom";
 import { motion, useInView } from 'framer-motion';
 import graph from "../styles/img/graph.png";
 import book from "../styles/img/bok.png";
@@ -25,7 +25,7 @@ const Home = () => {
         console.log(page)
         
 
-        }, 10000)
+        }, 5000)
         
     }, [page])
     
@@ -35,15 +35,15 @@ const Home = () => {
             {/* Large Screen */}
             <div ref={ref} className="lg:flex hidden flex-col justify-center items-center m-20">
 
-
+            
             <motion.div
-                    className="flex justify-between w-full"
+                    className="flex p-14 justify-between w-full"
                     initial={{ y: -100, opacity: 0 }}
                     animate={{ y: 0, opacity: 1 }}
                     transition={{ duration: 0.7 }}
                 >
                     <div className="p-4 flex flex-col text-center ">
-                        <h1 className="font-primary mb-5 text-4xl text-white hover:scale-105">Welcome to Goal-Tracker!</h1>
+                        <h1 className="font-secondary mb-5 text-4xl text-white hover:scale-105">Welcome to Goal-Tracker!</h1>
                         <button onClick={() => navigate("/register")} className="text-900 bg-gray-200 text-xl p-3 hover:scale-110 mt-4 font-secondary rounded-md  self-center">Join Us Today!</button>
                         <motion.div
                             className="flex justify-between w-full"
@@ -66,7 +66,7 @@ const Home = () => {
                     initial="hidden"
                     whileInView="visible"
                     ref={ref}
-                    className="flex lg:flex-row flex-col justify-between w-full m-24"
+                    className="flex lg:flex-row p-14 flex-col justify-between w-full m-24"
                     animate={{ y: 0, opacity: 1 }}
                     transition={{ duration: 0.9 }}
                     variants={{
@@ -93,7 +93,7 @@ const Home = () => {
                                 </div>
                             </motion.div>
                         </div>
-                        <img src={graph} height={700} width={700} className="rounded-xl shadow-lg shadow-black hover:scale-105" />
+                        <img src={graph} height={700} width={700} className="rounded-xl shadow-lg shadow-black text-white hover:scale-105" />
                     </div>
                 </motion.div>
 
@@ -102,7 +102,7 @@ const Home = () => {
                 initial="hidden"
                 whileInView="visible"
                 ref={ref}
-                className="flex lg:flex-row flex-col justify-between w-full m-24"
+                className="flex lg:flex-row flex-col p-14 justify-between w-full m-24"
                 animate={{ y: 0, opacity: 1 }}
                 transition={{ duration: 0.9 }}
                 variants={{
@@ -138,7 +138,7 @@ const Home = () => {
                     initial="hidden"
                     whileInView="visible"
                     ref={ref}
-                    className="flex lg:flex-row flex-col justify-between w-full m-24"
+                    className="flex lg:flex-row flex-col p-14 justify-between w-full m-24"
                     animate={{ y: 0, opacity: 1 }}
                     transition={{ duration: 0.9 }}
                     variants={{
@@ -165,7 +165,7 @@ const Home = () => {
                                 </div>
                             </motion.div>
                         </div>
-                        <img src={sandClock} height={300} width={300} className="rounded-xl hover:scale-105" />
+                        <img src={sandClock} height={300} width={300} className="rounded-xl text-white hover:scale-105" />
                     </div>
                 </motion.div>
             </div>
@@ -212,10 +212,10 @@ const Home = () => {
                     </div>
                 </motion.div>
                             
-                <div className="text-white flex mt-9">
+                {/* <div className="text-white flex mt-9">
                     <IoIosArrowBack onClick={() => setPage(page - 1)} className="bg-slate-800 p-1 text-3xl m-1"/>
                     <IoIosArrowForward onClick={() => setPage(page + 1)} className="bg-slate-800 p-1 text-3xl m-1"/>
-                </div>
+                </div> */}
 
                 {page === 1 && (
   <motion.div

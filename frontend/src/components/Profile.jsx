@@ -37,7 +37,7 @@ const Profile = () => {
     <div className="relative">
     {username && (
       <div className="relative w-16 h-16">
-        <div className="bg-purple-900 rounded-full w-full h-full flex items-center justify-center shadow-lg relative">
+        <div className="rounded-full w-full h-full flex items-center justify-center shadow-lg relative">
           <h1 className="text-white font-primary text-3xl font-bold z-10 relative">{username.substring(0, 1).toUpperCase()}</h1>
           <div className="absolute top-0 left-0 w-full h-full rounded-full border-2 border-white pointer-events-none"></div>
         </div>
