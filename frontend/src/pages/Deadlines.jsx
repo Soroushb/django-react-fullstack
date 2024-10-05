@@ -66,7 +66,7 @@ const Deadlines = () => {
   return (
     <div>
     <div className='hidden lg:flex lg:flex-col container items-center mx-auto lg:h-400 justify-center'>
-      <h1 className='text-white m-12 font-primary text-4xl'>Your Goals</h1>
+      <h1 className='text-white m-12 font-primary text-4xl'>My Goals</h1>
       <div className='flex w-full justify-between'>
       <div>
       <form onSubmit={createGoal} className='mb-4'>
@@ -122,7 +122,7 @@ const Deadlines = () => {
       
     </div>
     <div className='lg:hidden flex flex-col justify-center items-center'>
-    <h1 className='text-white m-12  text-4xl'>Your Goals</h1>
+    <h1 className='text-white m-12  text-4xl'>My Goals</h1>
     <div onClick={() => setShowAddGoal(!showAddGoal)} className='bg-blue-800 hover:cursor-pointer p-3 rounded-md w-fit text-white'>Add a Goal</div>
     
     {showAddGoal && (<div>

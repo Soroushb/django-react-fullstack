@@ -110,7 +110,7 @@ const Home = () => {
                     hidden: { opacity: 0, x: 100 }
                 }}
             >
-                <img src={book} height={300} width={350} className="rounded-xl  hover:scale-105" />
+                <img src={book} height={300} width={350} className="rounded-xl bg-white p-12 m-5 hover:scale-105" />
                 <div className="flex justify-between w-full">
                     <div className="p-8 flex flex-col">
                         <h1 className="font-secondary text-2xl text-white hover:scale-105">Manage Your Books</h1>
@@ -165,7 +165,7 @@ const Home = () => {
                                 </div>
                             </motion.div>
                         </div>
-                        <img src={sandClock} height={300} width={300} className="rounded-xl text-white hover:scale-105" />
+                        <img src={sandClock} height={300} width={300} className="rounded-xl bg-white p-12 text-white hover:scale-105" />
                     </div>
                 </motion.div>
             </div>

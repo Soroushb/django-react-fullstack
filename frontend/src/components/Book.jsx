@@ -73,11 +73,11 @@ const Book = ({ id, orgId, list_type, type, setInProg, setToFinished, setToRead,
               <p className="text-gray-300 text-center text-base">Rating: {book.rating}</p>
               <h1 className='text-white'>{book?.orgId}</h1>
             </div>
-            <div className="px-6 pt-4 pb-2 justify-center items-center">
+            <div className="flex flex-col px-6 pt-4 pb-2 justify-center items-center">
               
               {list_type == "to read" && 
               (
-                <button onClick={handleAddToLibrary} className="flex justify-center font-secondary bg-gray-200 rounded-md p-2 text-sm font-semibold text-green-700 mr-2 mb-2">
+                <button onClick={handleAddToLibrary} className="flex justify-center font-secondary bg-gray-200 rounded-md p-2 text-sm font-semibold text-green-700  mb-2">
                 Add to In Progress
               </button>
               )
@@ -85,19 +85,18 @@ const Book = ({ id, orgId, list_type, type, setInProg, setToFinished, setToRead,
 
               {list_type == "progress" && 
               (
-                <button onClick={handleAddToLibrary} className="flex justify-center font-secondary  bg-gray-200 rounded-md  p-2 text-sm font-semibold text-green-700 mr-2 mb-2">
+                <button onClick={handleAddToLibrary} className="flex justify-center font-secondary  bg-gray-200 rounded-md  p-2 text-sm font-semibold text-green-700  mb-2">
                   Mark as Finished
               </button>
               )
               }
 
               {inLibrary && (
-                <button onClick={handleAddToLibrary} className="inline-block font-secondary bg-gray-200 px-3 py-1 text-sm font-semibold text-green-700 mr-2 mb-2">
+                <button onClick={handleAddToLibrary} className="inline-block font-secondary bg-gray-200 px-3 py-1 text-sm font-semibold text-green-700 p-2  mb-2">
                 Add to library
               </button>
               )}
-
-            <div onClick={deleteBook} className='flex justify-center font-secondary rounded-md bg-gray-200 text-red-600'>Delete</div>
+            <div onClick={deleteBook} className='flex justify-center p-2 font-secondary rounded-md bg-gray-200 text-red-600'>Delete</div>
 
 
               

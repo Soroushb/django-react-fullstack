@@ -100,6 +100,7 @@ const Navbar = () => {
 
           {isDropdownOpen && (
             <div className="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg py-2">
+              <Link to="/dashboard" className="block px-4 py-2 text-gray-800 text-xl font-secondary hover:bg-purple-200">Dashboard</Link>
               <Link to="/goals" className="block px-4 py-2 text-gray-800 text-xl font-secondary hover:bg-purple-200">Progress Monitor</Link>
               <Link to="/deadlines" className="block px-4 py-2 text-gray-800 text-xl font-secondary hover:bg-purple-200">Goals & Deadlines</Link>
               <Link to="/books" className="block px-4 py-2 text-gray-800 text-xl font-secondary hover:bg-purple-200">Book Search</Link>
