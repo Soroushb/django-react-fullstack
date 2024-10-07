@@ -52,7 +52,7 @@ const BookSearch = () => {
                 const { id, title, author, publicationYear, rating, ratings, smallImageURL, url } = book;
     
     
-                const res = await api.post("/book/", { orgId: id, title, author, published_year: publicationYear, rating, ratings, smallImageURL, url  });
+                const res = await api.post("/api/book/", { orgId: id, title, author, published_year: publicationYear, rating, ratings, smallImageURL, url  });
                 
                 if (res.status === 201) {
     
