@@ -47,10 +47,10 @@ const BookSearch = () => {
 
             try {
                 const { id, title, author, publicationYear, rating, ratings, smallImageURL, url } = book;
-    
+                console.log(book)
     
                 const res = await api.post("/api/book/", { orgId: id, title, author, published_year: publicationYear, rating, ratings, smallImageURL, url  });
-                
+                console.log(res)
                 if (res.status === 201) {
     
                     const bookId = res.data.id;
