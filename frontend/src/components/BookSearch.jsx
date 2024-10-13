@@ -16,28 +16,25 @@ const BookSearch = () => {
     let bookType = ""
 
 
+    
     useEffect(() => {
-        getMyBooks()
-        const bookIds = myBooks?.map((book) => book.orgId)
-    }, [])
-
-    useEffect(() => {
-        const ids = myBooks.map((book) => book.orgId);
-        setBookIds(ids);
-    }, [myBooks])
-
-    console.log(bookIds)
-
-    const getMyBooks = async () => {
-        await api.get('/api/books/')
-            .then((res) => res.data)
-            .then((data) => {
+        const getMyBooks = async () => {
+            try {
+                const res = await api.get('/api/books/');
+                const data = res.data;
                 setMyBooks(data);
-            })
-            .catch(() => {
+    
+                const ids = data.map((book) => book.orgId);
+                setBookIds(ids);
+            } catch (error) {
                 navigate("/login");
-            });
-    };
+            }
+        };
+    
+        getMyBooks();
+    }, []);
+
+
 
     const handleBookClick = async (book, bookType) => {
 
@@ -68,7 +65,6 @@ const BookSearch = () => {
                     if (bookListRes.status === 201) {
                         alert("Book added to your library");
                         setShowError(false)
-                        getMyBooks()
                     } else {
                         alert("Failed to add book to BookList");
                     }
