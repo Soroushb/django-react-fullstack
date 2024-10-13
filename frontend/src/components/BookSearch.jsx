@@ -35,6 +35,35 @@ const BookSearch = () => {
     }, []);
 
 
+    const handleSearch = async (event) => {
+        event.preventDefault();
+
+        const params = new URLSearchParams({
+            q: searchTerm,
+            page: "1"
+        });
+
+        try {
+            const response = await fetch(`https://goodreads-books.p.rapidapi.com/search?${params}`, {
+                headers: {
+                    'X-RapidAPI-Key': 'f72da7c950msh11ea433ca5651cbp1b213cjsn8deca4e8e5a6',
+                },
+            });
+
+            if (!response.ok) {
+                throw new Error('Network response was not ok.');
+            }
+            
+            const data = await response.json();
+            !data ? setLoading(true) : setLoading(false)
+            setBooks(data); // Update state with fetched books
+        } catch (error) {
+            console.error('Error fetching data:', error);
+            alert('Failed to fetch data. Check console for details.');
+        }
+    };
+
+
 
     const handleBookClick = async (book, bookType) => {
 
@@ -46,6 +75,7 @@ const BookSearch = () => {
         }else{
 
             try {
+
                 const { id, title, author, publicationYear, rating, ratings, smallImageURL, url } = book;
                 console.log(book)
     
@@ -81,33 +111,7 @@ const BookSearch = () => {
         
     };
 
-    const handleSearch = async (event) => {
-        event.preventDefault();
-
-        const params = new URLSearchParams({
-            q: searchTerm,
-            page: "1"
-        });
-
-        try {
-            const response = await fetch(`https://goodreads-books.p.rapidapi.com/search?${params}`, {
-                headers: {
-                    'X-RapidAPI-Key': 'f72da7c950msh11ea433ca5651cbp1b213cjsn8deca4e8e5a6',
-                },
-            });
-
-            if (!response.ok) {
-                throw new Error('Network response was not ok.');
-            }
-            
-            const data = await response.json();
-            !data ? setLoading(true) : setLoading(false)
-            setBooks(data); // Update state with fetched books
-        } catch (error) {
-            console.error('Error fetching data:', error);
-            alert('Failed to fetch data. Check console for details.');
-        }
-    };
+    
 
     return (
         <div className="min-h-screen">

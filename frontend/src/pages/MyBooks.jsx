@@ -26,14 +26,6 @@ const MyBooks = () => {
             });
     };
 
-    const LoadingIndicator = () => {
-        return (
-            <div className="loading-container h-full flex items-center justify-center">
-                <div className="loader"></div>
-            </div>
-        );
-    };
-
     const setToFinished = (book) => {
         api.patch(`api/booklist/${book.id}/update/`, { list_type: 'finished' })
             .then((res) => {
