@@ -35,6 +35,8 @@ const BookSearch = () => {
     }, []);
 
 
+    console.log(myBooks)
+
     const handleSearch = async (event) => {
         event.preventDefault();
 
