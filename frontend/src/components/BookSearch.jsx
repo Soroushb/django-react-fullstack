@@ -86,8 +86,8 @@ const BookSearch = () => {
                     const bookId = res.data.id;
                     const bookListData = {
                         list_type: bookType,
-                        book_id: bookId,
-                        user_id: 1, 
+                        book: bookId,
+                        user: 1, 
                         orgId: id
                     };
     
