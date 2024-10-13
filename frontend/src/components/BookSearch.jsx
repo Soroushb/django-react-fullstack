@@ -86,12 +86,13 @@ const BookSearch = () => {
                     const bookId = res.data.id;
                     const bookListData = {
                         list_type: bookType,
-                        book: bookId, // Use the book ID, not the entire book object
-                        user: 1, // Replace '6' with the current user's ID retrieved from token
+                        book: bookId,
+                        user: 1, 
                         orgId: id
                     };
     
                     const bookListRes = await api.post("/api/books/", bookListData);
+                    console.log(bookListRes)
                     if (bookListRes.status === 201) {
                         alert("Book added to your library");
                         setShowError(false)
