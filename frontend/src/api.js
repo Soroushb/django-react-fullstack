@@ -1,7 +1,7 @@
 import axios from "axios";
 import { ACCESS_TOKEN } from "./constants";
 
-const apiUrl = "https://literature-frenz-eece749b9dd9.herokuapp.com"; // Absolute URL to your Heroku backend
+const apiUrl = "https://literature-frenz-eece749b9dd9.herokuapp.com"; 
 
 const api = axios.create({
     baseURL: import.meta.env.VITE_API_URL ? import.meta.env.VITE_API_URL : apiUrl

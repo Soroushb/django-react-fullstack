@@ -18,7 +18,7 @@ const BookSearch = () => {
 
     useEffect(() => {
         getMyBooks()
-        const bookIds = myBooks.map((book) => book.orgId)
+        const bookIds = myBooks?.map((book) => book.orgId)
     }, [])
 
     useEffect(() => {
