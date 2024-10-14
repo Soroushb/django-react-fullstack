@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import api from "../api";
 import Book from "../components/Book";
 import { useNavigate } from 'react-router-dom';
+import { motion } from 'framer-motion';
 import BookSearch from '../components/BookSearch';
 
 const MyBooks = () => {
@@ -56,11 +57,18 @@ const MyBooks = () => {
     return (
         <div>
         <div className="flex w-full justify-center p-4 overflow-x-hidden">
+            <motion.div
+            initial={{ y: -100, opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            transition={{ duration: 0.7 }} 
+            >
             <div className="flex flex-col lg:flex-row justify-between">
                 <div className="flex flex-col items-center ">
                     {(booksToRead.length > 0 || inProgress.length > 0 || finished.length > 0 ) ? (
                         <div className="max-w-screen-lg mx-auto lg:mt-8 mb-8">
                             <div className='flex justify-center items-center text-center text-white font-primary text-3xl mt-3'>My Books</div>
+                            <div onClick={() => navigate("/books")} className=' p-2 rounded-md text-center hover:cursor-pointer hover:scale-105 text-2xl text-blue-500'> Search for books </div>
+
                             <div className="flex flex-col items-center m-10 rounded-lg lg:p-6">
                                 <div className='flex hover:cursor-pointer  text-center items-center bg-slate-900 lg:rounded-full border-2 border-gray-200'>
                                 <h1 onClick={() => setType("to read")} className={`${type == "to read" ? "text-blue-500" : "text-white"} font-primary lg:text-2xl font-bold mb-4 m-5  hover:scale-110`}>To Read</h1>
@@ -70,7 +78,11 @@ const MyBooks = () => {
                                 <h1 onClick={() => setType("finished")} className={`${type == "finished" ? "text-blue-500" : "text-white"} font-primary lg:text-2xl font-bold mb-4 m-5  hover:scale-110`}>Finished</h1>
                                 </div>
                                 {type == "to read" && (
-                                    <>
+                                    <motion.div
+                                    initial={{ y: -100, opacity: 0 }}
+                                    animate={{ y: 0, opacity: 1 }}
+                                    transition={{ duration: 0.7 }} 
+                                    >
                                     {booksToRead.length > 0 ? (
                                         <div className=" grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
                                             {booksToRead.map((book) => (
@@ -86,10 +98,14 @@ const MyBooks = () => {
                                     ) : (
                                         <p className="text-white text-2xl mt-16 h-screen font-secondary">No books to read...</p>
                                     )}
-                                    </>  
+                                    </motion.div>  
                                 )}
                                 {type == "in progress" && (
-                                    <>
+                                    <motion.div
+                                    initial={{ y: -100, opacity: 0 }}
+                                    animate={{ y: 0, opacity: 1 }}
+                                    transition={{ duration: 0.7 }} 
+                                    >
                                     {inProgress.length > 0 ? (
                                         <div className="grid mt-14 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
                                             {inProgress.map((book) => (
@@ -105,10 +121,14 @@ const MyBooks = () => {
                                     ) : (
                                         <p className="text-white text-2xl mt-16 h-screen font-secondary">No books in progress...</p>
                                     )}
-                                    </>  
+                                    </motion.div>  
                                 )}
                                 {type == "finished" && (
-                                    <>
+                                    <motion.div
+                                    initial={{ y: -100, opacity: 0 }}
+                                    animate={{ y: 0, opacity: 1 }}
+                                    transition={{ duration: 0.7 }} 
+                                    >
                                     {finished.length > 0 ? (
                                         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
                                             {finished.map((book) => (
@@ -123,15 +143,19 @@ const MyBooks = () => {
                                     ) : (
                                         <p className="text-white text-2xl mt-16 h-screen font-secondary">No books finished...</p>
                                     )}
-                                    </>  
+                                    </motion.div>  
                                 )}
                       
                             </div>
             
                         </div>
                     ) : (
-                        <div>
-                            <div className='font-secondary m-20 h-screen text-3xl text-white'>No Books in Your Library</div>
+    
+                        <div className='flex flex-col h-screen '>
+                            
+                            <div className='font-secondary mt-20 mb-3 text-3xl text-white'>No Books in Your Library</div>
+                            <div onClick={() => navigate("/books")} className=' p-2 rounded-md text-center hover:cursor-pointer hover:scale-105 text-2xl text-blue-500'> Search for books </div>
+                    
                         </div>
                     )}
                 </div>
@@ -154,6 +178,7 @@ const MyBooks = () => {
                     )}
                 </div> */}
             </div>
+            </motion.div>
         </div>
         </div>
     );

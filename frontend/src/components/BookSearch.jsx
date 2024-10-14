@@ -2,7 +2,6 @@ import api from '../api';
 import { useEffect, useState } from 'react';
 import LoadingIndicator from './LoadingIndicator';
 import { useNavigate } from 'react-router-dom';
-import { getYear } from 'date-fns';
 
 const BookSearch = () => {
     const [books, setBooks] = useState([]);

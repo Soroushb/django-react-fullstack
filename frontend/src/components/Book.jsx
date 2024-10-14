@@ -1,5 +1,4 @@
-import React, { useState, useEffect } from 'react';
-import { IoIosClose } from "react-icons/io";
+import { useState, useEffect } from 'react';
 import api from '../api';
 
 const Book = ({ id, orgId, list_type, type, setInProg, setToFinished, setToRead, inLibrary }) => {
