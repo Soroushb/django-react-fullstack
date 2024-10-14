@@ -52,7 +52,6 @@ const Form = ({route, method}) => {
             className="flex flex-col items-center justify-center">
             <p className="mb-0 me-4 text-lg font-secondary">Sign in with</p>
             
-          <button className="mt-2 scale-125 hover:scale-150"><FaGoogle/> </button>
           </div>
 
           <div
